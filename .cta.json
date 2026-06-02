@@ -3,7 +3,7 @@
   "mode": "file-router",
   "typescript": true,
   "packageManager": "npm",
-  "includeExamples": false,
+  "includeExamples": true,
   "tailwind": true,
   "addOnOptions": {},
   "envVarValues": {},
@@ -13,6 +13,7 @@
   "version": 1,
   "framework": "react",
   "chosenAddOns": [
-    "eslint"
+    "eslint",
+    "nitro"
   ]
 }
