@@ -1,9 +1,13 @@
+import Sidebar from "./Sidebar";
 
 
-export default function Dashboard() {
+export default function Dashboard({ children }: { children: React.ReactNode }) {
   return (
-    <div>
-      
-    </div>
+    <main>
+        <Sidebar />
+        {children}
+    </main>
+       
+    
   )
 }
