@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, House,LayoutDashboard,FolderKanban, UsersRound,
 
 export default function Sidebar() {
   return (
-    <aside className="sticky top-0 left-0 h-screen w-64 border-r bg-background p-4 justify-between flex flex-col">
+    <aside className=" h-screen w-64 max-w-3xs border-r bg-background p-4 justify-between flex flex-col">
       <div>
       <div className="flex items-center gap-4 mb-8 cursor-pointer">
         <span>#</span>
