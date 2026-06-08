@@ -1,3 +1,4 @@
+import { Moon, Sun, Monitor } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 type ThemeMode = 'light' | 'dark' | 'auto'
@@ -73,9 +74,26 @@ export default function ThemeToggle() {
       onClick={toggleMode}
       aria-label={label}
       title={label}
-      className="rounded-full border border-[var(--chip-line)]  px-3  text-sm font-semibold text-[var(--sea-ink)] shadow-[0_8px_22px_rgba(30,90,72,0.08)] transition hover:-translate-y-0.5"
+      className="rounded-full
+      border
+      border-(--border)
+      bg-(--card-bg)
+      text-(--text)
+      px-3
+      py-2
+      transition
+      hover:bg-(--surface-hover)
+      "
     >
-      {mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}
+     {
+  mode === 'auto' ? (
+    <Monitor size={18} />
+  ) : mode === 'dark' ? (
+    <Moon size={18} />
+  ) : (
+    <Sun size={18} />
+  )
+}
     </button>
   )
 }

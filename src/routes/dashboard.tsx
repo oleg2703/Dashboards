@@ -1,51 +1,93 @@
 import { createFileRoute } from '@tanstack/react-router'
 import Dashboard from '../components/layout/Dashboard'
+import Header from '../components/layout/Header'
 import { StatCard } from '../components/dashboard/StatCard'
-import  Header  from '../components/layout/Header'
+import RevenueChart from '../components/dashboard/RevenueChart'
+import OrdersPieChart from '../components/dashboard/OrdersPieChart'
+import TopProducts from '../components/dashboard/TopProducts'
+import RecentOrdersTable from '../components/dashboard/RecentOrdersTable'
 
 export const Route = createFileRoute('/dashboard')({
-  component: () => (
-    <main className="flex w-full h-screen">
-    <Dashboard>
-      
-      <div className=" w-full">
-        <Header />
-        <div className="w-full flex items-center justify-between px-4 py-2">
-          <h1>Dashboard</h1> 
-          <ul className='flex gap-4'>
-            <li>Overview</li>
-            <li>Analytics</li>
-            <li>Reports</li>
-          </ul>
+  component: DashboardPage,
+})
+
+function DashboardPage() {
+  return (
+    <main className="flex h-screen w-full">
+      <Dashboard>
+        <div className="w-full p-6">
+          <Header />
+
+          <div className="mb-6 flex items-center justify-between">
+            <h1 className="text-2xl font-bold">Dashboard</h1>
+
+            <ul className="flex gap-6">
+              <li>Overview</li>
+              <li>Analytics</li>
+              <li>Reports</li>
+            </ul>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <StatCard
+              title="Total Revenue"
+              value="$24,580"
+              change="+12%"
+            />
+
+            <StatCard
+              title="Total Orders"
+              value="154"
+              change="+8 this week"
+            />
+
+            <StatCard
+              title="Customers"
+              value="1,248"
+              change="+24 this week"
+            />
+
+            <StatCard
+              title="Products"
+              value="34"
+              change="5 low stock"
+            />
+          </div>
+
+              <div className="mt-6 rounded-2xl border border-(--border) bg-(--card-bg) p-6">
+        <h2 className="mb-4 text-lg font-semibold">
+          Revenue Overview
+        </h2>
+
+        <RevenueChart />
+      </div>
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-6">
+          <h2 className="mb-4 text-lg font-semibold">
+            Order Status
+          </h2>
+
+          <OrdersPieChart />
         </div>
-         
-      <div className="flex gap-4">
-          <StatCard 
-          title="Total Revenue" 
-          value="$24,580" 
-          change="+12%" 
-        />
-        <StatCard 
-          title="Total Orders" 
-          value="154" 
-          change="+8 this week" 
-        />
-        <StatCard 
-          title="Customers" 
-          value="1,248" 
-          change="+24 this week" 
-        />
-          <StatCard 
-          title="Products" 
-          value="34" 
-          change="5 low stock" 
-        />
+
+        <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-6">
+          <h2 className="mb-4 text-lg font-semibold">
+            Top Products
+          </h2>
+
+          <TopProducts />
         </div>
       </div>
-      
-     
-    </Dashboard>
+
+      <div className="mt-6 rounded-2xl border border-(--border) bg-(--card-bg) p-6">
+        <h2 className="mb-4 text-lg font-semibold">
+          Recent Orders
+        </h2>
+
+        <RecentOrdersTable />
+      </div>
+        </div>
+      </Dashboard>
     </main>
-    
-  ),
-})
+  )
+}

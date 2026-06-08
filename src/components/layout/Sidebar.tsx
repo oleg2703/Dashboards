@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, House,LayoutDashboard,FolderKanban, UsersRound,
 
 export default function Sidebar() {
   return (
-    <aside className="h-screen w-64 max-w-3xs border-r bg-background p-4 justify-between flex flex-col">
+    <aside className="sidebar h-screen w-64 max-w-3xs border-r bg-background p-4 justify-between flex flex-col">
       <div>
       <div className="flex items-center gap-4 mb-8 cursor-pointer">
         <span>#</span>
@@ -29,7 +29,7 @@ export default function Sidebar() {
       </div>
       
       <ul className="flex flex-col gap-2 ">
-        <li className='flex items-center gap-2'><Settings /><Link to={'/settings'} className='text-lg font-bold'>Settings</Link>  <ThemeToggle/></li>
+        <li className='flex items-center gap-2'><Settings /><Link to={'/settings'} className='text-lg font-bold'>Settings</Link></li>
         <li className='flex items-center gap-2'><Headphones /><Link to={'/help'} className='text-lg font-bold'>Help Center</Link></li>
       </ul>
 

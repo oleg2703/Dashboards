@@ -9,7 +9,7 @@ export default function Header() {
      <ul className="flex items-left place-content-end gap-4 py-4">
      <li><input type="text" placeholder="Search..." /></li>
      </ul>
-     <ul className="flex items-right gap-4">
+     <ul className="flex items-right gap-4 items-center">
         <li><Bell /></li>
         <li><CirclePlus /></li>
         <li><Gift /></li>
