@@ -10,16 +10,16 @@ export function StatCard({
   change,
 }: StatCardProps) {
   return (
-    <div className="stat-card rounded-2xl p-6">
+    <div className="stat-card rounded-1xl">
       <h3 className="text-sm text-(--text-secondary)">
         {title}
       </h3>
 
-      <p className="mt-2 text-3xl font-bold">
+      <p className=" text-1xl font-bold">
         {value}
       </p>
 
-      <p className="mt-2 text-sm text-green-500">
+      <p className="text-sm text-green-500">
         {change}
       </p>
     </div>

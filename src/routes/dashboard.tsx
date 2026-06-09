@@ -15,20 +15,20 @@ function DashboardPage() {
   return (
     <main className="flex h-screen w-full">
       <Dashboard>
-        <div className="w-full p-6">
+        <div className="w-full p-2">
           <Header />
 
-          <div className="mb-6 flex items-center justify-between">
+          <div className="mb-1 flex items-center justify-between">
             <h1 className="text-2xl font-bold">Dashboard</h1>
 
-            <ul className="flex gap-6">
+            <ul className="flex gap-6 text-sm text-(--text-secondary)">
               <li>Overview</li>
               <li>Analytics</li>
               <li>Reports</li>
             </ul>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
             <StatCard
               title="Total Revenue"
               value="$24,580"
@@ -54,24 +54,24 @@ function DashboardPage() {
             />
           </div>
 
-              <div className="mt-6 rounded-2xl border border-(--border) bg-(--card-bg) p-6">
-        <h2 className="mb-4 text-lg font-semibold">
+              <div className="mt-3 rounded-2xl border border-(--border) bg-(--card-bg) p-3">
+        <h2 className="mb-4 text-md font-semibold">
           Revenue Overview
         </h2>
 
         <RevenueChart />
       </div>
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-6">
-          <h2 className="mb-4 text-lg font-semibold">
+      <div className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2">
+        <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-3">
+          <h2 className="mb-1 text-lg font-semibold">
             Order Status
           </h2>
 
           <OrdersPieChart />
         </div>
 
-        <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-6">
-          <h2 className="mb-4 text-lg font-semibold">
+        <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-3">
+          <h2 className="mb-1 text-lg font-semibold">
             Top Products
           </h2>
 
@@ -79,8 +79,8 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-(--border) bg-(--card-bg) p-6">
-        <h2 className="mb-4 text-lg font-semibold">
+      <div className="mt-3 rounded-2xl border border-(--border) bg-(--card-bg) p-3">
+        <h2 className="mb-2 text-lg font-semibold">
           Recent Orders
         </h2>
 

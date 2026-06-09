@@ -65,7 +65,8 @@ body {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 1.5rem;
+  padding: 0.7rem;
+  width: 100%;
   transition:
     background-color 0.2s ease,
     color 0.2s ease,

@@ -19,11 +19,11 @@ const products = [
 
 export default function TopProducts() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {products.map((product) => (
         <div
           key={product.name}
-          className="flex items-center justify-between rounded-xl border border-(--border) p-4"
+          className="flex items-center justify-between "
         >
           <span className="font-medium">
             {product.name}

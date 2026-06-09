@@ -38,10 +38,10 @@ export default function RecentOrdersTable() {
       <table className="w-full">
         <thead>
           <tr className="border-b border-(--border)">
-            <th className="px-4 py-3 text-left">Order ID</th>
-            <th className="px-4 py-3 text-left">Customer</th>
-            <th className="px-4 py-3 text-left">Status</th>
-            <th className="px-4 py-3 text-right">Amount</th>
+            <th className="px-3 py-2 text-left">Order ID</th>
+            <th className="px-3 py-2 text-left">Customer</th>
+            <th className="px-3 py-2 text-left">Status</th>
+            <th className="px-3 py-2 text-right">Amount</th>
           </tr>
         </thead>
 
@@ -51,15 +51,15 @@ export default function RecentOrdersTable() {
               key={order.id}
               className="border-b border-(--border)"
             >
-              <td className="px-4 py-3">{order.id}</td>
+              <td className="px-3 py-2">{order.id}</td>
 
-              <td className="px-4 py-3">
+              <td className="px-3 py-2">
                 {order.customer}
               </td>
 
-              <td className="px-4 py-3">
+              <td className="px-3 py-2">
                 <span
-                  className={`rounded-full px-3 py-1 text-xs font-medium
+                  className={`rounded-full px-2 py-1 text-xs font-medium
                   ${
                     order.status === 'Completed'
                       ? 'bg-green-500/15 text-green-500'
@@ -72,7 +72,7 @@ export default function RecentOrdersTable() {
                 </span>
               </td>
 
-              <td className="px-4 py-3 text-right">
+              <td className="px-3 py-3 text-right">
                 ${order.amount}
               </td>
             </tr>

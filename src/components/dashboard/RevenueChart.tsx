@@ -39,7 +39,7 @@ const options = {
 
 export default function RevenueChart() {
   return (
-    <div className="h-350px">
+    <div className="chart-container h-32">
       <Line data={data} options={options} />
     </div>
   )
