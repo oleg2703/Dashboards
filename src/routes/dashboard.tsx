@@ -15,42 +15,36 @@ function DashboardPage() {
   return (
     <main className="flex h-screen w-full">
       <Dashboard>
-        <div className="w-full p-2">
+        <div className="w-full p-2 ">
           <Header />
 
-          <div className="mb-1 flex items-center justify-between">
+          <div className="mb-3 flex items-center justify-between">
             <h1 className="text-2xl font-bold">Dashboard</h1>
-
-            <ul className="flex gap-6 text-sm text-(--text-secondary)">
-              <li>Overview</li>
-              <li>Analytics</li>
-              <li>Reports</li>
-            </ul>
           </div>
 
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
             <StatCard
               title="Total Revenue"
               value="$24,580"
-              change="+12%"
+              change="↑ 12% from last month"
             />
 
             <StatCard
               title="Total Orders"
               value="154"
-              change="+8 this week"
+              change="↑ 8 this week"
             />
 
             <StatCard
               title="Customers"
               value="1,248"
-              change="+24 this week"
+              change="↑ 24 this week"
             />
 
             <StatCard
               title="Products"
               value="34"
-              change="5 low stock"
+              change="↑ 5 low stock"
             />
           </div>
 

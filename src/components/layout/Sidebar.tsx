@@ -42,10 +42,10 @@ export default function Sidebar() {
       <div>
       </div>
       <ul className="flex flex-col gap-4 ">
-        <li className='flex items-center gap-2'><House/><Link to="/"className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}> Home</Link></li>
-        <li className='flex items-center gap-2'><LayoutDashboard /><Link to={'/dashboard'}  className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Dashboard</Link></li>
-        <li className='flex items-center gap-2'><FolderKanban /><Link to={'/products'}  className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Products</Link></li>
-        <li className='flex items-center gap-2'><UsersRound /><Link to={'/customers'} className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Customers</Link></li>
+        <li className='flex items-center gap-2'><Link to="/"><House/></Link><Link to="/"className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}> Home</Link></li>
+        <li className='flex items-center gap-2'><Link to={'/dashboard'}><LayoutDashboard /></Link><Link to={'/dashboard'}  className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Dashboard</Link></li>
+        <li className='flex items-center gap-2'><Link to={'/products'}><FolderKanban /></Link><Link to={'/products'}  className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Products</Link></li>
+        <li className='flex items-center gap-2'><Link to={'/customers'}><UsersRound /></Link><Link to={'/customers'} className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Customers</Link></li>
       </ul>
       </div>
       
