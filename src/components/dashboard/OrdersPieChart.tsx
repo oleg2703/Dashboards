@@ -17,7 +17,7 @@ const data = {
   labels: ['Completed', 'Pending', 'Cancelled'],
   datasets: [
     {
-      data: [70, 20, 10],
+      data: [73, 17, 10],
       backgroundColor: [
         '#22c55e',
         '#f59e0b',
@@ -35,8 +35,8 @@ const options = {
 
 export default function OrdersPieChart() {
   return (
-    <div className="h-300px">
-      <Pie data={data} options={options} />
+    <div className=" ">
+      <Pie data={data} options={options}  />
     </div>
   )
 }

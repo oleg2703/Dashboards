@@ -1,39 +1,59 @@
-const products = [
-  {
-    name: 'Pizza Margherita',
-    sales: 124,
-  },
-  {
-    name: 'Classic Burger',
-    sales: 98,
-  },
-  {
-    name: 'Caesar Salad',
-    sales: 76,
-  },
-  {
-    name: 'Carbonara Pasta',
-    sales: 64,
-  },
-]
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+} from 'chart.js'
+
+import { Bar } from 'react-chartjs-2'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend
+)
 
 export default function TopProducts() {
-  return (
-    <div className="space-y-2">
-      {products.map((product) => (
-        <div
-          key={product.name}
-          className="flex items-center justify-between "
-        >
-          <span className="font-medium">
-            {product.name}
-          </span>
+  const data = {
+    labels: [
+      'Pizza',
+      'Burger',
+      'Caesar Salad',
+      'Pasta',
+      'Steak',
+    ],
+    datasets: [
+      {
+        label: 'Sales',
+        data: [124, 98, 76, 64, 51],
+        borderRadius: 8,
+      },
+    ],
+  }
 
-          <span className="text-sm text-(--text-secondary)">
-            {product.sales} sales
-          </span>
-        </div>
-      ))}
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+
+    indexAxis: 'y' as const,
+
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  }
+
+  return (
+    <div className="h-300px">
+      <Bar
+        data={data}
+        options={options}
+      />
     </div>
   )
 }

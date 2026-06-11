@@ -13,9 +13,9 @@ export const Route = createFileRoute('/dashboard')({
 
 function DashboardPage() {
   return (
-    <main className="flex h-screen w-full">
+    <main className="flex h-screen w-full overflow-hidden">
       <Dashboard>
-        <div className="w-full p-2 ">
+        <div className="w-full overflow-y-auto p-2 ">
           <Header />
 
           <div className="mb-3 flex items-center justify-between">
@@ -55,13 +55,13 @@ function DashboardPage() {
 
         <RevenueChart />
       </div>
-      <div className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2">
+      <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-2 xl:grid-cols-2">
         <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-3">
           <h2 className="mb-1 text-lg font-semibold">
             Order Status
           </h2>
 
-          <OrdersPieChart />
+          <OrdersPieChart  />
         </div>
 
         <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-3">

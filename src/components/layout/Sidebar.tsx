@@ -7,7 +7,7 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
   return (
     <aside
-  className={`sidebar h-full border-r p-4 flex flex-col justify-between transition-all duration-500 ${
+  className={`sidebar h-screen border-r p-4 flex flex-col justify-between transition-all duration-500 ${
     collapsed ? 'w-15' : 'w-70'
   }`}
 >
@@ -42,16 +42,27 @@ export default function Sidebar() {
       <div>
       </div>
       <ul className="flex flex-col gap-4 ">
-        <li className='flex items-center gap-2'><Link to="/"><House/></Link><Link to="/"className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}> Home</Link></li>
-        <li className='flex items-center gap-2'><Link to={'/dashboard'}><LayoutDashboard /></Link><Link to={'/dashboard'}  className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Dashboard</Link></li>
-        <li className='flex items-center gap-2'><Link to={'/products'}><FolderKanban /></Link><Link to={'/products'}  className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Products</Link></li>
-        <li className='flex items-center gap-2'><Link to={'/customers'}><UsersRound /></Link><Link to={'/customers'} className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Customers</Link></li>
+        <li className='flex items-center gap-2'><Link to="/"className="text-lg font-bold flex items-center gap-2"><House  /> 
+         {!collapsed && (<span className="font-bold">Dashboard</span>)}</Link></li>
+        <li className='flex items-center gap-2'><Link to={'/dashboard'}  className="text-lg font-bold flex items-center gap-2"><LayoutDashboard />
+        {!collapsed && (<span className="font-bold">Dashboard</span>)}
+        </Link></li>
+        <li className='flex items-center gap-2'><Link to={'/products'}  className="text-lg font-bold flex items-center gap-2"><FolderKanban />
+        {!collapsed && (<span className="font-bold">Products</span>)}
+        </Link></li>
+        <li className='flex items-center gap-2'><Link to={'/customers'} className="text-lg font-bold flex items-center gap-2"><UsersRound />
+        {!collapsed && (<span className="font-bold">Customers</span>)}
+        </Link></li>
       </ul>
       </div>
       
       <ul className="flex flex-col gap-2 ">
-        <li className='flex items-center gap-2'><Settings /><Link to={'/settings'}  className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Settings</Link></li>
-        <li className='flex items-center gap-2'><Headphones /><Link to={'/help'} className={`${collapsed ? 'hidden' : 'block'} text-lg font-bold`}>Help Center</Link></li>
+        <li className='flex items-center gap-2'><Link to={'/settings'}  className="text-lg font-bold flex items-center gap-2"><Settings />
+        {!collapsed && (<span className="font-bold">Settings</span>)}
+        </Link></li>
+        <li className='flex items-center gap-2'><Link to={'/help'} className="text-lg font-bold flex items-center gap-2"><Headphones />
+        {!collapsed && (<span className="font-bold">Help Center</span>)}
+        </Link></li>
       </ul>
 
     </aside>
