@@ -43,7 +43,7 @@ export default function Sidebar() {
       </div>
       <ul className="flex flex-col gap-4 ">
         <li className='flex items-center gap-2'><Link to="/"className="text-lg font-bold flex items-center gap-2"><House  /> 
-         {!collapsed && (<span className="font-bold">Dashboard</span>)}</Link></li>
+         {!collapsed && (<span className="font-bold">Home</span>)}</Link></li>
         <li className='flex items-center gap-2'><Link to={'/dashboard'}  className="text-lg font-bold flex items-center gap-2"><LayoutDashboard />
         {!collapsed && (<span className="font-bold">Dashboard</span>)}
         </Link></li>

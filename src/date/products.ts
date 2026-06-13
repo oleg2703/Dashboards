@@ -7,6 +7,7 @@ export const products: Product[] = [
     price: 12,
     stock: 35,
     status: 'Active',
+    description: 'Classic Italian pizza',
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const products: Product[] = [
     price: 10,
     stock: 20,
     status: 'Active',
+    description: 'Delicious beef burger',
   },
   {
     id: 3,
@@ -21,6 +23,7 @@ export const products: Product[] = [
     price: 15,
     stock: 4,
     status: 'Low Stock',
+    description: 'Delicious pasta dish',
   },
   {
     id: 4,
@@ -28,5 +31,6 @@ export const products: Product[] = [
     price: 22,
     stock: 8,
     status: 'Active',
+    description: 'Juicy beef steak',
   },
 ]

@@ -1,11 +1,16 @@
+import { Eye, Pencil, Trash2 } from 'lucide-react'
 import type { Product } from '../../types/product'
 
 interface ProductsTableProps {
   products: Product[]
+  onView: (product: Product) => void
+  onEdit: (product: Product) => void
 }
 
 export default function ProductsTable({
   products,
+  onView,
+  onEdit,
 }: ProductsTableProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-(--border)">
@@ -16,6 +21,7 @@ export default function ProductsTable({
             <th className="p-4 text-left">Price</th>
             <th className="p-4 text-left">Stock</th>
             <th className="p-4 text-left">Status</th>
+            <th className="p-4 text-left">Actions</th>
           </tr>
         </thead>
 
@@ -39,6 +45,22 @@ export default function ProductsTable({
                 >
                   {product.status}
                 </span>
+              </td>
+             <td className="p-4">
+                <div className="flex gap-3">
+                  <div onClick={() => onView(product)}
+                    className="rounded p-1 hover:bg-(--surface-hover)">
+                    <Eye size={18} />
+                  </div>
+                  <div className="rounded p-1 hover:bg-(--surface-hover)">
+                    <button onClick={() => onEdit(product)}>
+                     <Pencil size={18} />
+                    </button>
+                  </div>
+                  <div className="rounded p-1 hover:bg-red-500/10">
+                    <Trash2 size={18} className="text-red-500"/>
+                  </div>
+                </div>
               </td>
             </tr>
           ))}
