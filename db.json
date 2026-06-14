@@ -1,0 +1,31 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@mail.com",
+      "isActive": true,
+      "createdAt": "2025-06-01",
+      "totalSpent": 540,
+      "ordersCount": 5
+    },
+    {
+      "id": 2,
+      "name": "Anna Smith",
+      "email": "anna@mail.com",
+      "isActive": false,
+      "createdAt": "2025-05-10",
+      "totalSpent": 1200,
+      "ordersCount": 12
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "customerId": 1,
+      "amount": 120,
+      "status": "paid",
+      "date": "2025-06-10"
+    }
+  ]
+}
