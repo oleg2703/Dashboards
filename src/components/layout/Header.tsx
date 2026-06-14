@@ -4,13 +4,13 @@ import { Bell, CirclePlus, Gift } from 'lucide-react'
 
 export default function Header() {
   return (
-    <header className="w-full flex items-center justify-between border-b bg-background px-1">
+    <header className="w-full flex items-center justify-between border-b bg-background ">
      
-     <ul className="flex items-left place-content-end gap-2 py-2">
-     <li className="position-relative">
-        <input type="text" placeholder="Search..." className="bg-background text-sm placeholder:text-sm  align-center " />
-      </li>
-     </ul>
+     <div className="flex items-left place-content-end">
+     <h1 className="text-2xl font-bold">
+      DashboardBY
+      </h1>
+     </div>
      <ul className="flex items-right gap-7 items-center">
         <li><Bell /></li>
         <li><CirclePlus /></li>

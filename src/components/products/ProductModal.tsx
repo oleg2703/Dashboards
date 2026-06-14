@@ -9,7 +9,7 @@ interface ProductModalProps {
 export default function ProductModal({
   product,
   onClose,
-  onEdit,
+
 }: ProductModalProps) {
   if (!product) return null
 

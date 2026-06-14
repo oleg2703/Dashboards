@@ -5,12 +5,14 @@ interface ProductsTableProps {
   products: Product[]
   onView: (product: Product) => void
   onEdit: (product: Product) => void
+  onDelete: (product: Product) => void
 }
 
 export default function ProductsTable({
   products,
   onView,
   onEdit,
+  onDelete
 }: ProductsTableProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-(--border)">
@@ -58,7 +60,9 @@ export default function ProductsTable({
                     </button>
                   </div>
                   <div className="rounded p-1 hover:bg-red-500/10">
-                    <Trash2 size={18} className="text-red-500"/>
+                    <button onClick={() => onDelete(product)}>
+                      <Trash2 size={18} className="cursor-pointer text-red-500"/>
+                    </button>
                   </div>
                 </div>
               </td>
