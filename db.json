@@ -1,7 +1,7 @@
 {
   "customers": [
     {
-      "id": 1,
+      "id": "1",
       "name": "John Doe",
       "email": "john@mail.com",
       "isActive": true,
@@ -10,7 +10,7 @@
       "ordersCount": 5
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Anna Smith",
       "email": "anna@mail.com",
       "isActive": false,
@@ -21,11 +21,78 @@
   ],
   "orders": [
     {
-      "id": 1,
+      "id": "1",
       "customerId": 1,
       "amount": 120,
       "status": "paid",
       "date": "2025-06-10"
     }
-  ]
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Pizza",
+      "price": 12,
+      "stock": 35,
+      "status": "Active",
+      "description": "Classic Italian pizza"
+    },
+    {
+      "id": "2",
+      "name": "Burger",
+      "price": 30,
+      "stock": 20,
+      "status": "Active",
+      "description": "Delicious beef burger"
+    },
+    {
+      "id": "3",
+      "name": "Pasta",
+      "price": 15,
+      "stock": 4,
+      "status": "Low Stock",
+      "description": "Delicious pasta dish"
+    },
+    {
+      "id": "Ho2qaCbwah4",
+      "name": "w22",
+      "price": 2,
+      "stock": 22,
+      "status": "Active",
+      "description": ""
+    },
+    {
+      "id": "5etZCSPjDLg",
+      "name": "22",
+      "price": 19,
+      "stock": 222,
+      "status": "Active",
+      "description": ""
+    },
+    {
+      "id": "DZ0UkySqOwI",
+      "name": "222",
+      "price": 21,
+      "stock": 2,
+      "status": "Low Stock",
+      "description": ""
+    },
+    {
+      "id": "bu3Qtxutr9U",
+      "name": "22",
+      "price": 22,
+      "stock": 22,
+      "status": "Active",
+      "description": ""
+    },
+    {
+      "id": "uZhozHonhCo",
+      "name": "asdasdas",
+      "price": 4,
+      "stock": 3,
+      "status": "Low Stock",
+      "description": ""
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
