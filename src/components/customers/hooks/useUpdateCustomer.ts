@@ -1,0 +1,16 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { customersApi } from '#/api/customers.api'
+
+export const useUpdateCustomer = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: customersApi.update,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['customers'],
+      })
+    },
+  })
+}

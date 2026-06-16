@@ -1,21 +1,22 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useQuery } from "@tanstack/react-query"
-import { customersApi } from "../api/customers.api"
-import type { Customer } from '#/types/customer'
 import Sidebar from '#/components/layout/Sidebar'
+import { useCustomers } from '#/components/customers/hooks/useCustomers'
+import CustomersTable from '#/components/customers/CustomersTable'
+import Header from '#/components/layout/Header'
+import { useState } from 'react'
+import type { Customer } from '#/types/customer'
 
-export const useCustomers = () => {
-  return useQuery({
-    queryKey: ["customers"],
-    queryFn: customersApi.getAll,
-  })
-}
 
+const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
+const [editingCustomer, setEditingCustomer] =useState<Customer | null>(null)
+const [deletingCustomer, setDeletingCustomer] =useState<Customer | null>(null)
 export const Route = createFileRoute('/customers')({
   component: RouteComponent,
 })
 
+
 function RouteComponent() {
+  
   const { data = [], isLoading, isError } = useCustomers()
 
   if (isLoading) return <div>Loading customers...</div>
@@ -25,21 +26,19 @@ function RouteComponent() {
   return (
     <>
     <main className="flex h-screen w-full overflow-hidden">
-      <Sidebar />
-      <div>
-        <h1>Customers</h1>
-        <ul>
-          {data.map((customer: Customer) => (
-            <ul key={customer.id}>
-              <li>{customer.name} - {customer.email}</li>
-              <li>{customer.totalSpent}</li>
-              <li>{customer.ordersCount}</li>
-              
-            </ul>
-          
-          ))}
-        </ul>
-    </div>
+       <Sidebar />
+        <div className="w-full overflow-y-auto p-2">
+    <Header />
+        <h1 className="text-2xl font-bold">
+      Customers
+    </h1>
+
+    <CustomersTable customers={data}
+     onView={setSelectedCustomer}
+     onEdit={setEditingCustomer}
+     onDelete={setDeletingCustomer}/>
+        </div>
+     
     </main>
    
     </>

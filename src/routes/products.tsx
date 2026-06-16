@@ -38,7 +38,6 @@ function RouteComponent() {
 
  const {
   data: products = [],
-  isLoading,
   isFetching,
 } = useProducts()
 
