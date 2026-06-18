@@ -1,58 +1,53 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Customer } from '#/types/customer'
 
-interface AddCustomerModalProps {
+interface Props {
+  customer: Customer | null
   onClose: () => void
-  onAdd: (
-    customer: Omit<Customer, 'id'>
-  ) => void
+  onSave: (customer: Customer) => void
 }
 
-export default function AddCustomerModal({
+export default function EditCustomerModal({
+  customer,
   onClose,
-  onAdd,
-}: AddCustomerModalProps) {
+  onSave,
+}: Props) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
 
-  const handleSubmit = () => {
- onAdd({
-  name,
-  email,
-  isActive: true,
-  ordersCount: 0,
-  totalSpent: 0,
-  createdAt: new Date()
-    .toISOString()
-    .split('T')[0],
-  orders: [],
-})
+  useEffect(() => {
+    if (customer) {
+      setName(customer.name)
+      setEmail(customer.email)
+    }
+  }, [customer])
 
-    onClose()
+  if (!customer) return null
+
+  const handleSubmit = () => {
+    onSave({
+      ...customer,
+      name,
+      email,
+    })
   }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">
       <div className="w-full max-w-md rounded-2xl bg-(--card-bg) p-6">
         <h2 className="mb-4 text-xl font-bold">
-          Add Customer
+          Edit Customer
         </h2>
 
         <input
           value={name}
-          onChange={(e) =>
-            setName(e.target.value)
-          }
-          placeholder="Customer name"
+          onChange={(e) => setName(e.target.value)}
           className="mb-3 w-full rounded border p-2"
         />
 
         <input
           value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
           className="mb-4 w-full rounded border p-2"
         />
 
@@ -68,7 +63,7 @@ export default function AddCustomerModal({
             onClick={handleSubmit}
             className="rounded bg-blue-500 px-4 py-2 text-white"
           >
-            Add
+            Save
           </button>
         </div>
       </div>

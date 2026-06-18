@@ -2,7 +2,7 @@
   "customers": [
     {
       "id": "1",
-      "name": "John Doe",
+      "name": "John Doev2",
       "email": "john@mail.com",
       "isActive": true,
       "createdAt": "2025-06-01",
@@ -11,7 +11,7 @@
     },
     {
       "id": "2",
-      "name": "Anna Smith",
+      "name": "Anna Smiths",
       "email": "anna@mail.com",
       "isActive": false,
       "createdAt": "2025-05-10",

@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 
 export type Customer = {
   ordersCount: ReactNode
-  id: string
+  id: number
   name: string
   email: string
   isActive: boolean
