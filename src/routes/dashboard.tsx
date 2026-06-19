@@ -6,12 +6,15 @@ import RevenueChart from '../components/dashboard/RevenueChart'
 import OrdersPieChart from '../components/dashboard/OrdersPieChart'
 import TopProducts from '../components/dashboard/TopProducts'
 import RecentOrdersTable from '../components/dashboard/RecentOrdersTable'
+import { useDashboardStats } from '#/components/dashboard/hooks/useDashboardStats'
 
 export const Route = createFileRoute('/dashboard')({
   component: DashboardPage,
 })
 
 function DashboardPage() {
+  
+  const {totalCustomers,totalProducts,totalRevenue,activeCustomers} = useDashboardStats()
   return (
     <main className="flex h-screen w-full overflow-hidden">
       <Dashboard>
@@ -23,29 +26,28 @@ function DashboardPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
-            <StatCard
-              title="Total Revenue"
-              value="$24,580"
-              change="↑ 12% from last month"
-            />
-
-            <StatCard
-              title="Total Orders"
-              value="154"
-              change="↑ 8 this week"
-            />
-
-            <StatCard
+           <StatCard
               title="Customers"
-              value="1,248"
-              change="↑ 24 this week"
+              value={totalCustomers}
+              change={`${activeCustomers} active`}
             />
 
             <StatCard
               title="Products"
-              value="34"
-              change="↑ 5 low stock"
+              value={totalProducts}
+              change="In catalog"
             />
+
+            <StatCard
+              title="Revenue"
+              value={`$${totalRevenue}`}
+             change="Total earnings"
+            />
+            <StatCard
+            title="Active Customers"
+            value={activeCustomers}
+            change={`${activeCustomers}/${totalCustomers}`}
+          />
           </div>
 
               <div className="mt-3 rounded-2xl border border-(--border) bg-(--card-bg) p-3">
