@@ -26,7 +26,49 @@
       "amount": 120,
       "status": "paid",
       "date": "2025-06-10"
-    }
+    },
+     {
+    "id": 2,
+    "customerId": 2,
+    "amount": 110,
+    "status": "paid",
+    "date": "2025-02-10"
+  },
+   {
+    "id": 3,
+    "customerId": 1,
+    "amount": 70,
+    "status": "paid",
+    "date": "2025-01-10"
+  },
+   {
+    "id": 4,
+    "customerId": 1,
+    "amount": 80,
+    "status": "paid",
+    "date": "2025-03-10"
+  },
+   {
+    "id": 5,
+    "customerId": 2,
+    "amount": 80,
+    "status": "paid",
+    "date": "2025-04-10"
+  },
+    {
+    "id": 6,
+    "customerId": 2,
+    "amount": 90,
+    "status": "paid",
+    "date": "2025-04-10"
+  },
+    {
+    "id": 7,
+    "customerId": 2,
+    "amount": 99,
+    "status": "paid",
+    "date": "2025-03-10"
+  }
   ],
   "products": [
     {
