@@ -31,7 +31,13 @@ const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 const createOrder = useCreateOrder()
 const updateOrder = useUpdateOrder()
 const deleteOrder = useDeleteOrder()
+const [search, setSearch] = useState('')
 
+const filteredOrders = orders.filter( 
+  (order) => order.id .toString() 
+  .includes(search) || order.customerId
+  .toString() .includes(search) || order.status .toLowerCase()
+   .includes(search.toLowerCase()) )
 const handleAddOrder = (
   order: Omit<Order, 'id'>
 ) => {
@@ -60,6 +66,9 @@ const handleDeleteOrder = (
         <button onClick={() =>setIsAddModalOpen(true)}
           className="rounded-xl bg-blue-500 px-4 py-2 text-white"> Add Order
         </button>
+        <input type="text" placeholder="Search orders..." value={search}
+        onChange={(e) =>setSearch(e.target.value)}
+        className="rounded-xl border border-(--border) px-3 py-2"/>
         <h1 className="text-2xl font-bold">
           Orders
         </h1>
@@ -72,8 +81,8 @@ const handleDeleteOrder = (
           <div>Failed to load orders</div>
         )}
 
-      <OrdersTable
-        orders={orders}
+        <OrdersTable
+        orders={filteredOrders}
         onView={setSelectedOrder}
         onEdit={setEditingOrder}
         onDelete={setDeletingOrder}

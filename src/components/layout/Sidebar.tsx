@@ -1,10 +1,11 @@
 import { Link } from '@tanstack/react-router'
-import { ChevronDown, ChevronUp, House,LayoutDashboard,FolderKanban, UsersRound,Settings, Headphones, ArrowLeftFromLine } from 'lucide-react'
+import { ChevronDown, ChevronUp, House,LayoutDashboard,FolderKanban, UsersRound,Settings, Headphones, ArrowLeftFromLine, UserRound } from 'lucide-react'
 import { useState } from 'react'
 
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
+  
   return (
     <aside
   className={`sidebar h-screen border-r p-4 flex flex-col justify-between transition-all duration-500 ${
@@ -52,6 +53,9 @@ export default function Sidebar() {
         </Link></li>
         <li className='flex items-center gap-2'><Link to={'/customers'} className="text-lg font-bold flex items-center gap-2"><UsersRound />
         {!collapsed && (<span className="font-bold">Customers</span>)}
+        </Link></li>
+        <li className='flex items-center gap-2'><Link to={'/orders'} className="text-lg font-bold flex items-center gap-2"><UserRound />
+        {!collapsed && (<span className="font-bold">Orders</span>)}
         </Link></li>
       </ul>
       </div>
