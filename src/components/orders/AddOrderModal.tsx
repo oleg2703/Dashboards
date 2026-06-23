@@ -61,53 +61,22 @@ export default function AddOrderModal({
             className="w-full rounded-xl border p-2"
           />
 
-          <input
-            type="number"
-            placeholder="Amount"
-            value={amount}
-            onChange={(e) =>
-              setAmount(
-                e.target.value
-              )
-            }
-            className="w-full rounded-xl border p-2"
-          />
-
-          <select
-            value={status}
-            onChange={(e) =>
-              setStatus(
-                e.target.value as 'paid' | 'pending' | 'cancelled'
-              )
-            }
-            className="w-full rounded-xl border p-2"
-          >
-            <option value="paid">
-              Paid
-            </option>
-
-            <option value="pending">
-              Pending
-            </option>
-
-            <option value="cancelled">
-              Cancelled
-            </option>
+          <input type="number" placeholder="Amount"value={amount}
+            onChange={(e) =>setAmount(e.target.value)}
+            className="w-full rounded-xl border p-2"/>
+          <select value={status}onChange={(e) =>setStatus
+            (e.target.value as 'paid' | 'pending' | 'cancelled')}
+            className="rounded-xl border border bg-(--card-bg) w-full py-2">
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="cancelled">Cancelled</option>
           </select>
-
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-xl border px-4 py-2"
-            >
+            <button type="button" onClick={onClose} className="rounded-xl border px-4 py-2">
               Cancel
             </button>
-
-            <button
-              type="submit"
-              className="rounded-xl bg-blue-500 px-4 py-2 text-white"
-            >
+            <button type="submit"
+              className="rounded-xl bg-blue-500 px-4 py-2 text-white">
               Create
             </button>
           </div>

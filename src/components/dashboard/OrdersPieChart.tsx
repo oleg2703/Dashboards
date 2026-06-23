@@ -6,27 +6,13 @@ import {
 } from 'chart.js'
 
 import { Pie } from 'react-chartjs-2'
+import { useOrders } from '#/components/orders/hooks/useOrders'
 
 ChartJS.register(
   ArcElement,
   Tooltip,
-  Legend,
+  Legend
 )
-
-const data = {
-  labels: ['Completed', 'Pending', 'Cancelled'],
-  datasets: [
-    {
-      data: [73, 17, 10],
-      backgroundColor: [
-        '#22c55e',
-        '#f59e0b',
-        '#ef4444',
-      ],
-      borderWidth: 0,
-    },
-  ],
-}
 
 const options = {
   responsive: true,
@@ -34,9 +20,43 @@ const options = {
 }
 
 export default function OrdersPieChart() {
+  const { data: orders = [] } = useOrders()
+
+  const paidCount = orders.filter(
+    (o) => o.status === 'paid'
+  ).length
+
+  const pendingCount = orders.filter(
+    (o) => o.status === 'pending'
+  ).length
+
+  const cancelledCount = orders.filter(
+    (o) => o.status === 'cancelled'
+  ).length
+
+  const data = {
+    labels: [
+      'Paid',
+      'Pending',
+      'Cancelled',
+    ],
+    datasets: [
+      {
+        data: [
+          paidCount,
+          pendingCount,
+          cancelledCount,
+        ],
+      },
+    ],
+  }
+
   return (
-    <div className=" ">
-      <Pie data={data} options={options}  />
+    <div className="h-40">
+      <Pie
+        data={data}
+        options={options}
+      />
     </div>
   )
 }

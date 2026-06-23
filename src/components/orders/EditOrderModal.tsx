@@ -95,7 +95,7 @@ export default function EditOrderModal({
                   | 'cancelled'
               )
             }
-            className="w-full rounded-xl border p-2"
+            className="w-full rounded-xl border p-2 bg-(--card-bg)"
           >
             <option value="paid">
               Paid

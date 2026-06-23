@@ -9,6 +9,7 @@ import {
 } from 'chart.js'
 
 import { Line } from 'react-chartjs-2'
+import { useOrders } from '#/components/orders/hooks/useOrders'
 
 ChartJS.register(
   CategoryScale,
@@ -19,28 +20,48 @@ ChartJS.register(
   Legend,
 )
 
-const data = {
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-  datasets: [
-    {
-      label: 'Revenue',
-      data: [4000, 3000, 2000, 2780, 1890],
-      borderColor: '#3b82f6',
-      backgroundColor: 'rgba(59,130,246,0.2)',
-      tension: 0.4,
-    },
-  ],
-}
-
 const options = {
   responsive: true,
   maintainAspectRatio: false,
 }
 
 export default function RevenueChart() {
+  const { data: orders = [] } = useOrders()
+
+  const chartData = [...orders]
+    .sort(
+      (a, b) =>
+        new Date(a.date).getTime() -
+        new Date(b.date).getTime()
+    )
+
+  const data = {
+    labels: chartData.map(
+      (order) => order.date
+    ),
+
+    datasets: [
+      {
+        label: 'Revenue',
+        data: chartData.map(
+          (order) => order.amount
+        ),
+
+        borderColor: '#3b82f6',
+        backgroundColor:
+          'rgba(59,130,246,0.2)',
+
+        tension: 0.4,
+      },
+    ],
+  }
+
   return (
-    <div className="chart-container h-32">
-      <Line data={data} options={options} />
+    <div className="h-50">
+      <Line
+        data={data}
+        options={options}
+      />
     </div>
   )
 }

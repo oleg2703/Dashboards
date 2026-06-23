@@ -1,69 +1,57 @@
-type Order = {
-  id: string
-  customer: string
-  status: 'Completed' | 'Pending' | 'Cancelled'
-  amount: number
-}
-
-const orders: Order[] = [
-  {
-    id: '#1001',
-    customer: 'John Doe',
-    status: 'Completed',
-    amount: 120,
-  },
-  {
-    id: '#1002',
-    customer: 'Jane Smith',
-    status: 'Pending',
-    amount: 85,
-  },
-  {
-    id: '#1003',
-    customer: 'Alex Brown',
-    status: 'Completed',
-    amount: 45,
-  },
-  {
-    id: '#1004',
-    customer: 'Emily Davis',
-    status: 'Cancelled',
-    amount: 70,
-  },
-]
+import { useOrders } from '../orders/hooks/useOrders'
 
 export default function RecentOrdersTable() {
+  const { data: orders = [] } = useOrders()
+
+  const recentOrders = [...orders]
+    .sort(
+      (a, b) =>
+        new Date(b.date).getTime() -
+        new Date(a.date).getTime()
+    )
+    .slice(0, 5)
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
           <tr className="border-b border-(--border)">
-            <th className="px-3 py-2 text-left">Order ID</th>
-            <th className="px-3 py-2 text-left">Customer</th>
-            <th className="px-3 py-2 text-left">Status</th>
-            <th className="px-3 py-2 text-right">Amount</th>
+            <th className="px-3 py-2 text-left">
+              Order ID
+            </th>
+            <th className="px-3 py-2 text-left">
+              Customer ID
+            </th>
+            <th className="px-3 py-2 text-left">
+              Status
+            </th>
+            <th className="px-3 py-2 text-right">
+              Amount
+            </th>
           </tr>
         </thead>
 
         <tbody>
-          {orders.map((order) => (
+          {recentOrders.map((order) => (
             <tr
               key={order.id}
               className="border-b border-(--border)"
             >
-              <td className="px-3 py-2">{order.id}</td>
+              <td className="px-3 py-2">
+                #{order.id}
+              </td>
 
               <td className="px-3 py-2">
-                {order.customer}
+                {order.customerId}
               </td>
 
               <td className="px-3 py-2">
                 <span
                   className={`rounded-full px-2 py-1 text-xs font-medium
                   ${
-                    order.status === 'Completed'
+                    order.status === 'paid'
                       ? 'bg-green-500/15 text-green-500'
-                      : order.status === 'Pending'
+                      : order.status === 'pending'
                         ? 'bg-yellow-500/15 text-yellow-500'
                         : 'bg-red-500/15 text-red-500'
                   }`}
@@ -72,7 +60,7 @@ export default function RecentOrdersTable() {
                 </span>
               </td>
 
-              <td className="px-3 py-3 text-right">
+              <td className="px-3 py-2 text-right">
                 ${order.amount}
               </td>
             </tr>

@@ -13,6 +13,7 @@ import EditOrderModal from '#/components/orders/EditOrderModal'
 import { useUpdateOrder } from '#/components/orders/hooks/useUpdateOrder'
 import DeleteOrderModal from '#/components/orders/DeleteOrderModal'
 import { useDeleteOrder } from '#/components/orders/hooks/useDeleteOrder'
+import { Search } from 'lucide-react'
 
 export const Route = createFileRoute('/orders')({
   component: RouteComponent,
@@ -28,16 +29,38 @@ const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
 const [editingOrder, setEditingOrder] = useState<Order | null>(null)
 const [deletingOrder, setDeletingOrder] = useState<Order | null>(null)
 const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+const [statusFilter, setStatusFilter] = useState('All')
+const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
 const createOrder = useCreateOrder()
 const updateOrder = useUpdateOrder()
 const deleteOrder = useDeleteOrder()
 const [search, setSearch] = useState('')
 
-const filteredOrders = orders.filter( 
-  (order) => order.id .toString() 
-  .includes(search) || order.customerId
-  .toString() .includes(search) || order.status .toLowerCase()
-   .includes(search.toLowerCase()) )
+const filteredOrders = orders
+  .filter(
+    (order) =>
+      order.id
+        .toString()
+        .includes(search) ||
+      order.customerId
+        .toString()
+        .includes(search) ||
+      order.status
+        .toLowerCase()
+        .includes(search.toLowerCase())
+  )
+  .filter((order) =>
+    statusFilter === 'All'
+      ? true
+      : order.status === statusFilter
+  )
+   
+  const sortedOrders = [...filteredOrders].sort(
+  (a, b) =>
+    sortOrder === 'asc'
+      ? a.amount - b.amount
+      : b.amount - a.amount
+)
 const handleAddOrder = (
   order: Omit<Order, 'id'>
 ) => {
@@ -63,15 +86,38 @@ const handleDeleteOrder = (
 
       <div className="w-full overflow-y-auto p-2">
         <Header />
-        <button onClick={() =>setIsAddModalOpen(true)}
-          className="rounded-xl bg-blue-500 px-4 py-2 text-white"> Add Order
-        </button>
-        <input type="text" placeholder="Search orders..." value={search}
-        onChange={(e) =>setSearch(e.target.value)}
-        className="rounded-xl border border-(--border) px-3 py-2"/>
-        <h1 className="text-2xl font-bold">
+         <h1 className="text-2xl font-bold">
           Orders
         </h1>
+       <div className="my-4 flex items-center gap-4">
+          <button onClick={() => setIsAddModalOpen(true)}
+            className="rounded-xl bg-blue-500 px-4 py-2 text-white">
+            Add Order
+          </button>
+          <button onClick={() => setSortOrder( sortOrder === 'asc' ? 'desc' : 'asc')}
+          className="rounded-xl border border-(--border) bg-(--card-bg) px-4 py-2">
+          {sortOrder === 'asc'? '↑ Amount': '↓ Amount'}
+        </button>
+          <div className="flex items-center gap-2 rounded-xl border border-(--border) bg-(--card-bg) px-3">
+            <Search size={18} />
+            <input
+              type="text"
+              placeholder="Search orders..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-transparent py-2 outline-none"
+            />
+          </div>
+          <select value={statusFilter} onChange={(e) =>setStatusFilter(e.target.value)}
+            className="rounded-xl border border-(--border) bg-(--card-bg) px-4 py-2">
+            <option value="All">All Orders</option>
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+       
 
         {isLoading && (
           <div>Loading orders...</div>
@@ -82,7 +128,7 @@ const handleDeleteOrder = (
         )}
 
         <OrdersTable
-        orders={filteredOrders}
+        orders={sortedOrders}
         onView={setSelectedOrder}
         onEdit={setEditingOrder}
         onDelete={setDeletingOrder}
