@@ -12,6 +12,7 @@ import EditCustomerModal from '#/components/customers/EditCustomerModal'
 import { useUpdateCustomer } from '#/components/customers/hooks/useUpdateCustomer'
 import DeleteCustomerModal from '#/components/customers/DeleteCustomerModal'
 import { useDeleteCustomer } from '#/components/customers/hooks/useDeleteCustomer'
+import { Search } from 'lucide-react'
 
 export const Route = createFileRoute('/customers')({
   component: RouteComponent,
@@ -23,12 +24,23 @@ const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
 const [editingCustomer, setEditingCustomer] =useState<Customer | null>(null)
 const [deletingCustomer, setDeletingCustomer] =useState<Customer | null>(null)
 const [isAddModalOpen, setIsAddModalOpen] =useState(false)
+const [search, setSearch] = useState('')
   
   const {data = [],isFetching} = useCustomers()
   const createCustomer = useCreateCustomer()
   const updateCustomer = useUpdateCustomer()
   const deleteCustomer = useDeleteCustomer()
 
+
+  const filteredCustomers = data.filter(
+  (customer) =>
+    customer.name
+      .toLowerCase()
+      .includes(search.toLowerCase()) ||
+    customer.email
+      .toLowerCase()
+      .includes(search.toLowerCase())
+)
   const handleAddCustomer = (
   customer: any
 ) => {
@@ -56,26 +68,39 @@ const handleDeleteCustomer = (
         <h1 className="text-2xl font-bold">
       Customers
     </h1>
-    <div className='flex justify-left gap-3'>
-          <div className="my-4">
-            <button
-              onClick={() => setIsAddModalOpen(true)}
-              className="rounded-xl bg-blue-500 px-4 py-2 text-white">
-              Add Customer
-            </button>
-        </div>
-    </div>
+   <div className="my-4 flex items-center gap-4">
+  <div className="flex items-center gap-2 rounded-xl border border-(--border) bg-(--card-bg) px-3">
+    <Search size={18} />
+
+    <input
+      type="text"
+      placeholder="Search customers..."
+      value={search}
+      onChange={(e) =>
+        setSearch(e.target.value)
+      }
+      className="bg-transparent py-2 outline-none"
+    />
+  </div>
+
+  <button
+    onClick={() => setIsAddModalOpen(true)}
+    className="rounded-xl bg-blue-500 px-4 py-2 text-white"
+  >
+    Add Customer
+  </button>
+</div>
          {isFetching && (
           <div className="mb-2 text-sm text-gray-500">
             Updating...
           </div>
         )}
-            <CustomersTable
-              customers={data}
-              onView={setSelectedCustomer}
-              onEdit={setEditingCustomer}
-              onDelete={setDeletingCustomer}
-            />
+           <CustomersTable
+          customers={filteredCustomers}
+          onView={setSelectedCustomer}
+          onEdit={setEditingCustomer}
+          onDelete={setDeletingCustomer}
+        />
         
         </div>
         <CustomerModal
