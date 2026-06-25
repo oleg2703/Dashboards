@@ -13,6 +13,7 @@ import { useUpdateCustomer } from '#/components/customers/hooks/useUpdateCustome
 import DeleteCustomerModal from '#/components/customers/DeleteCustomerModal'
 import { useDeleteCustomer } from '#/components/customers/hooks/useDeleteCustomer'
 import { Search } from 'lucide-react'
+import Pagination from '#/components/common/Pagination'
 
 export const Route = createFileRoute('/customers')({
   component: RouteComponent,
@@ -25,6 +26,8 @@ const [editingCustomer, setEditingCustomer] =useState<Customer | null>(null)
 const [deletingCustomer, setDeletingCustomer] =useState<Customer | null>(null)
 const [isAddModalOpen, setIsAddModalOpen] =useState(false)
 const [search, setSearch] = useState('')
+const [currentPage, setCurrentPage] = useState(1)
+const itemsPerPage = 5
   
   const {data = [],isFetching} = useCustomers()
   const createCustomer = useCreateCustomer()
@@ -32,6 +35,7 @@ const [search, setSearch] = useState('')
   const deleteCustomer = useDeleteCustomer()
 
 
+  
   const filteredCustomers = data.filter(
   (customer) =>
     customer.name
@@ -41,6 +45,20 @@ const [search, setSearch] = useState('')
       .toLowerCase()
       .includes(search.toLowerCase())
 )
+const totalPages = Math.max(
+  1,
+  Math.ceil(
+    filteredCustomers.length /
+      itemsPerPage
+  )
+)
+
+const paginatedCustomers =
+  filteredCustomers.slice(
+    (currentPage - 1) *
+      itemsPerPage,
+    currentPage * itemsPerPage
+  )
   const handleAddCustomer = (
   customer: any
 ) => {
@@ -96,12 +114,16 @@ const handleDeleteCustomer = (
           </div>
         )}
            <CustomersTable
-          customers={filteredCustomers}
+          customers={paginatedCustomers}
           onView={setSelectedCustomer}
           onEdit={setEditingCustomer}
           onDelete={setDeletingCustomer}
         />
-        
+        <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
         </div>
         <CustomerModal
          customer={selectedCustomer}

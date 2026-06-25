@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import Sidebar from '#/components/layout/Sidebar'
 import Header from '#/components/layout/Header'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Order } from '#/types/order'
 
 import { useCreateOrder } from '#/components/orders/hooks/useCreateOrder'
@@ -14,6 +14,7 @@ import { useUpdateOrder } from '#/components/orders/hooks/useUpdateOrder'
 import DeleteOrderModal from '#/components/orders/DeleteOrderModal'
 import { useDeleteOrder } from '#/components/orders/hooks/useDeleteOrder'
 import { Search } from 'lucide-react'
+import Pagination from '#/components/common/Pagination'
 
 export const Route = createFileRoute('/orders')({
   component: RouteComponent,
@@ -31,11 +32,17 @@ const [deletingOrder, setDeletingOrder] = useState<Order | null>(null)
 const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 const [statusFilter, setStatusFilter] = useState('All')
 const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+const [currentPage, setCurrentPage] = useState(1)
+const itemsPerPage = 5
 const createOrder = useCreateOrder()
 const updateOrder = useUpdateOrder()
 const deleteOrder = useDeleteOrder()
 const [search, setSearch] = useState('')
 
+
+useEffect(() => {
+  setCurrentPage(1)
+}, [search])
 const filteredOrders = orders
   .filter(
     (order) =>
@@ -49,6 +56,26 @@ const filteredOrders = orders
         .toLowerCase()
         .includes(search.toLowerCase())
   )
+      const totalPages = Math.max(
+      1,
+      Math.ceil(
+        filteredOrders.length /
+          itemsPerPage
+      )
+    )
+
+    const startIndex =
+      (currentPage - 1) * itemsPerPage
+
+    const endIndex =
+      startIndex + itemsPerPage
+
+    const paginatedOrders =
+      filteredOrders.slice(
+        startIndex,
+        endIndex
+      )
+  
   .filter((order) =>
     statusFilter === 'All'
       ? true
@@ -128,12 +155,17 @@ const handleDeleteOrder = (
         )}
 
         <OrdersTable
-        orders={sortedOrders}
+        orders={paginatedOrders}
         onView={setSelectedOrder}
         onEdit={setEditingOrder}
         onDelete={setDeletingOrder}
       />
-       <OrderModal
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
+            <OrderModal
         order={selectedOrder}
         onClose={() => setSelectedOrder(null)}
       />

@@ -2,13 +2,14 @@ import Sidebar from '#/components/layout/Sidebar'
 import { createFileRoute } from '@tanstack/react-router'
 import Header from '../components/layout/Header'
 import ProductsTable from '#/components/products/ProductsTable'
-import { useState } from 'react'
+import { useState ,useEffect} from 'react'
 import type { Product } from '#/types/product'
 import ProductModal from '#/components/products/ProductModal'
 import EditProductModal from '#/components/products/EditProductModal'
 import AddProductModal from '#/components/products/AddProductModal'
 import DeleteProductModal from '#/components/products/DeleteProductModal'
 import { Search } from 'lucide-react'
+import Pagination from '#/components/common/Pagination'
 
 import { useProducts } from '#/components/products/hooks/useProducts'
 import { useCreateProduct } from '#/components/products/hooks/useCreateProduct'
@@ -20,9 +21,15 @@ export const Route = createFileRoute('/products')({
 })
 
 function RouteComponent() {
+
   const [search, setSearch] = useState('')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [statusFilter, setStatusFilter] = useState('All')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+
 
   const [selectedProduct, setSelectedProduct] =
     useState<Product | null>(null)
@@ -45,23 +52,41 @@ function RouteComponent() {
   const updateProduct = useUpdateProduct()
   const deleteProduct = useDeleteProduct()
 
-  const filteredProducts = products
-    .filter((product) =>
-      product.name
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    )
-    .filter((product) =>
-      statusFilter === 'All'
-        ? true
-        : product.status === statusFilter
-    )
 
-  const sortedProducts = [...filteredProducts].sort(
-    (a, b) =>
-      sortOrder === 'asc'
-        ? a.price - b.price
-        : b.price - a.price
+useEffect(() => {
+  setCurrentPage(1)
+}, [search, statusFilter])
+
+const filteredProducts = products
+  .filter((product) =>
+    product.name
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  )
+  .filter((product) =>
+    statusFilter === 'All'
+      ? true
+      : product.status === statusFilter
+  )
+
+const sortedProducts = [...filteredProducts].sort(
+  (a, b) =>
+    sortOrder === 'asc'
+      ? a.price - b.price
+      : b.price - a.price
+)
+
+const totalPages = Math.max(
+  1,
+  Math.ceil(
+    sortedProducts.length / itemsPerPage
+  )
+)
+
+const paginatedProducts =
+  sortedProducts.slice(
+    startIndex,
+    endIndex
   )
 
   const handleAddProduct = (
@@ -166,13 +191,17 @@ function RouteComponent() {
         )}
 
         <ProductsTable
-          products={sortedProducts}
+          products={paginatedProducts}
           onView={setSelectedProduct}
           onEdit={setEditingProduct}
           onDelete={setDeletingProduct}
         />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
-
       <ProductModal
         product={selectedProduct}
         onClose={() =>
