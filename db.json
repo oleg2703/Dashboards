@@ -68,6 +68,13 @@
       "amount": 99,
       "status": "paid",
       "date": "2025-03-10"
+    },
+    {
+      "customerId": 1,
+      "amount": 2000,
+      "status": "paid",
+      "date": "2026-06-26",
+      "id": "jadcTrmt3mQ"
     }
   ],
   "products": [
@@ -96,43 +103,27 @@
       "description": "Delicious pasta dish"
     },
     {
-      "id": "Ho2qaCbwah4",
-      "name": "w22",
-      "price": 2,
-      "stock": 22,
+      "id": "LO2nNbId9JY",
+      "name": "icecream",
+      "price": 20,
+      "stock": 45,
       "status": "Active",
       "description": ""
     },
     {
-      "id": "5etZCSPjDLg",
-      "name": "22",
-      "price": 19,
-      "stock": 222,
+      "id": "kyKQ6H42soE",
+      "name": "beef",
+      "price": 30,
+      "stock": 10,
       "status": "Active",
       "description": ""
     },
     {
-      "id": "DZ0UkySqOwI",
-      "name": "222",
-      "price": 21,
-      "stock": 2,
-      "status": "Low Stock",
-      "description": ""
-    },
-    {
-      "id": "bu3Qtxutr9U",
-      "name": "22",
-      "price": 22,
-      "stock": 22,
+      "id": "xHeNxajaG8Y",
+      "name": "Mozarela",
+      "price": 30,
+      "stock": 10,
       "status": "Active",
-      "description": ""
-    },
-    {
-      "id": "uZhozHonhCo",
-      "name": "asdasdas",
-      "price": 4,
-      "stock": 3,
-      "status": "Low Stock",
       "description": ""
     }
   ],

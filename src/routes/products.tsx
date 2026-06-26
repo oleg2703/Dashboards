@@ -15,6 +15,7 @@ import { useProducts } from '#/components/products/hooks/useProducts'
 import { useCreateProduct } from '#/components/products/hooks/useCreateProduct'
 import { useUpdateProduct } from '#/components/products/hooks/useUpdateProduct'
 import { useDeleteProduct } from '#/components/products/hooks/useDeleteProduct'
+import { toast } from 'react-toastify';
 
 export const Route = createFileRoute('/products')({
   component: RouteComponent,
@@ -45,7 +46,7 @@ function RouteComponent() {
 
  const {
   data: products = [],
-  isFetching,
+  
 } = useProducts()
 
   const createProduct = useCreateProduct()
@@ -89,12 +90,12 @@ const paginatedProducts =
     endIndex
   )
 
-  const handleAddProduct = (
-    newProduct: Product
-  ) => {
+
+const handleAddProduct = (newProduct: Product) => {
+  toast.success('Product created successfully') 
     createProduct.mutate(newProduct)
-    setIsAddModalOpen(false)
-  }
+  setIsAddModalOpen(false) 
+}
 
   const handleSaveProduct = (
     updatedProduct: Product
@@ -147,6 +148,7 @@ const paginatedProducts =
             >
               Add Product
             </button>
+            
 
             <button
               onClick={() =>
@@ -184,11 +186,7 @@ const paginatedProducts =
             </select>
           </div>
         </div>
-              {isFetching && (
-          <div className="mb-2 text-sm text-gray-500">
-            Updating...
-          </div>
-        )}
+            
 
         <ProductsTable
           products={paginatedProducts}
