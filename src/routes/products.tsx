@@ -2,13 +2,12 @@ import Sidebar from '#/components/layout/Sidebar'
 import { createFileRoute } from '@tanstack/react-router'
 import Header from '../components/layout/Header'
 import ProductsTable from '#/components/products/ProductsTable'
-import { useState ,useEffect} from 'react'
+import { useState } from 'react'
 import type { Product } from '#/types/product'
 import ProductModal from '#/components/products/ProductModal'
 import EditProductModal from '#/components/products/EditProductModal'
 import AddProductModal from '#/components/products/AddProductModal'
 import DeleteProductModal from '#/components/products/DeleteProductModal'
-import { Search } from 'lucide-react'
 import Pagination from '#/components/common/Pagination'
 
 import { useProducts } from '#/components/products/hooks/useProducts'
@@ -16,21 +15,14 @@ import { useCreateProduct } from '#/components/products/hooks/useCreateProduct'
 import { useUpdateProduct } from '#/components/products/hooks/useUpdateProduct'
 import { useDeleteProduct } from '#/components/products/hooks/useDeleteProduct'
 import { toast } from 'react-toastify';
+import TableToolbar from '#/components/common/TableToolbar'
+import { useTable } from '#/hooks/useTable'
 
 export const Route = createFileRoute('/products')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-
-  const [search, setSearch] = useState('')
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
-  const [statusFilter, setStatusFilter] = useState('All')
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-
 
   const [selectedProduct, setSelectedProduct] =
     useState<Product | null>(null)
@@ -45,74 +37,49 @@ function RouteComponent() {
     useState(false)
 
  const {
-  data: products = [],
-  
-} = useProducts()
+  data: products = [], isLoading} = useProducts()
 
   const createProduct = useCreateProduct()
   const updateProduct = useUpdateProduct()
   const deleteProduct = useDeleteProduct()
 
 
-useEffect(() => {
-  setCurrentPage(1)
-}, [search, statusFilter])
+ const table = useTable({
+  data: products,
 
-const filteredProducts = products
-  .filter((product) =>
+  defaultSort: 'asc',
+
+  searchFn: (product, search) =>
     product.name
       .toLowerCase()
-      .includes(search.toLowerCase())
-  )
-  .filter((product) =>
-    statusFilter === 'All'
+      .includes(search.toLowerCase()),
+
+  filterFn: (product, filter) =>
+    filter === 'All'
       ? true
-      : product.status === statusFilter
-  )
+      : product.status === filter,
 
-const sortedProducts = [...filteredProducts].sort(
-  (a, b) =>
-    sortOrder === 'asc'
+  sortFn: (a, b, order) =>
+    order === 'asc'
       ? a.price - b.price
-      : b.price - a.price
-)
-
-const totalPages = Math.max(
-  1,
-  Math.ceil(
-    sortedProducts.length / itemsPerPage
-  )
-)
-
-const paginatedProducts =
-  sortedProducts.slice(
-    startIndex,
-    endIndex
-  )
-
-
+      : b.price - a.price,
+})
 const handleAddProduct = (newProduct: Product) => {
-  toast.success('Product created successfully') 
     createProduct.mutate(newProduct)
+     toast.success('Product created successfully') 
   setIsAddModalOpen(false) 
 }
-
-  const handleSaveProduct = (
-    updatedProduct: Product
-  ) => {
+const handleSaveProduct = (updatedProduct: Product) => {
     updateProduct.mutate(updatedProduct)
-    setEditingProduct(null)
-  }
-
-  const handleDeleteProduct = (
-    id: number
-  ) => {
+    toast.success('Product update successfully') 
+  setEditingProduct(null)
+}
+const handleDeleteProduct = (id: number) => {
     deleteProduct.mutate(id)
-    setDeletingProduct(null)
-  }
-
-
-
+     toast.success('Product delete successfully') 
+  setDeletingProduct(null)
+}
+  
   return (
     <main className="flex h-screen w-full overflow-hidden">
       <Sidebar />
@@ -123,82 +90,47 @@ const handleAddProduct = (newProduct: Product) => {
         <h1 className="text-2xl font-bold">
           Products
         </h1>
+        <TableToolbar
+          search={table.search}
+          onSearchChange={table.setSearch}
+          addLabel="Add Product"
+          onAdd={() => setIsAddModalOpen(true)}
+          sortOrder={table.sortOrder}
+          onSort={() =>
+            table.setSortOrder(
+              table.sortOrder === 'asc'
+                ? 'desc'
+                : 'asc'
+            )
+          }
+          filterValue={table.filter}
+          onFilterChange={table.setFilter}
+          filterOptions={[
+            'All',
+            'Active',
+            'Low Stock',
+          ]}
+        />
+       
+            {isLoading && (
+          <div>Loading product...</div>
+        )}
 
-        <div className="my-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 rounded-xl border border-(--border) bg-(--card-bg) px-3">
-              <Search size={18} />
-
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={search}
-                onChange={(e) =>
-                  setSearch(e.target.value)
-                }
-                className="bg-transparent py-2 outline-none"
-              />
-            </div>
-
-            <button
-              onClick={() =>
-                setIsAddModalOpen(true)
-              }
-              className="rounded-xl bg-blue-500 px-4 py-2 text-white"
-            >
-              Add Product
-            </button>
-            
-
-            <button
-              onClick={() =>
-                setSortOrder(
-                  sortOrder === 'asc'
-                    ? 'desc'
-                    : 'asc'
-                )
-              }
-              className="rounded-xl border border-(--border) bg-(--card-bg) px-4 py-2"
-            >
-              {sortOrder === 'asc'
-                ? '↑'
-                : '↓'}
-            </button>
-
-            <select
-              value={statusFilter}
-              onChange={(e) =>
-                setStatusFilter(
-                  e.target.value
-                )
-              }
-              className="rounded-xl border border-(--border) bg-(--card-bg) px-4 py-2"
-            >
-              <option value="All">
-                All Products
-              </option>
-              <option value="Active">
-                Active
-              </option>
-              <option value="Low Stock">
-                Low Stock
-              </option>
-            </select>
-          </div>
-        </div>
-            
+        
 
         <ProductsTable
-          products={paginatedProducts}
+          products={table.paginatedData}
           onView={setSelectedProduct}
           onEdit={setEditingProduct}
           onDelete={setDeletingProduct}
         />
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+       <Pagination
+          currentPage={table.currentPage}
+          totalPages={table.totalPages}
+          onPageChange={
+            table.setCurrentPage
+          }
+      />
       </div>
       <ProductModal
         product={selectedProduct}

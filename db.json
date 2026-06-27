@@ -17,6 +17,16 @@
       "createdAt": "2025-05-10",
       "totalSpent": 1200,
       "ordersCount": 12
+    },
+    {
+      "name": "Maik Loe",
+      "email": "maikloe@gmail.com",
+      "isActive": true,
+      "ordersCount": 0,
+      "totalSpent": 0,
+      "createdAt": "2026-06-26",
+      "orders": [],
+      "id": "BiUg58TrbUM"
     }
   ],
   "orders": [
@@ -71,10 +81,31 @@
     },
     {
       "customerId": 1,
-      "amount": 2000,
+      "amount": 20,
       "status": "paid",
       "date": "2026-06-26",
-      "id": "jadcTrmt3mQ"
+      "id": "YcSSvEkMatE"
+    },
+    {
+      "customerId": 3,
+      "amount": 21,
+      "status": "paid",
+      "date": "2026-06-26",
+      "id": "q4eszUqwxq8"
+    },
+    {
+      "customerId": 0,
+      "amount": 22,
+      "status": "pending",
+      "date": "2026-06-26",
+      "id": "ENgEiWnLyFg"
+    },
+    {
+      "customerId": 3,
+      "amount": 200,
+      "status": "paid",
+      "date": "2026-06-26",
+      "id": "QlDnoT5_A_I"
     }
   ],
   "products": [
@@ -106,14 +137,6 @@
       "id": "LO2nNbId9JY",
       "name": "icecream",
       "price": 20,
-      "stock": 45,
-      "status": "Active",
-      "description": ""
-    },
-    {
-      "id": "kyKQ6H42soE",
-      "name": "beef",
-      "price": 30,
       "stock": 10,
       "status": "Active",
       "description": ""
@@ -124,6 +147,22 @@
       "price": 30,
       "stock": 10,
       "status": "Active",
+      "description": ""
+    },
+    {
+      "id": "Opt4ojdJBiA",
+      "name": "Beef",
+      "price": 30,
+      "stock": 2,
+      "status": "Low Stock",
+      "description": ""
+    },
+    {
+      "id": "7PHjLwNwmro",
+      "name": "ice",
+      "price": 20,
+      "stock": 2,
+      "status": "Low Stock",
       "description": ""
     }
   ],
