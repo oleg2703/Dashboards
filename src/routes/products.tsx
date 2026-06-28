@@ -64,21 +64,46 @@ function RouteComponent() {
       ? a.price - b.price
       : b.price - a.price,
 })
+
 const handleAddProduct = (newProduct: Product) => {
-    createProduct.mutate(newProduct)
-     toast.success('Product created successfully') 
-  setIsAddModalOpen(false) 
-}
-const handleSaveProduct = (updatedProduct: Product) => {
-    updateProduct.mutate(updatedProduct)
-    toast.success('Product update successfully') 
-  setEditingProduct(null)
-}
-const handleDeleteProduct = (id: number) => {
-    deleteProduct.mutate(id)
-     toast.success('Product delete successfully') 
-  setDeletingProduct(null)
-}
+    createProduct.mutate(newProduct, {
+    onSuccess: () => {
+      toast.success('Product created successfully')
+      setIsAddModalOpen(false)
+    },
+    onError: (error: any) => {
+      const msg = error?.response?.data?.message || 'Failed to create product'
+      toast.error(msg)
+    }
+  })
+  }
+
+  const handleSaveProduct = (updatedProduct: Product) => {
+    updateProduct.mutate(updatedProduct, {
+    onSuccess: () => {
+      toast.success('Product update successfully')
+      setIsAddModalOpen(false)
+    },
+    onError: (error: any) => {
+      const msg = error?.response?.data?.message || 'Failed to update product'
+      toast.error(msg)
+    }
+  })
+  }
+
+  
+  const handleDeleteProduct = (id: number) => {
+    deleteProduct.mutate(id, {
+    onSuccess: () => {
+      toast.success('Product delete successfully')
+      setIsAddModalOpen(false)
+    },
+    onError: (error: any) => {
+      const msg = error?.response?.data?.message || 'Failed to delete product'
+      toast.error(msg)
+    }
+  })
+  }
   
   return (
     <main className="flex h-screen w-full overflow-hidden">

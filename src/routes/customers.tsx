@@ -15,6 +15,7 @@ import { useDeleteCustomer } from '#/components/customers/hooks/useDeleteCustome
 import Pagination from '#/components/common/Pagination'
 import TableToolbar from '#/components/common/TableToolbar'
 import { useTable } from '#/hooks/useTable'
+import { toast } from 'react-toastify'
 
 export const Route = createFileRoute('/customers')({
   component: RouteComponent,
@@ -35,23 +36,44 @@ const [isAddModalOpen, setIsAddModalOpen] =useState(false)
 
 
 
-  const handleAddCustomer = (
-  customer: any
-) => {
-  createCustomer.mutate(customer)
-}
-const handleSaveCustomer = (
-  customer: Customer
-) => {
-  updateCustomer.mutate(customer)
-  setEditingCustomer(null)
-}
-const handleDeleteCustomer = (
-  id: number
-) => {
-  deleteCustomer.mutate(id)
-  setDeletingCustomer(null)
-}
+
+const handleAddCustomer = (customer: any) => {
+    createCustomer.mutate(customer, {
+    onSuccess: () => {
+      toast.success('Customer created successfully')
+      setIsAddModalOpen(false)
+    },
+    onError: (error: any) => {
+      const msg = error?.response?.data?.message || 'Failed to create customer'
+      toast.error(msg)
+    }
+  })
+  }
+
+  const handleSaveCustomer = (customer: Customer) => {
+   updateCustomer.mutate(customer, {
+    onSuccess: () => {
+      toast.success('Customer update successfully')
+      setEditingCustomer(null)
+    },
+    onError: (error: any) => {
+      const msg = error?.response?.data?.message || 'Failed to update customer'
+      toast.error(msg)
+    }
+  })
+  }
+    const handleDeleteCustomer = (id: number) => {
+   deleteCustomer.mutate(id, {
+    onSuccess: () => {
+      toast.success('Customer delete successfully')
+     setDeletingCustomer(null)
+    },
+    onError: (error: any) => {
+      const msg = error?.response?.data?.message || 'Failed to delete customer'
+      toast.error(msg)
+    }
+  })
+  }
 const table = useTable({
   data,
 
