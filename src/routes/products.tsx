@@ -11,18 +11,33 @@ import DeleteProductModal from '#/components/products/DeleteProductModal'
 import Pagination from '#/components/common/Pagination'
 
 import { useProducts } from '#/components/products/hooks/useProducts'
-import { useCreateProduct } from '#/components/products/hooks/useCreateProduct'
-import { useUpdateProduct } from '#/components/products/hooks/useUpdateProduct'
-import { useDeleteProduct } from '#/components/products/hooks/useDeleteProduct'
-import { toast } from 'react-toastify';
 import TableToolbar from '#/components/common/TableToolbar'
 import { useTable } from '#/hooks/useTable'
+import { useCrud } from '#/hooks/useCrud'
+import { useCreateProduct } from '#/components/products/hooks/useCreateProduct'
+import { useDeleteProduct } from '#/components/products/hooks/useDeleteProduct'
+import { useUpdateProduct } from '#/components/products/hooks/useUpdateProduct'
 
 export const Route = createFileRoute('/products')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+const createMutation = useCreateProduct()
+const updateMutation = useUpdateProduct()
+const deleteMutation = useDeleteProduct()
+
+const crud = useCrud<Product>({
+  entityName: 'Product',
+
+  createMutation,
+  updateMutation,
+  deleteMutation,
+
+  onCreateSuccess: () => setIsAddModalOpen(false),
+  onUpdateSuccess: () => setEditingProduct(null),
+  onDeleteSuccess: () => setDeletingProduct(null),
+})
 
   const [selectedProduct, setSelectedProduct] =
     useState<Product | null>(null)
@@ -39,11 +54,7 @@ function RouteComponent() {
  const {
   data: products = [], isLoading} = useProducts()
 
-  const createProduct = useCreateProduct()
-  const updateProduct = useUpdateProduct()
-  const deleteProduct = useDeleteProduct()
-
-
+  
  const table = useTable({
   data: products,
 
@@ -65,45 +76,7 @@ function RouteComponent() {
       : b.price - a.price,
 })
 
-const handleAddProduct = (newProduct: Product) => {
-    createProduct.mutate(newProduct, {
-    onSuccess: () => {
-      toast.success('Product created successfully')
-      setIsAddModalOpen(false)
-    },
-    onError: (error: any) => {
-      const msg = error?.response?.data?.message || 'Failed to create product'
-      toast.error(msg)
-    }
-  })
-  }
 
-  const handleSaveProduct = (updatedProduct: Product) => {
-    updateProduct.mutate(updatedProduct, {
-    onSuccess: () => {
-      toast.success('Product update successfully')
-      setIsAddModalOpen(false)
-    },
-    onError: (error: any) => {
-      const msg = error?.response?.data?.message || 'Failed to update product'
-      toast.error(msg)
-    }
-  })
-  }
-
-  
-  const handleDeleteProduct = (id: number) => {
-    deleteProduct.mutate(id, {
-    onSuccess: () => {
-      toast.success('Product delete successfully')
-      setIsAddModalOpen(false)
-    },
-    onError: (error: any) => {
-      const msg = error?.response?.data?.message || 'Failed to delete product'
-      toast.error(msg)
-    }
-  })
-  }
   
   return (
     <main className="flex h-screen w-full overflow-hidden">
@@ -169,7 +142,7 @@ const handleAddProduct = (newProduct: Product) => {
         onClose={() =>
           setEditingProduct(null)
         }
-        onSave={handleSaveProduct}
+        onSave={crud.handleUpdate}
       />
 
       {isAddModalOpen && (
@@ -177,7 +150,7 @@ const handleAddProduct = (newProduct: Product) => {
           onClose={() =>
             setIsAddModalOpen(false)
           }
-          onAdd={handleAddProduct}
+          onAdd={crud.handleCreate}
         />
       )}
 
@@ -187,7 +160,7 @@ const handleAddProduct = (newProduct: Product) => {
           onClose={() =>
             setDeletingProduct(null)
           }
-          onDelete={handleDeleteProduct}
+          onDelete={crud.handleDelete}
         />
       )}
     </main>

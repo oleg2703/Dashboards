@@ -17,6 +17,7 @@ import Pagination from '#/components/common/Pagination'
 import { toast } from 'react-toastify'
 import TableToolbar from '#/components/common/TableToolbar'
 import { useTable } from '#/hooks/useTable'
+import { useCrud } from '#/hooks/useCrud'
 
 export const Route = createFileRoute('/orders')({
   component: RouteComponent,
@@ -32,9 +33,9 @@ function RouteComponent() {
 
  
 
-  const createOrder = useCreateOrder()
-  const updateOrder = useUpdateOrder()
-  const deleteOrder = useDeleteOrder()
+  const createMutation = useCreateOrder()
+  const updateMutation = useUpdateOrder()
+  const deleteMutation = useDeleteOrder()
 
 const table = useTable({
   data: orders,
@@ -56,43 +57,21 @@ const table = useTable({
       : b.amount - a.amount,
 })
 
-  const handleAddOrder = (order: Omit<Order, 'id'>) => {
-    createOrder.mutate(order, {
-    onSuccess: () => {
-      toast.success('Order created successfully')
-      setIsAddModalOpen(false)
-    },
-    onError: (error: any) => {
-      const msg = error?.response?.data?.message || 'Failed to create order'
-      toast.error(msg)
-    }
-  })
-  }
+const crud = useCrud<
+  Order,
+  Omit<Order, 'id'>
+>({
+  entityName: 'Order',
 
-  const handleSaveOrder = (order: Order) => {
-  updateOrder.mutate(order, {
-    onSuccess: () => {
-      toast.success('Order updated successfully')
-      setEditingOrder(null) 
-    },
-    onError: (error: any) => {
-      const msg = error?.response?.data?.message || 'Failed to update order'
-      toast.error(msg)
-    }
-  })
-}
- const handleDeleteOrder = (id: number) => {
-  deleteOrder.mutate(id, {
-    onSuccess: () => {
-      toast.success('Order deleted successfully')
-      setDeletingOrder(null) 
-    },
-    onError: (error: any) => {
-      const msg = error?.response?.data?.message || 'Failed to delete order'
-      toast.error(msg)
-    }
-  })
-}
+  createMutation,
+  updateMutation,
+  deleteMutation,
+
+  onCreateSuccess: () => setIsAddModalOpen(false),
+  onUpdateSuccess: () => setEditingOrder(null),
+  onDeleteSuccess: () => setDeletingOrder(null),
+})
+
 
   return (
     <main className="flex h-screen w-full overflow-hidden">
@@ -142,7 +121,7 @@ const table = useTable({
         {isAddModalOpen && (
           <AddOrderModal
             onClose={() => setIsAddModalOpen(false)}
-            onAdd={handleAddOrder}
+            onAdd={crud.handleCreate}
           />
         )}
 
@@ -150,7 +129,7 @@ const table = useTable({
           <EditOrderModal
             order={editingOrder}
             onClose={() => setEditingOrder(null)}
-            onSave={handleSaveOrder}
+            onSave={crud.handleUpdate}
           />
         )}
 
@@ -158,7 +137,7 @@ const table = useTable({
           <DeleteOrderModal
             order={deletingOrder}
             onClose={() => setDeletingOrder(null)}
-            onDelete={handleDeleteOrder}
+            onDelete={crud.handleDelete}
           />
         )}
       </div>

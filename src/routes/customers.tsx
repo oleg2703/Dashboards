@@ -15,7 +15,7 @@ import { useDeleteCustomer } from '#/components/customers/hooks/useDeleteCustome
 import Pagination from '#/components/common/Pagination'
 import TableToolbar from '#/components/common/TableToolbar'
 import { useTable } from '#/hooks/useTable'
-import { toast } from 'react-toastify'
+import { useCrud } from '#/hooks/useCrud'
 
 export const Route = createFileRoute('/customers')({
   component: RouteComponent,
@@ -30,50 +30,27 @@ const [isAddModalOpen, setIsAddModalOpen] =useState(false)
 
   
   const {data = [],isFetching} = useCustomers()
-  const createCustomer = useCreateCustomer()
-  const updateCustomer = useUpdateCustomer()
-  const deleteCustomer = useDeleteCustomer()
+  const createMutation = useCreateCustomer()
+  const updateMutation = useUpdateCustomer()
+  const deleteMutation = useDeleteCustomer()
+
+const crud = useCrud<
+  Customer,
+  Omit<Customer, 'id'>
+>({
+  entityName: 'Customer',
+
+  createMutation,
+  updateMutation,
+  deleteMutation,
+
+  onCreateSuccess: () => setIsAddModalOpen(false),
+  onUpdateSuccess: () => setEditingCustomer(null),
+  onDeleteSuccess: () => setDeletingCustomer(null),
+})
 
 
 
-
-const handleAddCustomer = (customer: any) => {
-    createCustomer.mutate(customer, {
-    onSuccess: () => {
-      toast.success('Customer created successfully')
-      setIsAddModalOpen(false)
-    },
-    onError: (error: any) => {
-      const msg = error?.response?.data?.message || 'Failed to create customer'
-      toast.error(msg)
-    }
-  })
-  }
-
-  const handleSaveCustomer = (customer: Customer) => {
-   updateCustomer.mutate(customer, {
-    onSuccess: () => {
-      toast.success('Customer update successfully')
-      setEditingCustomer(null)
-    },
-    onError: (error: any) => {
-      const msg = error?.response?.data?.message || 'Failed to update customer'
-      toast.error(msg)
-    }
-  })
-  }
-    const handleDeleteCustomer = (id: number) => {
-   deleteCustomer.mutate(id, {
-    onSuccess: () => {
-      toast.success('Customer delete successfully')
-     setDeletingCustomer(null)
-    },
-    onError: (error: any) => {
-      const msg = error?.response?.data?.message || 'Failed to delete customer'
-      toast.error(msg)
-    }
-  })
-  }
 const table = useTable({
   data,
 
@@ -124,15 +101,15 @@ const table = useTable({
         <EditCustomerModal
         customer={editingCustomer}
         onClose={() =>setEditingCustomer(null)}
-        onSave={handleSaveCustomer}/>
+        onSave={crud.handleUpdate}/>
         <DeleteCustomerModal
         customer={deletingCustomer}
         onClose={() =>setDeletingCustomer(null)}
-        onDelete={handleDeleteCustomer}/>
+        onDelete={crud.handleDelete}/>
         {
         isAddModalOpen && (
         <AddCustomerModal
-        onClose={() =>setIsAddModalOpen(false)}onAdd={handleAddCustomer}/>
+        onClose={() =>setIsAddModalOpen(false)} onAdd={crud.handleCreate}/>
         )}
     </main>
    
