@@ -14,7 +14,12 @@ export const Route = createFileRoute('/dashboard')({
 
 function DashboardPage() {
   
-  const {totalCustomers,totalProducts,totalRevenue,activeCustomers} = useDashboardStats()
+ const stats = useDashboardStats()
+
+if (stats.isLoading) {
+  return <div>Loading...</div>
+}
+
   return (
     <main className="flex h-screen w-full overflow-hidden">
       <Dashboard>
@@ -26,28 +31,30 @@ function DashboardPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
-           <StatCard
+          <StatCard
               title="Customers"
-              value={totalCustomers}
-              change={`${activeCustomers} active`}
+              value={stats.totalCustomers}
+              change={`${stats.activeCustomers} active`}
             />
 
             <StatCard
               title="Products"
-              value={totalProducts}
-              change="In catalog"
+              value={stats.totalProducts}
+              change={`${stats.lowStockProducts} low stock`}
+            />
+
+            <StatCard
+              title="Orders"
+              value={stats.totalOrders}
+              change={`${stats.pendingOrders} pending`}
             />
 
             <StatCard
               title="Revenue"
-              value={`$${totalRevenue}`}
-             change="Total earnings"
+              value={`$${stats.totalRevenue.toLocaleString()}`}
+              change="Total earnings"
             />
-            <StatCard
-            title="Active Customers"
-            value={activeCustomers}
-            change={`${activeCustomers}/${totalCustomers}`}
-          />
+
           </div>
 
               <div className="mt-3 rounded-2xl border border-(--border) bg-(--card-bg) p-3">
