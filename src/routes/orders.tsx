@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import Sidebar from '#/components/layout/Sidebar'
 import Header from '#/components/layout/Header'
-import { useState } from 'react'
 import type { Order } from '#/types/order'
 
 import { useCreateOrder } from '#/components/orders/hooks/useCreateOrder'
@@ -17,6 +16,7 @@ import Pagination from '#/components/common/Pagination'
 import TableToolbar from '#/components/common/TableToolbar'
 import { useTable } from '#/hooks/useTable'
 import { useCrud } from '#/hooks/useCrud'
+import { useModal } from '#/hooks/useModal'
 
 export const Route = createFileRoute('/orders')({
   component: RouteComponent,
@@ -25,10 +25,7 @@ export const Route = createFileRoute('/orders')({
 function RouteComponent() {
   const { data: orders = [], isLoading, isError } = useOrders()
 
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
-  const [editingOrder, setEditingOrder] = useState<Order | null>(null)
-  const [deletingOrder, setDeletingOrder] = useState<Order | null>(null)
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+ 
 
  
 
@@ -55,7 +52,7 @@ const table = useTable({
       ? a.amount - b.amount
       : b.amount - a.amount,
 })
-
+const modal = useModal<Order>()
 const crud = useCrud<
   Order,
   Omit<Order, 'id'>
@@ -66,9 +63,9 @@ const crud = useCrud<
   updateMutation,
   deleteMutation,
 
-  onCreateSuccess: () => setIsAddModalOpen(false),
-  onUpdateSuccess: () => setEditingOrder(null),
-  onDeleteSuccess: () => setDeletingOrder(null),
+  onCreateSuccess: modal.closeAdd,
+  onUpdateSuccess: modal.closeEdit,
+  onDeleteSuccess: modal.closeDelete,
 })
 
 
@@ -83,7 +80,7 @@ const crud = useCrud<
           search={table.search}
           onSearchChange={table.setSearch}
           addLabel="Add Order"
-          onAdd={() => setIsAddModalOpen(true)}
+          onAdd={modal.openAdd}
           sortOrder={table.sortOrder}
           onSort={table.toggleSort}
           filterValue={table.filter}
@@ -101,9 +98,9 @@ const crud = useCrud<
 
         <OrdersTable
           orders={table.paginatedData}
-          onView={setSelectedOrder}
-          onEdit={setEditingOrder}
-          onDelete={setDeletingOrder}
+          onView={modal.openView}
+          onEdit={modal.openEdit}
+         onDelete={modal.openDelete}
         />
         
         <Pagination
@@ -113,29 +110,29 @@ const crud = useCrud<
         />
 
         <OrderModal 
-          order={selectedOrder} 
-          onClose={() => setSelectedOrder(null)} 
+          order={modal.selected}
+          onClose={modal.closeView}
         />
 
-        {isAddModalOpen && (
+        {modal.isAddOpen && (
           <AddOrderModal
-            onClose={() => setIsAddModalOpen(false)}
+            onClose={modal.closeAdd}
             onAdd={crud.handleCreate}
           />
         )}
 
-        {editingOrder && (
+        {modal.editing && (
           <EditOrderModal
-            order={editingOrder}
-            onClose={() => setEditingOrder(null)}
+            order={modal.editing}
+            onClose={modal.closeEdit}
             onSave={crud.handleUpdate}
           />
         )}
 
-        {deletingOrder && (
+        {modal.deleting && (
           <DeleteOrderModal
-            order={deletingOrder}
-            onClose={() => setDeletingOrder(null)}
+            order={modal.deleting}
+            onClose={modal.closeDelete}
             onDelete={crud.handleDelete}
           />
         )}

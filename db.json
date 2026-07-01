@@ -2,7 +2,7 @@
   "customers": [
     {
       "id": "1",
-      "name": "John Doev2",
+      "name": "John Doev22",
       "email": "john@mail.com",
       "isActive": true,
       "createdAt": "2025-06-01",
@@ -92,13 +92,6 @@
       "status": "paid",
       "date": "2026-06-26",
       "id": "q4eszUqwxq8"
-    },
-    {
-      "customerId": 0,
-      "amount": 22,
-      "status": "pending",
-      "date": "2026-06-26",
-      "id": "ENgEiWnLyFg"
     },
     {
       "customerId": 3,

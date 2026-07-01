@@ -2,7 +2,6 @@ import Sidebar from '#/components/layout/Sidebar'
 import { createFileRoute } from '@tanstack/react-router'
 import Header from '../components/layout/Header'
 import ProductsTable from '#/components/products/ProductsTable'
-import { useState } from 'react'
 import type { Product } from '#/types/product'
 import ProductModal from '#/components/products/ProductModal'
 import EditProductModal from '#/components/products/EditProductModal'
@@ -17,6 +16,7 @@ import { useCrud } from '#/hooks/useCrud'
 import { useCreateProduct } from '#/components/products/hooks/useCreateProduct'
 import { useDeleteProduct } from '#/components/products/hooks/useDeleteProduct'
 import { useUpdateProduct } from '#/components/products/hooks/useUpdateProduct'
+import { useModal } from '#/hooks/useModal'
 
 export const Route = createFileRoute('/products')({
   component: RouteComponent,
@@ -26,30 +26,7 @@ function RouteComponent() {
 const createMutation = useCreateProduct()
 const updateMutation = useUpdateProduct()
 const deleteMutation = useDeleteProduct()
-
-const crud = useCrud<Product>({
-  entityName: 'Product',
-
-  createMutation,
-  updateMutation,
-  deleteMutation,
-
-  onCreateSuccess: () => setIsAddModalOpen(false),
-  onUpdateSuccess: () => setEditingProduct(null),
-  onDeleteSuccess: () => setDeletingProduct(null),
-})
-
-  const [selectedProduct, setSelectedProduct] =
-    useState<Product | null>(null)
-
-  const [editingProduct, setEditingProduct] =
-    useState<Product | null>(null)
-
-  const [deletingProduct, setDeletingProduct] =
-    useState<Product | null>(null)
-
-  const [isAddModalOpen, setIsAddModalOpen] =
-    useState(false)
+const modal = useModal<Product>()
 
  const {
   data: products = [], isLoading} = useProducts()
@@ -75,6 +52,19 @@ const crud = useCrud<Product>({
       ? a.price - b.price
       : b.price - a.price,
 })
+const crud = useCrud<Product>({
+  entityName: 'Product',
+
+  createMutation,
+  updateMutation,
+  deleteMutation,
+
+  onCreateSuccess: modal.closeAdd,
+  onUpdateSuccess: modal.closeEdit,
+  onDeleteSuccess: modal.closeDelete,
+})
+
+
 
 
   
@@ -92,7 +82,7 @@ const crud = useCrud<Product>({
           search={table.search}
           onSearchChange={table.setSearch}
           addLabel="Add Product"
-          onAdd={() => setIsAddModalOpen(true)}
+          onAdd={modal.openAdd}
           sortOrder={table.sortOrder}
           onSort={() =>
             table.setSortOrder(
@@ -118,9 +108,9 @@ const crud = useCrud<Product>({
 
         <ProductsTable
           products={table.paginatedData}
-          onView={setSelectedProduct}
-          onEdit={setEditingProduct}
-          onDelete={setDeletingProduct}
+          onView={modal.openView}
+          onEdit={modal.openEdit}
+          onDelete={modal.openDelete}
         />
        <Pagination
           currentPage={table.currentPage}
@@ -131,38 +121,30 @@ const crud = useCrud<Product>({
       />
       </div>
       <ProductModal
-        product={selectedProduct}
-        onClose={() =>
-          setSelectedProduct(null)
-        }
+        product={modal.selected}
+        onClose={modal.closeView}
       />
 
       <EditProductModal
-        product={editingProduct}
-        onClose={() =>
-          setEditingProduct(null)
-        }
+        product={modal.editing}
+        onClose={modal.closeEdit}
         onSave={crud.handleUpdate}
       />
 
-      {isAddModalOpen && (
+      {modal.isAddOpen && (
         <AddProductModal
-          onClose={() =>
-            setIsAddModalOpen(false)
-          }
+          onClose={modal.closeAdd}
           onAdd={crud.handleCreate}
         />
       )}
 
-      {deletingProduct && (
-        <DeleteProductModal
-          product={deletingProduct}
-          onClose={() =>
-            setDeletingProduct(null)
-          }
-          onDelete={crud.handleDelete}
-        />
-      )}
+      {modal.deleting && (
+      <DeleteProductModal
+        product={modal.deleting}
+        onClose={modal.closeDelete}
+        onDelete={crud.handleDelete}
+      />
+    )}
     </main>
   )
 }

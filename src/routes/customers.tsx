@@ -3,7 +3,7 @@ import Sidebar from '#/components/layout/Sidebar'
 import { useCustomers } from '#/components/customers/hooks/useCustomers'
 import CustomersTable from '#/components/customers/CustomersTable'
 import Header from '#/components/layout/Header'
-import { useState } from 'react'
+
 import type { Customer } from '#/types/customer'
 import AddCustomerModal from '#/components/customers/AddCustomerModal'
 import CustomerModal from '#/components/customers/CustomerModal'
@@ -16,6 +16,7 @@ import Pagination from '#/components/common/Pagination'
 import TableToolbar from '#/components/common/TableToolbar'
 import { useTable } from '#/hooks/useTable'
 import { useCrud } from '#/hooks/useCrud'
+import { useModal } from '#/hooks/useModal'
 
 export const Route = createFileRoute('/customers')({
   component: RouteComponent,
@@ -23,17 +24,14 @@ export const Route = createFileRoute('/customers')({
 
 
 function RouteComponent() {
-const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
-const [editingCustomer, setEditingCustomer] =useState<Customer | null>(null)
-const [deletingCustomer, setDeletingCustomer] =useState<Customer | null>(null)
-const [isAddModalOpen, setIsAddModalOpen] =useState(false)
+
 
   
   const {data = [],isFetching} = useCustomers()
   const createMutation = useCreateCustomer()
   const updateMutation = useUpdateCustomer()
   const deleteMutation = useDeleteCustomer()
-
+  const modal = useModal<Customer>()
 const crud = useCrud<
   Customer,
   Omit<Customer, 'id'>
@@ -44,9 +42,9 @@ const crud = useCrud<
   updateMutation,
   deleteMutation,
 
-  onCreateSuccess: () => setIsAddModalOpen(false),
-  onUpdateSuccess: () => setEditingCustomer(null),
-  onDeleteSuccess: () => setDeletingCustomer(null),
+  onCreateSuccess: modal.closeAdd,
+  onUpdateSuccess: modal.closeEdit,
+  onDeleteSuccess: modal.closeDelete,
 })
 
 
@@ -76,7 +74,7 @@ const table = useTable({
           search={table.search}
           onSearchChange={table.setSearch}
           addLabel="Add Customer"
-          onAdd={() => setIsAddModalOpen(true)}
+          onAdd={modal.openAdd}
         />
               {isFetching && (
           <div className="mb-2 text-sm text-gray-500">
@@ -85,9 +83,9 @@ const table = useTable({
         )}
            <CustomersTable
          customers={table.paginatedData}
-          onView={setSelectedCustomer}
-          onEdit={setEditingCustomer}
-          onDelete={setDeletingCustomer}
+           onView={modal.openView}
+          onEdit={modal.openEdit}
+          onDelete={modal.openDelete}
         />
        <Pagination
           currentPage={table.currentPage}
@@ -96,20 +94,20 @@ const table = useTable({
         />
         </div>
         <CustomerModal
-         customer={selectedCustomer}
-         onClose={() => setSelectedCustomer(null)}/>
+         customer={modal.selected}
+         onClose={modal.closeView}/>
         <EditCustomerModal
-        customer={editingCustomer}
-        onClose={() =>setEditingCustomer(null)}
+        customer={modal.editing}
+        onClose={modal.closeEdit}
         onSave={crud.handleUpdate}/>
         <DeleteCustomerModal
-        customer={deletingCustomer}
-        onClose={() =>setDeletingCustomer(null)}
+        customer={modal.deleting}
+        onClose={modal.closeDelete}
         onDelete={crud.handleDelete}/>
-        {
-        isAddModalOpen && (
+        {modal.isAddOpen && (
         <AddCustomerModal
-        onClose={() =>setIsAddModalOpen(false)} onAdd={crud.handleCreate}/>
+        onClose={modal.closeAdd} 
+        onAdd={crud.handleCreate}/>
         )}
     </main>
    
