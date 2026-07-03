@@ -164,6 +164,14 @@
       "stock": 2,
       "status": "Low Stock",
       "description": ""
+    },
+    {
+      "name": "ice",
+      "price": 1,
+      "stock": 21,
+      "status": "Active",
+      "description": "",
+      "id": "cDkNQYetSAE"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

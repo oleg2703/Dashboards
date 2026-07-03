@@ -1,5 +1,10 @@
-import { useEffect, useState } from 'react'
-import type { Product } from '../../types/product'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+import type { Product } from '#/types/product'
+import { productSchema } from '#/validation/product.schema'
+import type { ProductFormData } from '#/validation/product.schema'
 
 interface EditProductModalProps {
   product: Product | null
@@ -12,60 +17,122 @@ export default function EditProductModal({
   onClose,
   onSave,
 }: EditProductModalProps) {
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState(0)
-  const [stock, setStock] = useState(0)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(productSchema),
+  })
 
   useEffect(() => {
     if (product) {
-      setName(product.name)
-      setPrice(product.price)
-      setStock(product.stock)
+      reset({
+        name: product.name,
+        price: product.price,
+        stock: product.stock,
+      })
     }
-  }, [product])
+  }, [product, reset])
 
   if (!product) return null
 
-function handleSave() {
-  if (!product) return
+  const handleSave = (data: ProductFormData) => {
+    onSave({
+      ...product,
+      ...data,
+      status:
+        data.stock > 5
+          ? 'Active'
+          : 'Low Stock',
+    })
 
-  const updatedProduct: Product = {
-    id: product.id,
-    name,
-    price,
-    stock,
-    status: product.status,
-    description: product.description,
+    onClose()
   }
 
-  onSave(updatedProduct)
-  onClose()
-}
-
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
-      <div className="w-full max-w-md rounded-2xl bg-(--card-bg) p-6" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-md rounded-2xl bg-(--card-bg) p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2 className="mb-4 text-xl font-bold">
           Edit Product
         </h2>
-        <div className="space-y-4">
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)}
-            placeholder="Product Name" className=" w-full rounded-xl border border-(--border) px-4 py-2"/>
-          <input type="number" value={price}onChange={(e) =>setPrice(Number(e.target.value))}
-            placeholder="Price" className="w-full rounded-xl border border-(--border) px-4 py-2"/>
-          <input type="number" value={stock} onChange={(e) => setStock(Number(e.target.value))}
-            placeholder="Stock" className=" w-full rounded-xl border border-(--border) px-4 py-2"/>
-        </div>
 
-        <div className="mt-6 flex justify-end gap-3">
-          <button onClick={onClose} className=" rounded-xl border border-(--border) px-4 py-2">
-            Cancel
-          </button>
-          <button onClick={handleSave} className="rounded-xl bg-blue-500 px-4 py-2 text-white">
-            Save
-          </button>
-        </div>
+        <form
+          onSubmit={handleSubmit(handleSave)}
+          className="space-y-4"
+        >
+          <div>
+            <input
+              {...register('name')}
+              placeholder="Product Name"
+              className="w-full rounded-xl border border-(--border) px-4 py-2"
+            />
+
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <input
+              type="number"
+              {...register('price', {
+                valueAsNumber: true,
+              })}
+              placeholder="Price"
+              className="w-full rounded-xl border border-(--border) px-4 py-2"
+            />
+
+            {errors.price && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.price.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <input
+              type="number"
+              {...register('stock', {
+                valueAsNumber: true,
+              })}
+              placeholder="Stock"
+              className="w-full rounded-xl border border-(--border) px-4 py-2"
+            />
+
+            {errors.stock && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.stock.message}
+              </p>
+            )}
+          </div>
+
+          <div className="mt-6 flex justify-end gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-xl border border-(--border) px-4 py-2"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="rounded-xl bg-blue-500 px-4 py-2 text-white"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )

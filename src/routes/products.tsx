@@ -52,7 +52,10 @@ const modal = useModal<Product>()
       ? a.price - b.price
       : b.price - a.price,
 })
-const crud = useCrud<Product>({
+const crud = useCrud<
+  Product,
+  Omit<Product, 'id'>
+>({
   entityName: 'Product',
 
   createMutation,

@@ -1,30 +1,42 @@
-import { useState } from 'react'
-import type { Product } from '../../types/product'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+
+import { productSchema } from '#/validation/product.schema'
+import type { ProductFormData } from '#/validation/product.schema'
+import type { Product } from '#/types/product'
 
 interface AddProductModalProps {
   onClose: () => void
-  onAdd: (product: Product) => void
+  onAdd: (product: Omit<Product, 'id'>) => void
 }
 
 export default function AddProductModal({
   onClose,
   onAdd,
 }: AddProductModalProps) {
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState(0)
-  const [stock, setStock] = useState(0)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      name: '',
+      price: 0,
+      stock: 0,
+    },
+  })
 
-  function handleAdd() {
-    const newProduct: Product = {
-      id: Date.now(),
-      name,
-      price,
-      stock,
-      status: stock > 5 ? 'Active' : 'Low Stock',
+  const submit = (data: ProductFormData) => {
+    onAdd({
+      ...data,
+      status:
+        data.stock > 5
+          ? 'Active'
+          : 'Low Stock',
       description: '',
-    }
+    })
 
-    onAdd(newProduct)
     onClose()
   }
 
@@ -41,51 +53,69 @@ export default function AddProductModal({
           Add Product
         </h2>
 
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Product Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-xl border border-(--border) px-4 py-2"
-          />
+        <form
+          onSubmit={handleSubmit(submit)}
+          className="space-y-4"
+        >
+          <div>
+            <input
+              placeholder="Product name"
+              {...register('name')}
+              className="w-full rounded-xl border border-(--border) px-4 py-2"
+            />
 
-          <input
-            type="number"
-            placeholder="Price"
-            value={price}
-            onChange={(e) =>
-              setPrice(Number(e.target.value))
-            }
-            className="w-full rounded-xl border border-(--border) px-4 py-2"
-          />
+            <p className="mt-1 text-sm text-red-500">
+              {errors.name?.message}
+            </p>
+          </div>
 
-          <input
-            type="number"
-            placeholder="Stock"
-            value={stock}
-            onChange={(e) =>
-              setStock(Number(e.target.value))
-            }
-            className="w-full rounded-xl border border-(--border) px-4 py-2"
-          />
-        </div>
+          <div>
+            <input
+              type="number"
+              placeholder="Price"
+              {...register('price', {
+                valueAsNumber: true,
+              })}
+              className="w-full rounded-xl border border-(--border) px-4 py-2"
+            />
 
-        <div className="mt-6 flex justify-end gap-3">
-          <button
-            onClick={onClose}
-            className="rounded-xl border border-(--border) px-4 py-2"
-          >
-            Cancel
-          </button>
+            <p className="mt-1 text-sm text-red-500">
+              {errors.price?.message}
+            </p>
+          </div>
 
-          <button
-            onClick={handleAdd}
-            className="rounded-xl bg-blue-500 px-4 py-2 text-white"
-          >
-            Add Product
-          </button>
-        </div>
+          <div>
+            <input
+              type="number"
+              placeholder="Stock"
+              {...register('stock', {
+                valueAsNumber: true,
+              })}
+              className="w-full rounded-xl border border-(--border) px-4 py-2"
+            />
+
+            <p className="mt-1 text-sm text-red-500">
+              {errors.stock?.message}
+            </p>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-xl border border-(--border) px-4 py-2"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="rounded-xl bg-blue-500 px-4 py-2 text-white"
+            >
+              Add Product
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )
