@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useDebounce } from './useDebounce'
 
 interface UseTableProps<T> {
   data: T[]
@@ -34,6 +35,7 @@ export function useTable<T>({
   defaultSort = 'asc',
 }: UseTableProps<T>) {
   const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 300)
   const [filter, setFilter] =
     useState(defaultFilter)
 
@@ -48,18 +50,18 @@ export function useTable<T>({
   const [currentPage, setCurrentPage] =
     useState(1)
 
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [search, filter])
+ useEffect(() => {
+  setCurrentPage(1)
+}, [debouncedSearch, filter])
 
   const processedData = useMemo(() => {
     let result = [...data]
 
     if (searchFn) {
-      result = result.filter((item) =>
-        searchFn(item, search)
-      )
-    }
+        result = result.filter((item) =>
+          searchFn(item, debouncedSearch)
+        )
+      }
 
     if (filterFn) {
       result = result.filter((item) =>
@@ -75,14 +77,14 @@ export function useTable<T>({
 
     return result
   }, [
-    data,
-    search,
-    filter,
-    sortOrder,
-    searchFn,
-    filterFn,
-    sortFn,
-  ])
+  data,
+  debouncedSearch,
+  filter,
+  sortOrder,
+  searchFn,
+  filterFn,
+  sortFn,
+])
 
   const totalPages = Math.max(
     1,

@@ -17,16 +17,6 @@
       "createdAt": "2025-05-10",
       "totalSpent": 1200,
       "ordersCount": 12
-    },
-    {
-      "name": "Maik Loe",
-      "email": "maikloe@gmail.com",
-      "isActive": true,
-      "ordersCount": 0,
-      "totalSpent": 0,
-      "createdAt": "2026-06-26",
-      "orders": [],
-      "id": "BiUg58TrbUM"
     }
   ],
   "orders": [
