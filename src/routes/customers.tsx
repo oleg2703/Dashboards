@@ -17,6 +17,7 @@ import TableToolbar from '#/components/common/TableToolbar'
 import { useTable } from '#/hooks/useTable'
 import { useCrud } from '#/hooks/useCrud'
 import { useModal } from '#/hooks/useModal'
+import TableSkeleton from '#/components/common/TableSkeleton'
 
 export const Route = createFileRoute('/customers')({
   component: RouteComponent,
@@ -76,22 +77,27 @@ const table = useTable({
           addLabel="Add Customer"
           onAdd={modal.openAdd}
         />
-              {isFetching && (
-          <div className="mb-2 text-sm text-gray-500">
-            Updating...
-          </div>
-        )}
-           <CustomersTable
-         customers={table.paginatedData}
-           onView={modal.openView}
-          onEdit={modal.openEdit}
-          onDelete={modal.openDelete}
-        />
-       <Pagination
-          currentPage={table.currentPage}
-          totalPages={table.totalPages}
-          onPageChange={table.setCurrentPage}
-        />
+             {isFetching ? (
+              <TableSkeleton
+                rows={5}
+                columns={7}
+              />
+            ) : (
+              <>
+                <CustomersTable
+                    customers={table.paginatedData}
+                      onView={modal.openView}
+                      onEdit={modal.openEdit}
+                      onDelete={modal.openDelete}
+                    />
+                  <Pagination
+                      currentPage={table.currentPage}
+                      totalPages={table.totalPages}
+                      onPageChange={table.setCurrentPage}
+                    />
+              </>
+            )}
+        
         </div>
         <CustomerModal
          customer={modal.selected}

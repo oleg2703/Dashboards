@@ -17,6 +17,7 @@ import { useCreateProduct } from '#/components/products/hooks/useCreateProduct'
 import { useDeleteProduct } from '#/components/products/hooks/useDeleteProduct'
 import { useUpdateProduct } from '#/components/products/hooks/useUpdateProduct'
 import { useModal } from '#/hooks/useModal'
+import TableSkeleton from '#/components/common/TableSkeleton'
 
 export const Route = createFileRoute('/products')({
   component: RouteComponent,
@@ -103,25 +104,31 @@ const crud = useCrud<
           ]}
         />
        
-            {isLoading && (
-          <div>Loading product...</div>
-        )}
+         
 
         
 
-        <ProductsTable
-          products={table.paginatedData}
-          onView={modal.openView}
-          onEdit={modal.openEdit}
-          onDelete={modal.openDelete}
+            {isLoading ? (
+        <TableSkeleton
+          rows={5}
+          columns={6}
         />
-       <Pagination
-          currentPage={table.currentPage}
-          totalPages={table.totalPages}
-          onPageChange={
-            table.setCurrentPage
-          }
-      />
+      ) : (
+        <>
+          <ProductsTable
+            products={table.paginatedData}
+            onView={modal.openView}
+            onEdit={modal.openEdit}
+            onDelete={modal.openDelete}
+          />
+
+          <Pagination
+            currentPage={table.currentPage}
+            totalPages={table.totalPages}
+            onPageChange={table.setCurrentPage}
+          />
+        </>
+      )}
       </div>
       <ProductModal
         product={modal.selected}

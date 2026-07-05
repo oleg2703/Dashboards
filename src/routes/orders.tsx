@@ -17,13 +17,14 @@ import TableToolbar from '#/components/common/TableToolbar'
 import { useTable } from '#/hooks/useTable'
 import { useCrud } from '#/hooks/useCrud'
 import { useModal } from '#/hooks/useModal'
+import TableSkeleton from '#/components/common/TableSkeleton'
 
 export const Route = createFileRoute('/orders')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { data: orders = [], isLoading, isError } = useOrders()
+  const { data: orders = [], isLoading } = useOrders()
 
  
 
@@ -93,22 +94,30 @@ const crud = useCrud<
           ]}
         />
 
-        {isLoading && <div>Loading orders...</div>}
-        {isError && <div>Failed to load orders</div>}
+          {isLoading ? (
+              <TableSkeleton
+                rows={5}
+                columns={7}
+              />
+            ) : (
+              <>
+                  <OrdersTable
+                      orders={table.paginatedData}
+                      onView={modal.openView}
+                      onEdit={modal.openEdit}
+                    onDelete={modal.openDelete}
+                    />
+                    
+                    <Pagination
+                      currentPage={table.currentPage}
+                      totalPages={table.totalPages}
+                      onPageChange={table.setCurrentPage}
+                    />
 
-        <OrdersTable
-          orders={table.paginatedData}
-          onView={modal.openView}
-          onEdit={modal.openEdit}
-         onDelete={modal.openDelete}
-        />
-        
-        <Pagination
-          currentPage={table.currentPage}
-          totalPages={table.totalPages}
-          onPageChange={table.setCurrentPage}
-        />
+              </>
+            )}
 
+      
         <OrderModal 
           order={modal.selected}
           onClose={modal.closeView}
