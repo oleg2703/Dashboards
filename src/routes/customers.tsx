@@ -18,6 +18,8 @@ import { useTable } from '#/hooks/useTable'
 import { useCrud } from '#/hooks/useCrud'
 import { useModal } from '#/hooks/useModal'
 import TableSkeleton from '#/components/common/TableSkeleton'
+import EmptyState from '#/components/common/EmptyState'
+import ErrorState from '#/components/common/ErrorState'
 
 export const Route = createFileRoute('/customers')({
   component: RouteComponent,
@@ -25,10 +27,8 @@ export const Route = createFileRoute('/customers')({
 
 
 function RouteComponent() {
-
-
   
-  const {data = [],isFetching} = useCustomers()
+  const {data = [],isFetching ,isError,refetch} = useCustomers()
   const createMutation = useCreateCustomer()
   const updateMutation = useUpdateCustomer()
   const deleteMutation = useDeleteCustomer()
@@ -77,27 +77,38 @@ const table = useTable({
           addLabel="Add Customer"
           onAdd={modal.openAdd}
         />
-             {isFetching ? (
-              <TableSkeleton
-                rows={5}
-                columns={7}
-              />
-            ) : (
-              <>
-                <CustomersTable
-                    customers={table.paginatedData}
-                      onView={modal.openView}
-                      onEdit={modal.openEdit}
-                      onDelete={modal.openDelete}
-                    />
-                  <Pagination
-                      currentPage={table.currentPage}
-                      totalPages={table.totalPages}
-                      onPageChange={table.setCurrentPage}
-                    />
-              </>
-            )}
-        
+
+        {isFetching ? (
+                            <TableSkeleton
+                              rows={5}
+                              columns={6}
+                            />
+                          ) : isError ? (
+                            <ErrorState
+                              title="Failed to load products"
+                              description="Please check your connection."
+                              onRetry={refetch}
+                            />
+                          ) : table.data.length === 0 ? (
+                            <EmptyState
+                              title="No products found"
+                              description="Try changing your search or filter."
+                            />
+                          ) : (
+                      <>
+                          <CustomersTable
+                              customers={table.paginatedData}
+                                onView={modal.openView}
+                                onEdit={modal.openEdit}
+                                onDelete={modal.openDelete}
+                              />
+                            <Pagination
+                                currentPage={table.currentPage}
+                                totalPages={table.totalPages}
+                                onPageChange={table.setCurrentPage}
+                              />
+                        </>
+                          )}
         </div>
         <CustomerModal
          customer={modal.selected}

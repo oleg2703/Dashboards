@@ -18,13 +18,15 @@ import { useTable } from '#/hooks/useTable'
 import { useCrud } from '#/hooks/useCrud'
 import { useModal } from '#/hooks/useModal'
 import TableSkeleton from '#/components/common/TableSkeleton'
+import EmptyState from '#/components/common/EmptyState'
+import ErrorState from '#/components/common/ErrorState'
 
 export const Route = createFileRoute('/orders')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { data: orders = [], isLoading } = useOrders()
+  const { data: orders = [], isLoading, isError, refetch } = useOrders()
 
  
 
@@ -93,14 +95,24 @@ const crud = useCrud<
             'cancelled',
           ]}
         />
-
-          {isLoading ? (
-              <TableSkeleton
-                rows={5}
-                columns={7}
-              />
-            ) : (
-              <>
+         {isLoading ? (
+                    <TableSkeleton
+                      rows={5}
+                      columns={6}
+                    />
+                  ) : isError ? (
+                    <ErrorState
+                      title="Failed to load products"
+                      description="Please check your connection."
+                      onRetry={refetch}
+                    />
+                  ) : table.data.length === 0 ? (
+                    <EmptyState
+                      title="No products found"
+                      description="Try changing your search or filter."
+                    />
+                  ) : (
+                  <>
                   <OrdersTable
                       orders={table.paginatedData}
                       onView={modal.openView}
@@ -115,9 +127,7 @@ const crud = useCrud<
                     />
 
               </>
-            )}
-
-      
+                  )}
         <OrderModal 
           order={modal.selected}
           onClose={modal.closeView}

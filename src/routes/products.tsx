@@ -2,6 +2,7 @@ import Sidebar from '#/components/layout/Sidebar'
 import { createFileRoute } from '@tanstack/react-router'
 import Header from '../components/layout/Header'
 import ProductsTable from '#/components/products/ProductsTable'
+import ErrorState from '#/components/common/ErrorState'
 import type { Product } from '#/types/product'
 import ProductModal from '#/components/products/ProductModal'
 import EditProductModal from '#/components/products/EditProductModal'
@@ -18,6 +19,7 @@ import { useDeleteProduct } from '#/components/products/hooks/useDeleteProduct'
 import { useUpdateProduct } from '#/components/products/hooks/useUpdateProduct'
 import { useModal } from '#/hooks/useModal'
 import TableSkeleton from '#/components/common/TableSkeleton'
+import EmptyState from '#/components/common/EmptyState'
 
 export const Route = createFileRoute('/products')({
   component: RouteComponent,
@@ -30,7 +32,7 @@ const deleteMutation = useDeleteProduct()
 const modal = useModal<Product>()
 
  const {
-  data: products = [], isLoading} = useProducts()
+  data: products = [], isLoading ,isError, refetch} = useProducts()
 
   
  const table = useTable({
@@ -107,28 +109,38 @@ const crud = useCrud<
          
 
         
+          {isLoading ? (
+            <TableSkeleton
+              rows={5}
+              columns={6}
+            />
+          ) : isError ? (
+            <ErrorState
+              title="Failed to load products"
+              description="Please check your connection."
+              onRetry={refetch}
+            />
+          ) : table.data.length === 0 ? (
+            <EmptyState
+              title="No products found"
+              description="Try changing your search or filter."
+            />
+          ) : (
+            <>
+              <ProductsTable
+                products={table.paginatedData}
+                onView={modal.openView}
+                onEdit={modal.openEdit}
+                onDelete={modal.openDelete}
+              />
 
-            {isLoading ? (
-        <TableSkeleton
-          rows={5}
-          columns={6}
-        />
-      ) : (
-        <>
-          <ProductsTable
-            products={table.paginatedData}
-            onView={modal.openView}
-            onEdit={modal.openEdit}
-            onDelete={modal.openDelete}
-          />
-
-          <Pagination
-            currentPage={table.currentPage}
-            totalPages={table.totalPages}
-            onPageChange={table.setCurrentPage}
-          />
-        </>
-      )}
+              <Pagination
+                currentPage={table.currentPage}
+                totalPages={table.totalPages}
+                onPageChange={table.setCurrentPage}
+              />
+            </>
+          )}
       </div>
       <ProductModal
         product={modal.selected}
