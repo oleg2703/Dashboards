@@ -1,0 +1,83 @@
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from '@tanstack/react-router'
+
+import  {loginSchema} from '#/validation/login.schema'
+import type {LoginFormData} from '#/validation/login.schema'
+import { useAuth } from '#/auth/useAuth'
+import { toast } from 'react-toastify'
+
+
+export default function LoginForm() {
+  const { login } = useAuth()
+
+  const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  })
+
+  const onSubmit = async (data: LoginFormData) => {
+    const success = await login(data.email, data.password)
+
+    if (!success) {
+      toast.error('Invalid email or password')
+      return
+    }
+
+    toast.success('Welcome back!')
+
+    navigate({
+      to: '/',
+    })
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-5"
+    >
+      <div>
+        <label>Email</label>
+
+        <input
+          {...register('email')}
+          className="mt-1 w-full rounded-md border px-3 py-2"
+        />
+
+        {errors.email && (
+          <p className="mt-1 text-sm text-red-500">
+            {errors.email.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label>Password</label>
+
+        <input
+          type="password"
+          {...register('password')}
+          className="mt-1 w-full rounded-md border px-3 py-2"
+        />
+
+        {errors.password && (
+          <p className="mt-1 text-sm text-red-500">
+            {errors.password.message}
+          </p>
+        )}
+      </div>
+
+      <button
+        disabled={isSubmitting}
+        className="w-full rounded-md bg-primary py-2 font-medium text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
+      >
+        {isSubmitting ? 'Signing in...' : 'Sign In'}
+      </button>
+    </form>
+  )
+}
