@@ -8,7 +8,7 @@ import TopProducts from '../components/dashboard/TopProducts'
 import RecentOrdersTable from '../components/dashboard/RecentOrdersTable'
 import { useDashboardStats } from '#/components/dashboard/hooks/useDashboardStats'
 
-export const Route = createFileRoute('/dashboard')({
+export const Route = createFileRoute('/_authenticated/dashboard')({
   component: DashboardPage,
 })
 

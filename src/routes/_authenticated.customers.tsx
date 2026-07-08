@@ -21,7 +21,7 @@ import TableSkeleton from '#/components/common/TableSkeleton'
 import EmptyState from '#/components/common/EmptyState'
 import ErrorState from '#/components/common/ErrorState'
 
-export const Route = createFileRoute('/customers')({
+export const Route = createFileRoute('/_authenticated/customers')({
   component: RouteComponent,
 })
 

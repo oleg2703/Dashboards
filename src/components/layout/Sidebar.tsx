@@ -1,3 +1,4 @@
+import { useAuth } from '#/auth/useAuth'
 import { Link } from '@tanstack/react-router'
 import { ChevronDown, ChevronUp, House,LayoutDashboard,FolderKanban, UsersRound,Settings, Headphones, ArrowLeftFromLine, UserRound } from 'lucide-react'
 import { useState } from 'react'
@@ -5,22 +6,25 @@ import { useState } from 'react'
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
+  const { user } = useAuth()
   
   return (
     <aside
-  className={`sidebar h-screen border-r p-4 flex flex-col justify-between transition-all duration-500 ${
+  className={`sidebar h-screen border-r p-4 mr-4 flex flex-col justify-between transition-all duration-500 ${
     collapsed ? 'w-15' : 'w-70'
   }`}
 >
       <div>
-      <div className="flex items-center gap-4 mb-8 cursor-pointer">
+      <div className="flex items-center gap-4 mb-8  cursor-pointer">
         {!collapsed && (
         <span>#</span>
          )}
        {!collapsed && (
-        <article>
-          <p>Dashboard Inc.</p>
-          <p>email@example.com</p>
+        <article >
+          
+
+        <p>{user?.name}</p>
+          <p>{user?.email}</p>
         </article>
       )}
       {!collapsed && (
@@ -34,7 +38,7 @@ export default function Sidebar() {
         className="cursor-pointer"
       >
         <ArrowLeftFromLine
-          className={`transition-transform ${
+          className={` transition-transform ${
             collapsed ? 'rotate-180' : ''
           }`}
         />
@@ -43,8 +47,6 @@ export default function Sidebar() {
       <div>
       </div>
       <ul className="flex flex-col gap-4 ">
-        <li className='flex items-center gap-2'><Link to="/"className="text-lg font-bold flex items-center gap-2"><House  /> 
-         {!collapsed && (<span className="font-bold">Home</span>)}</Link></li>
         <li className='flex items-center gap-2'><Link to={'/dashboard'}  className="text-lg font-bold flex items-center gap-2"><LayoutDashboard />
         {!collapsed && (<span className="font-bold">Dashboard</span>)}
         </Link></li>

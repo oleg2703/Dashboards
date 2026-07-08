@@ -1,8 +1,21 @@
 
+import { useAuth } from '#/auth/useAuth'
+import { useNavigate } from '@tanstack/react-router'
 import ThemeToggle from './ThemeToggle'
-import { Bell, Gift } from 'lucide-react'
+import { Bell, LogOut } from 'lucide-react'
 
 export default function Header() {
+  const { logout } = useAuth()
+
+const navigate = useNavigate()
+
+const handleLogout = () => {
+    logout()
+
+    navigate({
+        to: "/login",
+    })
+}
   return (
     <header className="w-full flex items-center justify-between border-b bg-background ">
      
@@ -14,7 +27,9 @@ export default function Header() {
      <ul className="flex items-right gap-7 items-center">
         <li><Bell /></li>
         <li><ThemeToggle /></li>
-        <li><Gift /></li>
+        <button onClick={handleLogout}>
+          <LogOut />
+      </button>
       </ul>
     </header>
   )

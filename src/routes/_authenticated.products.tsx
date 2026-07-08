@@ -21,7 +21,7 @@ import { useModal } from '#/hooks/useModal'
 import TableSkeleton from '#/components/common/TableSkeleton'
 import EmptyState from '#/components/common/EmptyState'
 
-export const Route = createFileRoute('/products')({
+export const Route = createFileRoute('/_authenticated/products')({
   component: RouteComponent,
 })
 

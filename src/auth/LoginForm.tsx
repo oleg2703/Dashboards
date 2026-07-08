@@ -32,7 +32,7 @@ export default function LoginForm() {
     toast.success('Welcome back!')
 
     navigate({
-      to: '/',
+      to: '/dashboard',
     })
   }
 
