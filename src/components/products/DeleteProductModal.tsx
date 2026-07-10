@@ -1,4 +1,5 @@
 import type { Product } from '../../types/product'
+import { Button } from '../ui/Button'
 
 interface DeleteProductModalProps {
   product: Product | null
@@ -31,9 +32,10 @@ export default function DeleteProductModal({
           <button onClick={onClose} className=" rounded-xl border border-(--border) px-4 py-2">
             Cancel
           </button>
-          <button onClick={() => {onDelete(product.id) 
-            onClose()}} className=" rounded-xl  bg-red-500 px-4 py-2 text-white">Delete
-          </button>
+          <Button onClick={() => {onDelete(product.id) 
+            onClose()}} variant="danger">
+              Delete
+          </Button>
         </div>
       </div>
     </div>

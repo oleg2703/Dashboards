@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { Product } from '#/types/product'
 import { productSchema } from '#/validation/product.schema'
 import type { ProductFormData } from '#/validation/product.schema'
+import { Button } from '../ui/Button'
 
 interface EditProductModalProps {
   product: Product | null
@@ -117,20 +118,16 @@ export default function EditProductModal({
           </div>
 
           <div className="mt-6 flex justify-end gap-3">
-            <button
-              type="button"
+            <Button
+              variant="outline"
               onClick={onClose}
-              className="rounded-xl border border-(--border) px-4 py-2"
             >
               Cancel
-            </button>
+            </Button>
 
-            <button
-              type="submit"
-              className="rounded-xl bg-blue-500 px-4 py-2 text-white"
-            >
+            <Button type="submit">
               Save
-            </button>
+            </Button>
           </div>
         </form>
       </div>

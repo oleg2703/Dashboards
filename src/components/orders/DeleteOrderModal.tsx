@@ -1,4 +1,5 @@
 import type { Order } from '#/types/order'
+import { Button } from '../ui/Button'
 
 interface DeleteOrderModalProps {
   order: Order | null
@@ -33,14 +34,11 @@ export default function DeleteOrderModal({
             Cancel
           </button>
 
-          <button
-            onClick={() =>
-              onDelete(order.id)
-            }
-            className="rounded-xl bg-red-500 px-4 py-2 text-white"
-          >
+          <Button
+            onClick={() =>onDelete(order.id)}
+            variant="danger">
             Delete
-          </button>
+          </Button>
         </div>
       </div>
     </div>

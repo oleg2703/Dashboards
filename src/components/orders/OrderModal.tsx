@@ -1,4 +1,5 @@
 import type { Order } from '#/types/order'
+import { Button } from '../ui/Button'
 
 interface OrderModalProps {
   order: Order | null
@@ -43,12 +44,13 @@ export default function OrderModal({
           </p>
         </div>
 
-        <button
+        <Button
           onClick={onClose}
-          className="mt-6 rounded-xl bg-blue-500 px-4 py-2 text-white"
+          className="mt-6 w-full cursor-pointer"
+          variant="outline"
         >
           Close
-        </button>
+        </Button>
       </div>
     </div>
   )

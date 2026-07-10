@@ -6,6 +6,7 @@ import  {loginSchema} from '#/validation/login.schema'
 import type {LoginFormData} from '#/validation/login.schema'
 import { useAuth } from '#/auth/useAuth'
 import { toast } from 'react-toastify'
+import { Button } from '#/components/ui/Button'
 
 
 export default function LoginForm() {
@@ -72,12 +73,13 @@ export default function LoginForm() {
         )}
       </div>
 
-      <button
-        disabled={isSubmitting}
-        className="w-full rounded-md bg-primary py-2 font-medium text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
+      <Button
+        type="submit"
+        loading={isSubmitting}
+        className="w-full"
       >
-        {isSubmitting ? 'Signing in...' : 'Sign In'}
-      </button>
+        Sign In
+      </Button>
     </form>
   )
 }

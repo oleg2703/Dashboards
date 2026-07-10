@@ -1,4 +1,6 @@
+
 import type { Product } from '../../types/product'
+import { Button } from '../ui/Button'
 
 interface ProductModalProps {
   product: Product | null
@@ -20,7 +22,7 @@ export default function ProductModal({
           <h2 className="text-xl font-bold">
             Product Details
           </h2>
-          <button onClick={onClose}>✕</button>
+       
         </div>
 
         <div className="space-y-3">
@@ -30,6 +32,13 @@ export default function ProductModal({
           <p><strong>Status:</strong> {product.status}</p>
           <p><strong>Description:</strong>{' '}{product.description}</p>
         </div>
+        <Button
+          onClick={onClose}
+          className="mt-6 w-full cursor-pointer"
+          variant="outline"
+        >
+          Close
+        </Button>
       </div>
     </div>
   )

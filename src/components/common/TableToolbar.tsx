@@ -1,4 +1,5 @@
-import { Search } from 'lucide-react'
+import { Plus, Search } from 'lucide-react'
+import { Button } from '../ui/Button'
 
 interface TableToolbarProps {
   search?: string
@@ -30,12 +31,11 @@ export default function TableToolbar({
     <div className="my-4 flex flex-wrap items-center gap-4">
 
       {addLabel && onAdd && (
-        <button
-          onClick={onAdd}
-          className="rounded-xl bg-blue-500 px-4 py-2 text-white"
-        >
-          {addLabel}
-        </button>
+      <Button
+        onClick={onAdd} 
+        leftIcon={<Plus size={18}/>}>
+        {addLabel}
+    </Button>
       )}
 
       {onSort && (

@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { Customer } from '#/types/customer'
 import { customerSchema} from '#/validation/customer.schema'
 import type {CustomerFormData} from '#/validation/customer.schema'
+import { Button } from '../ui/Button'
 
 interface AddCustomerModalProps {
   onClose: () => void
@@ -86,20 +87,17 @@ export default function AddCustomerModal({
           </div>
 
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded border px-4 py-2"
-            >
-              Cancel
-            </button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
 
-            <button
-              type="submit"
-              className="rounded bg-blue-500 px-4 py-2 text-white"
-            >
-              Add
-            </button>
+          <Button type="submit">
+            Add Customer
+          </Button>
           </div>
         </form>
       </div>

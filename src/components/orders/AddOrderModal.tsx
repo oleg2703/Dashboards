@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { Order } from '#/types/order'
 import {orderSchema} from '#/validation/orders.schema'
 import type {OrderFormData} from '#/validation/orders.schema'
+import { Button } from '../ui/Button'
 
 interface AddOrderModalProps {
   onClose: () => void
@@ -131,20 +132,17 @@ export default function AddOrderModal({
           </div>
 
           <div className="flex justify-end gap-2 pt-2">
-            <button
+            <Button
               type="button"
-              onClick={onClose}
-              className="rounded-xl border border-(--border) px-4 py-2"
+              variant="outline"
+              onClick={onClose} 
             >
               Cancel
-            </button>
+            </Button>
 
-            <button
-              type="submit"
-              className="rounded-xl bg-blue-500 px-4 py-2 text-white"
-            >
+            <Button type="submit">
               Create
-            </button>
+            </Button>
           </div>
         </form>
       </div>

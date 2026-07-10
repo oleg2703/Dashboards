@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { productSchema } from '#/validation/product.schema'
 import type { ProductFormData } from '#/validation/product.schema'
 import type { Product } from '#/types/product'
+import { Button } from '../ui/Button'
 
 interface AddProductModalProps {
   onClose: () => void
@@ -100,20 +101,17 @@ export default function AddProductModal({
           </div>
 
           <div className="flex justify-end gap-3 pt-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-xl border border-(--border) px-4 py-2"
-            >
-              Cancel
-            </button>
+            <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
 
-            <button
-              type="submit"
-              className="rounded-xl bg-blue-500 px-4 py-2 text-white"
-            >
-              Add Product
-            </button>
+          <Button type="submit">
+            Add Customer
+          </Button>
           </div>
         </form>
       </div>

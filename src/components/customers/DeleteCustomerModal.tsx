@@ -1,4 +1,5 @@
 import type { Customer } from '#/types/customer'
+import { Button } from '../ui/Button'
 
 interface Props {
   customer: Customer | null
@@ -26,21 +27,18 @@ export default function DeleteCustomerModal({
         </p>
 
         <div className="mt-6 flex justify-end gap-2">
-          <button
+         <Button
+            variant="outline"
             onClick={onClose}
-            className="rounded border px-4 py-2"
           >
             Cancel
-          </button>
+          </Button>
 
-          <button
-            onClick={() =>
-              onDelete(customer.id)
-            }
-            className="rounded bg-red-500 px-4 py-2 text-white"
-          >
+          <Button
+            variant="danger"
+            onClick={() =>onDelete(customer.id)}>
             Delete
-          </button>
+          </Button>
         </div>
       </div>
     </div>
