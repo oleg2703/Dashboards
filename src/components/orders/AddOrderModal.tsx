@@ -5,6 +5,8 @@ import type { Order } from '#/types/order'
 import {orderSchema} from '#/validation/orders.schema'
 import type {OrderFormData} from '#/validation/orders.schema'
 import { Button } from '../ui/Button'
+import { Input } from '../ui/Input'
+import { Modal } from '../ui/Modal'
 
 interface AddOrderModalProps {
   onClose: () => void
@@ -47,21 +49,25 @@ export default function AddOrderModal({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={onClose}
-    >
-      <div
-        className="mx-4 w-full max-w-md rounded-2xl border border-(--border) bg-(--card-bg) p-6 shadow-xl"
-        onClick={(e) =>
-          e.stopPropagation()
-        }
-      >
-        <h2 className="mb-4 text-xl font-bold">
-          Add Order
-        </h2>
+    <Modal
+      title="Add Order"
+      onClose={onClose}
+     footer={<>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose} 
+            >
+              Cancel
+            </Button>
 
-        <form
+            <Button type="submit">
+              Create
+            </Button>
+          </>}
+    >
+      <form
+         id="add-order-form"
           onSubmit={handleSubmit(handleAdd)}
           className="space-y-4"
         >
@@ -70,10 +76,9 @@ export default function AddOrderModal({
               Customer ID
             </label>
 
-            <input
+            <Input
               type="number"
               {...register('customerId')}
-              className="w-full rounded-xl border border-(--border) p-2"
             />
 
             {errors.customerId && (
@@ -88,11 +93,11 @@ export default function AddOrderModal({
               Amount
             </label>
 
-            <input
+            <Input
               type="number"
               step="0.01"
               {...register('amount')}
-              className="w-full rounded-xl border border-(--border) p-2"
+              
             />
 
             {errors.amount && (
@@ -109,7 +114,7 @@ export default function AddOrderModal({
 
             <select
               {...register('status')}
-              className="w-full rounded-xl border border-(--border) p-2"
+              className="w-full rounded-xl border border-(--border) bg-(--card-bg) p-2"
             >
               <option value="paid">
                 Paid
@@ -131,21 +136,8 @@ export default function AddOrderModal({
             )}
           </div>
 
-          <div className="flex justify-end gap-2 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose} 
-            >
-              Cancel
-            </Button>
-
-            <Button type="submit">
-              Create
-            </Button>
-          </div>
+          
         </form>
-      </div>
-    </div>
+    </Modal>
   )
 }

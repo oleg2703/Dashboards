@@ -7,6 +7,7 @@ import type {LoginFormData} from '#/validation/login.schema'
 import { useAuth } from '#/auth/useAuth'
 import { toast } from 'react-toastify'
 import { Button } from '#/components/ui/Button'
+import { Input } from '#/components/ui/Input'
 
 
 export default function LoginForm() {
@@ -45,10 +46,11 @@ export default function LoginForm() {
       <div>
         <label>Email</label>
 
-        <input
-          {...register('email')}
-          className="mt-1 w-full rounded-md border px-3 py-2"
-        />
+       <Input
+        type="email"
+        placeholder="Email"
+        {...register('email')}
+      />
 
         {errors.email && (
           <p className="mt-1 text-sm text-red-500">
@@ -60,11 +62,11 @@ export default function LoginForm() {
       <div>
         <label>Password</label>
 
-        <input
-          type="password"
-          {...register('password')}
-          className="mt-1 w-full rounded-md border px-3 py-2"
-        />
+        <Input
+        type="password"
+        placeholder="Password"
+        {...register('password')}
+      />
 
         {errors.password && (
           <p className="mt-1 text-sm text-red-500">

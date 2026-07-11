@@ -6,6 +6,8 @@ import type { Customer } from '#/types/customer'
 import { customerSchema} from '#/validation/customer.schema'
 import type {CustomerFormData} from '#/validation/customer.schema'
 import { Button } from '../ui/Button'
+import { Input } from '../ui/Input'
+import { Modal } from '../ui/Modal'
 
 
 interface Props {
@@ -50,48 +52,11 @@ export default function EditCustomerModal({
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <div
-        className="w-full max-w-md rounded-2xl bg-(--card-bg) p-6"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="mb-4 text-xl font-bold">
-          Edit Customer
-        </h2>
-
-        <form
-          onSubmit={handleSubmit(handleSave)}
-          className="space-y-4"
-        >
-          <div>
-            <input
-              {...register('name')}
-              placeholder="Customer name"
-              className="w-full rounded border p-2"
-            />
-
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.name.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <input
-              {...register('email')}
-              placeholder="Email"
-              className="w-full rounded border p-2"
-            />
-
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-
-          <div className="flex justify-end gap-2">
+    <Modal 
+    title="Edit Customer"
+    onClose={onClose}
+    footer={
+          <>
             <Button
               type="button"
               variant="outline"
@@ -103,9 +68,41 @@ export default function EditCustomerModal({
             <Button type="submit">
             Save 
             </Button>
+          </>
+    }>
+       <form
+          onSubmit={handleSubmit(handleSave)}
+          className="space-y-4"
+        >
+          <div>
+            <Input
+              {...register('name')}
+              placeholder="Customer name"
+            />
+
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.name.message}
+              </p>
+            )}
           </div>
+
+          <div>
+           <Input
+                {...register('email')}
+                type="email"
+                placeholder="Email"
+              />
+
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          
         </form>
-      </div>
-    </div>
+    </Modal>
   )
 }

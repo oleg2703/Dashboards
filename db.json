@@ -99,13 +99,6 @@
       "status": "paid",
       "date": "2026-06-26",
       "id": "QlDnoT5_A_I"
-    },
-    {
-      "customerId": 1,
-      "amount": 300,
-      "status": "cancelled",
-      "date": "2026-06-30",
-      "id": "bFoOyGKTrJs"
     }
   ],
   "products": [

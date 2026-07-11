@@ -1,37 +1,50 @@
+import { useEffect} from 'react'
+import type { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { useEffect } from 'react'
+import { X } from 'lucide-react'
+
+import { Button } from '../Button'
 
 interface ModalProps {
-  open: boolean
-  children: React.ReactNode
+  title: string
+  children: ReactNode
+  footer?: ReactNode
   onClose: () => void
+  size?: 'sm' | 'md' | 'lg'
+}
+
+const sizes = {
+  sm: 'max-w-md',
+  md: 'max-w-xl',
+  lg: 'max-w-3xl',
 }
 
 export function Modal({
-  open,
+  title,
   children,
+  footer,
   onClose,
+  size = 'md',
 }: ModalProps) {
   useEffect(() => {
-    if (!open) return
-
-    document.body.style.overflow = 'hidden'
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose()
-      }
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose()
     }
+  }
 
-    window.addEventListener('keydown', handleKeyDown)
+  document.body.style.overflow = 'hidden'
 
-    return () => {
-      document.body.style.overflow = ''
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [open, onClose])
+  window.addEventListener('keydown', handleKeyDown)
 
-  if (!open) return null
+  return () => {
+    document.body.style.overflow = ''
+    window.removeEventListener(
+      'keydown',
+      handleKeyDown,
+    )
+  }
+}, [onClose])
 
   return createPortal(
     <div
@@ -39,10 +52,33 @@ export function Modal({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-xl bg-background shadow-xl"
+        className={`w-full rounded-xl bg-(--card-bg) shadow-xl ${sizes[size]}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {children}
+        <div className="flex items-center justify-between border-b border-(--border) p-5">
+          <h2 className="text-xl font-semibold">
+            {title}
+          </h2>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Close"
+            onClick={onClose}
+          >
+            <X size={18} />
+          </Button>
+        </div>
+
+        <div className="p-5">
+          {children}
+        </div>
+
+        {footer && (
+          <div className="flex justify-end gap-3 border-t border-(--border) p-5">
+            {footer}
+          </div>
+        )}
       </div>
     </div>,
     document.body,

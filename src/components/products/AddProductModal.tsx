@@ -5,6 +5,8 @@ import { productSchema } from '#/validation/product.schema'
 import type { ProductFormData } from '#/validation/product.schema'
 import type { Product } from '#/types/product'
 import { Button } from '../ui/Button'
+import { Input } from '../ui/Input'
+import { Modal } from '../ui/Modal'
 
 interface AddProductModalProps {
   onClose: () => void
@@ -42,66 +44,12 @@ export default function AddProductModal({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-md rounded-2xl bg-(--card-bg) p-6"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="mb-4 text-xl font-bold">
-          Add Product
-        </h2>
-
-        <form
-          onSubmit={handleSubmit(submit)}
-          className="space-y-4"
-        >
-          <div>
-            <input
-              placeholder="Product name"
-              {...register('name')}
-              className="w-full rounded-xl border border-(--border) px-4 py-2"
-            />
-
-            <p className="mt-1 text-sm text-red-500">
-              {errors.name?.message}
-            </p>
-          </div>
-
-          <div>
-            <input
-              type="number"
-              placeholder="Price"
-              {...register('price', {
-                valueAsNumber: true,
-              })}
-              className="w-full rounded-xl border border-(--border) px-4 py-2"
-            />
-
-            <p className="mt-1 text-sm text-red-500">
-              {errors.price?.message}
-            </p>
-          </div>
-
-          <div>
-            <input
-              type="number"
-              placeholder="Stock"
-              {...register('stock', {
-                valueAsNumber: true,
-              })}
-              className="w-full rounded-xl border border-(--border) px-4 py-2"
-            />
-
-            <p className="mt-1 text-sm text-red-500">
-              {errors.stock?.message}
-            </p>
-          </div>
-
-          <div className="flex justify-end gap-3 pt-2">
-            <Button
+    <Modal
+      title="Add Product"
+      onClose={onClose}
+      footer={
+        <>
+          <Button
             type="button"
             variant="outline"
             onClick={onClose}
@@ -109,12 +57,65 @@ export default function AddProductModal({
             Cancel
           </Button>
 
-          <Button type="submit">
-            Add Customer
+          <Button
+            type="submit"
+            form="add-product-form"
+          >
+            Add Product
           </Button>
-          </div>
-        </form>
-      </div>
-    </div>
+        </>
+      }
+    >
+      <form
+        id="add-product-form"
+        onSubmit={handleSubmit(submit)}
+        className="space-y-4"
+      >
+        <div>
+          <Input
+            {...register('name')}
+            placeholder="Product name"
+          />
+
+          {errors.name && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.name.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <Input
+            type="number"
+            placeholder="Price"
+            {...register('price', {
+              valueAsNumber: true,
+            })}
+          />
+
+          {errors.price && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.price.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <Input
+            type="number"
+            placeholder="Stock"
+            {...register('stock', {
+              valueAsNumber: true,
+            })}
+          />
+
+          {errors.stock && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.stock.message}
+            </p>
+          )}
+        </div>
+      </form>
+    </Modal>
   )
 }

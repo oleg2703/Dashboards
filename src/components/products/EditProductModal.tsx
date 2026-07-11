@@ -6,6 +6,8 @@ import type { Product } from '#/types/product'
 import { productSchema } from '#/validation/product.schema'
 import type { ProductFormData } from '#/validation/product.schema'
 import { Button } from '../ui/Button'
+import { Input } from '../ui/Input'
+import { Modal } from '../ui/Modal'
 
 interface EditProductModalProps {
   product: Product | null
@@ -53,71 +55,11 @@ export default function EditProductModal({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-md rounded-2xl bg-(--card-bg) p-6"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="mb-4 text-xl font-bold">
-          Edit Product
-        </h2>
-
-        <form
-          onSubmit={handleSubmit(handleSave)}
-          className="space-y-4"
-        >
-          <div>
-            <input
-              {...register('name')}
-              placeholder="Product Name"
-              className="w-full rounded-xl border border-(--border) px-4 py-2"
-            />
-
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.name.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <input
-              type="number"
-              {...register('price', {
-                valueAsNumber: true,
-              })}
-              placeholder="Price"
-              className="w-full rounded-xl border border-(--border) px-4 py-2"
-            />
-
-            {errors.price && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.price.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <input
-              type="number"
-              {...register('stock', {
-                valueAsNumber: true,
-              })}
-              placeholder="Stock"
-              className="w-full rounded-xl border border-(--border) px-4 py-2"
-            />
-
-            {errors.stock && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.stock.message}
-              </p>
-            )}
-          </div>
-
-          <div className="mt-6 flex justify-end gap-3">
+    <Modal
+      title="Edit Product"
+      onClose={onClose}
+      footer={
+          <>
             <Button
               variant="outline"
               onClick={onClose}
@@ -128,9 +70,64 @@ export default function EditProductModal({
             <Button type="submit">
               Save
             </Button>
+          </>
+      }
+      >
+    
+      <form
+          onSubmit={handleSubmit(handleSave)}
+          className="space-y-4"
+        >
+          <div>
+            <Input
+              {...register('name')}
+              placeholder="Product Name"
+             
+            />
+
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.name.message}
+              </p>
+            )}
           </div>
+
+          <div>
+            <Input
+              type="number"
+              {...register('price', {
+                valueAsNumber: true,
+              })}
+              placeholder="Price"
+              
+            />
+
+            {errors.price && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.price.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Input
+              type="number"
+              {...register('stock', {
+                valueAsNumber: true,
+              })}
+              placeholder="Stock"
+              
+            />
+
+            {errors.stock && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.stock.message}
+              </p>
+            )}
+          </div>
+
+         
         </form>
-      </div>
-    </div>
+    </Modal>
   )
 }

@@ -1,5 +1,6 @@
 import type { Customer } from '#/types/customer'
 import { Button } from '../ui/Button'
+import { Modal } from '../ui/Modal'
 
 interface CustomerModalProps {
   customer: Customer | null
@@ -13,22 +14,18 @@ export default function CustomerModal({
   if (!customer) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-md rounded-2xl bg-(--card-bg) p-6 shadow-xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold">
-            Customer Details
-          </h2>
-
-          <button
-            onClick={onClose}
-            className="text-xl"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div className="space-y-3">
+    <Modal 
+    title="Customer Details"
+    onClose={onClose}
+    footer={
+    <Button
+     onClick={onClose}
+     className="mt-6 w-full cursor-pointer"
+     variant="outline" >
+         Close
+     </Button>
+    }>
+         <div className="space-y-3">
           <div>
             <span className="font-semibold">
               Name:
@@ -81,15 +78,6 @@ export default function CustomerModal({
             {customer.createdAt}
           </div>
         </div>
-
-      <Button
-          onClick={onClose}
-          className="mt-6 w-full cursor-pointer"
-          variant="outline"
-        >
-          Close
-        </Button>
-      </div>
-    </div>
+    </Modal>
   )
 }

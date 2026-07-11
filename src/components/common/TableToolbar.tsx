@@ -1,5 +1,6 @@
 import { Plus, Search } from 'lucide-react'
 import { Button } from '../ui/Button'
+import { SearchInput } from '../ui/SearchInput'
 
 interface TableToolbarProps {
   search?: string
@@ -46,21 +47,16 @@ export default function TableToolbar({
           {sortOrder === 'asc' ? '↑' : '↓'}
         </button>
       )}
-
-      {search !== undefined && onSearchChange && (
-        <div className="flex items-center gap-2 rounded-xl border border-(--border) bg-(--card-bg) px-3">
-          <Search size={18} />
-
-          <input
+        {search !== undefined && onSearchChange && (
+          <SearchInput
             value={search}
+            placeholder="Search..."
             onChange={(e) =>
               onSearchChange(e.target.value)
             }
-            placeholder="Search..."
-            className="bg-transparent py-2 outline-none"
+            onClear={() => onSearchChange('')}
           />
-        </div>
-      )}
+        )}
 
       {filterOptions && onFilterChange && (
         <select

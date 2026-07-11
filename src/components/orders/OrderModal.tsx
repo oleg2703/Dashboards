@@ -1,5 +1,6 @@
 import type { Order } from '#/types/order'
 import { Button } from '../ui/Button'
+import { Modal } from '../ui/Modal'
 
 interface OrderModalProps {
   order: Order | null
@@ -13,12 +14,17 @@ export default function OrderModal({
   if (!order) return null
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-md rounded-2xl bg-(--card-bg) p-6">
-        <h2 className="mb-4 text-xl font-bold">
-          Order Details
-        </h2>
-
+    <Modal 
+      title="Order Details"
+      onClose={onClose}
+      footer={<Button
+          onClick={onClose}
+          className="mt-6 w-full cursor-pointer"
+          variant="outline"
+        >
+          Close
+        </Button>}
+    >
         <div className="space-y-3">
           <p>
             <strong>ID:</strong> {order.id}
@@ -43,15 +49,6 @@ export default function OrderModal({
             <strong>Date:</strong> {order.date}
           </p>
         </div>
-
-        <Button
-          onClick={onClose}
-          className="mt-6 w-full cursor-pointer"
-          variant="outline"
-        >
-          Close
-        </Button>
-      </div>
-    </div>
+    </Modal>
   )
 }

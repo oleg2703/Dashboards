@@ -1,6 +1,7 @@
 
 import type { Product } from '../../types/product'
 import { Button } from '../ui/Button'
+import { Modal } from '../ui/Modal'
 
 interface ProductModalProps {
   product: Product | null
@@ -16,15 +17,18 @@ export default function ProductModal({
   if (!product) return null
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center  bg-black/50 z-50"onClick={onClose}>
-      <div className=" w-full max-w-md rounded-2xl bg-(--card-bg) p-6" onClick={(e) => e.stopPropagation()}>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold">
-            Product Details
-          </h2>
-       
-        </div>
-
+    <Modal 
+      title="Product Details"
+      onClose={onClose}
+      footer={<Button
+          onClick={onClose}
+          className="mt-6 w-full cursor-pointer"
+          variant="outline"
+        >
+          Close
+        </Button> }
+      >
+    
         <div className="space-y-3">
           <p><strong>Name:</strong> {product.name}</p>
           <p><strong>Price:</strong> ${product.price}</p>
@@ -32,14 +36,6 @@ export default function ProductModal({
           <p><strong>Status:</strong> {product.status}</p>
           <p><strong>Description:</strong>{' '}{product.description}</p>
         </div>
-        <Button
-          onClick={onClose}
-          className="mt-6 w-full cursor-pointer"
-          variant="outline"
-        >
-          Close
-        </Button>
-      </div>
-    </div>
+    </Modal>
   )
 }

@@ -3,9 +3,16 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import type { Order } from '#/types/order'
-import {orderSchema} from '#/validation/orders.schema'
-import type {OrderFormData} from '#/validation/orders.schema'
+import {
+  orderSchema
+  
+} from '#/validation/orders.schema'
+import type {OrderFormData} from '#/validation/orders.schema';
+
+
 import { Button } from '../ui/Button'
+import { Input } from '../ui/Input'
+import { Modal } from '../ui/Modal'
 
 interface EditOrderModalProps {
   order: Order | null
@@ -39,9 +46,7 @@ export default function EditOrderModal({
 
   if (!order) return null
 
-  const handleSave = (
-    data: OrderFormData
-  ) => {
+  const handleSave = (data: OrderFormData) => {
     onSave({
       ...order,
       customerId: data.customerId,
@@ -53,90 +58,83 @@ export default function EditOrderModal({
   }
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-black/50"
-      onClick={onClose}
-    >
-      <div
-        className="w-full max-w-md rounded-2xl bg-(--card-bg) p-6"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="mb-4 text-xl font-bold">
-          Edit Order
-        </h2>
-
-        <form
-          onSubmit={handleSubmit(handleSave)}
-          className="space-y-4"
-        >
-          <div>
-            <input
-              type="number"
-              placeholder="Customer ID"
-              {...register('customerId')}
-              className="w-full rounded-xl border border-(--border) p-2"
-            />
-
-            {errors.customerId && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.customerId.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <input
-              type="number"
-              step="0.01"
-              placeholder="Amount"
-              {...register('amount')}
-              className="w-full rounded-xl border border-(--border) p-2"
-            />
-
-            {errors.amount && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.amount.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <select
-              {...register('status')}
-              className="w-full rounded-xl border border-(--border) bg-(--card-bg) p-2"
-            >
-              <option value="paid">
-                Paid
-              </option>
-
-              <option value="pending">
-                Pending
-              </option>
-
-              <option value="cancelled">
-                Cancelled
-              </option>
-            </select>
-
-            {errors.status && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.status.message}
-              </p>
-            )}
-          </div>
-
-          <div className="flex justify-end gap-2">
-        <Button
-          variant="outline"
-          onClick={onClose}>
+    <Modal
+      title="Edit Order"
+      onClose={onClose}
+      footer={
+        <>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+          >
             Cancel
-        </Button>
-        <Button type="submit">
+          </Button>
+
+          <Button
+            type="submit"
+            form="edit-order-form"
+          >
             Save
-        </Button>
-          </div>
-        </form>
-      </div>
-    </div>
+          </Button>
+        </>
+      }
+    >
+      <form
+        id="edit-order-form"
+        onSubmit={handleSubmit(handleSave)}
+        className="space-y-4"
+      >
+        <div>
+          <Input
+            type="number"
+            placeholder="Customer ID"
+            {...register('customerId', {
+              valueAsNumber: true,
+            })}
+          />
+
+          {errors.customerId && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.customerId.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <Input
+            type="number"
+            step="0.01"
+            placeholder="Amount"
+            {...register('amount', {
+              valueAsNumber: true,
+            })}
+          />
+
+          {errors.amount && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.amount.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <select
+            {...register('status')}
+            className="w-full rounded-xl border border-(--border) bg-(--card-bg) p-2"
+          >
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+
+          {errors.status && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.status.message}
+            </p>
+          )}
+        </div>
+      </form>
+    </Modal>
   )
 }
