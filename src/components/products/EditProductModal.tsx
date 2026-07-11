@@ -67,7 +67,8 @@ export default function EditProductModal({
               Cancel
             </Button>
 
-            <Button type="submit">
+            <Button type="submit"
+            form='edit-product-form'>
               Save
             </Button>
           </>
@@ -75,6 +76,7 @@ export default function EditProductModal({
       >
     
       <form
+       id="edit-product-form"
           onSubmit={handleSubmit(handleSave)}
           className="space-y-4"
         >

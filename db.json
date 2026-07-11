@@ -2,7 +2,7 @@
   "customers": [
     {
       "id": "1",
-      "name": "John Doev22",
+      "name": "John Doev",
       "email": "john@mail.com",
       "isActive": true,
       "createdAt": "2025-06-01",
@@ -33,7 +33,7 @@
     {
       "id": "1",
       "customerId": 1,
-      "amount": 120,
+      "amount": 123,
       "status": "pending",
       "date": "2025-06-10"
     },
@@ -94,11 +94,18 @@
       "id": "q4eszUqwxq8"
     },
     {
-      "customerId": 3,
-      "amount": 200,
-      "status": "paid",
-      "date": "2026-06-26",
-      "id": "QlDnoT5_A_I"
+      "customerId": 1,
+      "amount": 22,
+      "status": "pending",
+      "date": "2026-07-11",
+      "id": "s3Yc8FsWyXU"
+    },
+    {
+      "customerId": 1,
+      "amount": 1000,
+      "status": "pending",
+      "date": "2026-07-11",
+      "id": "_uioiamhEyU"
     }
   ],
   "products": [
@@ -165,6 +172,22 @@
       "status": "Active",
       "description": "",
       "id": "cDkNQYetSAE"
+    },
+    {
+      "name": "Олег ",
+      "price": 222,
+      "stock": 2,
+      "status": "Low Stock",
+      "description": "",
+      "id": "2L5n9y5F0Ic"
+    },
+    {
+      "name": "ass",
+      "price": 22,
+      "stock": 2,
+      "status": "Low Stock",
+      "description": "",
+      "id": "o4-yBBRLdNo"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

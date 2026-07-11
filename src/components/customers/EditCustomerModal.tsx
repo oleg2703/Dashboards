@@ -65,12 +65,14 @@ export default function EditCustomerModal({
               Cancel
             </Button>
 
-            <Button type="submit">
+            <Button type="submit"
+            form="edit-customer-form">
             Save 
             </Button>
           </>
     }>
        <form
+        id="edit-customer-form"
           onSubmit={handleSubmit(handleSave)}
           className="space-y-4"
         >

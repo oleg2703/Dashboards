@@ -1,25 +1,45 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { vi, describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 
-import { Modal } from '#/components/ui/Modal/Modal.tsx'
+import AddProductModal from '#/components/products/AddProductModal'
 
-
-describe('Modal', () => {
-  it('calls onClose when clicking close button', async () => {
+describe('AddProductModal', () => {
+  it('calls onAdd when submitting valid form', async () => {
     const user = userEvent.setup()
+
+    const onAdd = vi.fn()
     const onClose = vi.fn()
 
     render(
-      <Modal onClose={onClose}  title={''} children={undefined} />,
+      <AddProductModal
+        onAdd={onAdd}
+        onClose={onClose}
+      />
+    )
+
+    await user.type(
+      screen.getByPlaceholderText(/product name/i),
+      'MacBook'
+    )
+
+    await user.type(
+      screen.getByPlaceholderText(/price/i),
+      '2500'
+    )
+
+    await user.type(
+      screen.getByPlaceholderText(/stock/i),
+      '10'
     )
 
     await user.click(
       screen.getByRole('button', {
-        name: /close/i,
-      }),
+        name: /add product/i,
+      })
     )
 
-    expect(onClose).toHaveBeenCalledOnce()
+    expect(onAdd).toHaveBeenCalledTimes(1)
+    expect(onClose).toHaveBeenCalledTimes(1)
   })
 })

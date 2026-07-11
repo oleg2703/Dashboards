@@ -61,8 +61,9 @@ export default function AddOrderModal({
               Cancel
             </Button>
 
-            <Button type="submit">
-              Create
+            <Button type="submit"
+            form="add-order-form">
+              Create Order
             </Button>
           </>}
     >
@@ -93,12 +94,12 @@ export default function AddOrderModal({
               Amount
             </label>
 
-            <Input
-              type="number"
-              step="0.01"
-              {...register('amount')}
-              
-            />
+           <Input
+          type="number"
+          step="1"
+          {...register('amount', {
+            valueAsNumber: true,
+          })}></Input>
 
             {errors.amount && (
               <p className="mt-1 text-sm text-red-500">

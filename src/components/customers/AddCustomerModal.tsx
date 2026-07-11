@@ -62,15 +62,18 @@ export default function AddCustomerModal({
           >
             Cancel
           </Button>
-
-          <Button type="submit">
-            Add Customer
-          </Button>
+          <Button
+              type="submit"
+              form="add-customer-form"
+            >
+        Add Customer
+      </Button>
           </>
     }>
           <form
-          onSubmit={handleSubmit(handleAdd)}
-          className="space-y-4"
+          id="add-customer-form"
+  onSubmit={handleSubmit(handleAdd)}
+  className="space-y-4"
         >
           <div>
             <Input
