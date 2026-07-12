@@ -48,9 +48,10 @@ export function Modal({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-      onClick={onClose}
-    >
+          data-testid="modal-backdrop"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={onClose}
+        >
       <div
         className={`w-full rounded-xl bg-(--card-bg) shadow-xl ${sizes[size]}`}
         onClick={(e) => e.stopPropagation()}
