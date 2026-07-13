@@ -47,6 +47,12 @@ export default function OrdersPieChart() {
           pendingCount,
           cancelledCount,
         ],
+         backgroundColor: [
+          '#10633B',
+          '#ffff42',
+          '#FF8056',
+        ],
+        borderWidth: 1,
       },
     ],
   }

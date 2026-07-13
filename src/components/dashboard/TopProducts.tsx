@@ -31,6 +31,7 @@ export default function TopProducts() {
         label: 'Sales',
         data: [124, 98, 76, 64, 51],
         borderRadius: 8,
+        backgroundColor: '#3b82f6',
       },
     ],
   }

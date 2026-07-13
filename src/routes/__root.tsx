@@ -1,6 +1,4 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '../lib/queryClient'
 
@@ -48,17 +46,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 <AuthProvider>
         {children}
   <ToastContainer position="top-right" autoClose={3000} />
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+       
         </AuthProvider>
         </QueryClientProvider>
         <Scripts />
