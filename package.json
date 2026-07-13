@@ -6,7 +6,8 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "dev": "vite dev --port 3000",
+    "dev": "vite dev --port 18012",
+    "server": "node server.js",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "build": "vite build",
