@@ -17,16 +17,6 @@
       "createdAt": "2025-05-10",
       "totalSpent": 1200,
       "ordersCount": 12
-    },
-    {
-      "name": "send-to-bot.php",
-      "email": "sss@gmail.com",
-      "isActive": true,
-      "ordersCount": 0,
-      "totalSpent": 0,
-      "createdAt": "2026-07-05",
-      "orders": [],
-      "id": "XIIen6SKJEI"
     }
   ],
   "orders": [
