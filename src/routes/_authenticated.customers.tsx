@@ -29,6 +29,7 @@ export const Route = createFileRoute('/_authenticated/customers')({
 function RouteComponent() {
   
   const {data = [],isFetching ,isError,refetch} = useCustomers()
+
   const createMutation = useCreateCustomer()
   const updateMutation = useUpdateCustomer()
   const deleteMutation = useDeleteCustomer()

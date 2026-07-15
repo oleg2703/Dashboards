@@ -17,6 +17,16 @@
       "createdAt": "2025-05-10",
       "totalSpent": 1200,
       "ordersCount": 12
+    },
+    {
+      "name": "asdas",
+      "email": "oleg2703lebid@gmail.com",
+      "isActive": true,
+      "ordersCount": 0,
+      "totalSpent": 0,
+      "createdAt": "2026-07-13",
+      "orders": [],
+      "id": "1BnZobdo2lM"
     }
   ],
   "orders": [

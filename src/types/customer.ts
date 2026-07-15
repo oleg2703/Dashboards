@@ -7,12 +7,5 @@ export type Customer = {
   email: string
   isActive: boolean
   createdAt: string
-  orders: Order[]
   totalSpent: number
-}
-export type Order = {
-  id: string
-  date: string
-  amount: number
-  status: "paid" | "pending" | "failed"
 }

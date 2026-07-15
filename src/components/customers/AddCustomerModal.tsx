@@ -42,8 +42,7 @@ export default function AddCustomerModal({
       totalSpent: 0,
       createdAt: new Date()
         .toISOString()
-        .split('T')[0],
-      orders: [],
+        .split('T')[0]
     })
 
     onClose()
