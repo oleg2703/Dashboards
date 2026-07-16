@@ -18,7 +18,7 @@ admin@example.com
 Password
 
 ```text
-admin
+admin123
 ```
 
 ---

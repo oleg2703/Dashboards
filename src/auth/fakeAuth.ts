@@ -6,4 +6,4 @@ export const fakeUser: User = {
   email: 'admin@dashboard.com',
 }
 
-export const fakePassword = 'admin'
+export const fakePassword = 'admin123'
