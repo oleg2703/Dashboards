@@ -7,21 +7,14 @@ import { Modal } from '#/components/ui/Modal'
 describe('Modal', () => {
   it('renders title and children', () => {
     render(
-      <Modal
-        title="Test Modal"
-        onClose={vi.fn()}
-      >
+      <Modal title="Test Modal" onClose={vi.fn()}>
         <p>Hello World</p>
       </Modal>,
     )
 
-    expect(
-      screen.getByText('Test Modal'),
-    ).toBeInTheDocument()
+    expect(screen.getByText('Test Modal')).toBeInTheDocument()
 
-    expect(
-      screen.getByText('Hello World'),
-    ).toBeInTheDocument()
+    expect(screen.getByText('Hello World')).toBeInTheDocument()
   })
 
   it('calls onClose when clicking close button', async () => {
@@ -29,10 +22,7 @@ describe('Modal', () => {
     const onClose = vi.fn()
 
     render(
-      <Modal
-        title="Test"
-        onClose={onClose}
-      >
+      <Modal title="Test" onClose={onClose}>
         Content
       </Modal>,
     )
@@ -50,10 +40,7 @@ describe('Modal', () => {
     const onClose = vi.fn()
 
     render(
-      <Modal
-        title="Test"
-        onClose={onClose}
-      >
+      <Modal title="Test" onClose={onClose}>
         Content
       </Modal>,
     )
@@ -66,31 +53,22 @@ describe('Modal', () => {
   })
 
   it('calls onClose when clicking backdrop', async () => {
-  const user = userEvent.setup()
-  const onClose = vi.fn()
+    const user = userEvent.setup()
+    const onClose = vi.fn()
 
-  render(
-    <Modal
-      title="Test"
-      onClose={onClose}
-    >
-      Content
-    </Modal>,
-  )
+    render(
+      <Modal title="Test" onClose={onClose}>
+        Content
+      </Modal>,
+    )
 
-  await user.click(
-    screen.getByTestId('modal-backdrop'),
-  )
+    await user.click(screen.getByTestId('modal-backdrop'))
 
-  expect(onClose).toHaveBeenCalledTimes(1)
-})
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
   it('renders footer', () => {
     render(
-      <Modal
-        title="Test"
-        onClose={vi.fn()}
-        footer={<button>Save</button>}
-      >
+      <Modal title="Test" onClose={vi.fn()} footer={<button>Save</button>}>
         Content
       </Modal>,
     )

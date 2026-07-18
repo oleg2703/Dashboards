@@ -11,35 +11,17 @@ describe('ProductForm', () => {
     const onAdd = vi.fn()
     const onClose = vi.fn()
 
-    render(
-      <AddProductModal
-        onAdd={onAdd}
-        onClose={onClose}
-      />,
-    )
+    render(<AddProductModal onAdd={onAdd} onClose={onClose} />)
 
-    await user.type(
-      screen.getByPlaceholderText(/product name/i),
-      'MacBook Pro',
-    )
+    await user.type(screen.getByPlaceholderText(/product name/i), 'MacBook Pro')
 
-    await user.clear(
-      screen.getByPlaceholderText(/price/i),
-    )
+    await user.clear(screen.getByPlaceholderText(/price/i))
 
-    await user.type(
-      screen.getByPlaceholderText(/price/i),
-      '2500',
-    )
+    await user.type(screen.getByPlaceholderText(/price/i), '2500')
 
-    await user.clear(
-      screen.getByPlaceholderText(/stock/i),
-    )
+    await user.clear(screen.getByPlaceholderText(/stock/i))
 
-    await user.type(
-      screen.getByPlaceholderText(/stock/i),
-      '10',
-    )
+    await user.type(screen.getByPlaceholderText(/stock/i), '10')
 
     await user.click(
       screen.getByRole('button', {
@@ -63,12 +45,7 @@ describe('ProductForm', () => {
   it('shows validation errors', async () => {
     const user = userEvent.setup()
 
-    render(
-      <AddProductModal
-        onAdd={vi.fn()}
-        onClose={vi.fn()}
-      />,
-    )
+    render(<AddProductModal onAdd={vi.fn()} onClose={vi.fn()} />)
 
     await user.click(
       screen.getByRole('button', {
@@ -76,8 +53,6 @@ describe('ProductForm', () => {
       }),
     )
 
-    expect(
-      screen.getByText(/name/i),
-    ).toBeInTheDocument()
+    expect(screen.getByText(/name/i)).toBeInTheDocument()
   })
 })

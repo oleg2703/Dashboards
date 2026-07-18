@@ -12,7 +12,7 @@ export default function ProductsTable({
   products,
   onView,
   onEdit,
-  onDelete
+  onDelete,
 }: ProductsTableProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-(--border)">
@@ -29,10 +29,7 @@ export default function ProductsTable({
 
         <tbody>
           {products.map((product) => (
-            <tr
-              key={product.id}
-              className="border-b border-(--border)"
-            >
+            <tr key={product.id} className="border-b border-(--border)">
               <td className="p-4">{product.name}</td>
               <td className="p-4">${product.price}</td>
               <td className="p-4">{product.stock}</td>
@@ -48,20 +45,25 @@ export default function ProductsTable({
                   {product.status}
                 </span>
               </td>
-             <td className="p-4">
+              <td className="p-4">
                 <div className="flex gap-3">
-                  <div onClick={() => onView(product)}
-                    className="rounded p-1 hover:bg-(--surface-hover)">
+                  <div
+                    onClick={() => onView(product)}
+                    className="rounded p-1 hover:bg-(--surface-hover)"
+                  >
                     <Eye size={18} />
                   </div>
                   <div className="rounded p-1 hover:bg-(--surface-hover)">
                     <button onClick={() => onEdit(product)}>
-                     <Pencil size={18} />
+                      <Pencil size={18} />
                     </button>
                   </div>
                   <div className="rounded p-1 hover:bg-red-500/10">
                     <button onClick={() => onDelete(product)}>
-                      <Trash2 size={18} className="cursor-pointer text-red-500"/>
+                      <Trash2
+                        size={18}
+                        className="cursor-pointer text-red-500"
+                      />
                     </button>
                   </div>
                 </div>

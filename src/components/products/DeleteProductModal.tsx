@@ -16,25 +16,30 @@ export default function DeleteProductModal({
   if (!product) return null
 
   return (
-    <Modal 
+    <Modal
       title="Delete Product"
       onClose={onClose}
-      footer={  <>
+      footer={
+        <>
           <Button onClick={onClose} variant="outline">
             Cancel
           </Button>
-          <Button onClick={() => {onDelete(product.id) 
-            onClose()}} variant="danger">
-              Delete
+          <Button
+            onClick={() => {
+              onDelete(product.id)
+              onClose()
+            }}
+            variant="danger"
+          >
+            Delete
           </Button>
-        </>}
+        </>
+      }
     >
-      
-        <p className="mb-6 text-(--text-secondary)">
-          Are you sure you want to delete
-          <strong> {product.name}</strong>?
-        </p>
-
+      <p className="mb-6 text-(--text-secondary)">
+        Are you sure you want to delete
+        <strong> {product.name}</strong>?
+      </p>
     </Modal>
   )
 }

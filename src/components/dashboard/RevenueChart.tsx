@@ -28,28 +28,20 @@ const options = {
 export default function RevenueChart() {
   const { data: orders = [] } = useOrders()
 
-  const chartData = [...orders]
-    .sort(
-      (a, b) =>
-        new Date(a.date).getTime() -
-        new Date(b.date).getTime()
-    )
+  const chartData = [...orders].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  )
 
   const data = {
-    labels: chartData.map(
-      (order) => order.date
-    ),
+    labels: chartData.map((order) => order.date),
 
     datasets: [
       {
         label: 'Revenue',
-        data: chartData.map(
-          (order) => order.amount
-        ),
+        data: chartData.map((order) => order.amount),
 
         borderColor: '#3b82f6',
-        backgroundColor:
-          'rgba(59,130,246,0.2)',
+        backgroundColor: 'rgba(59,130,246,0.2)',
 
         tension: 0.4,
       },
@@ -58,10 +50,7 @@ export default function RevenueChart() {
 
   return (
     <div className="h-50">
-      <Line
-        data={data}
-        options={options}
-      />
+      <Line data={data} options={options} />
     </div>
   )
 }

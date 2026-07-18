@@ -13,18 +13,11 @@ export default function ErrorState({
 }: ErrorStateProps) {
   return (
     <div className="flex flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50 py-16 text-center">
-      <AlertTriangle
-        size={48}
-        className="mb-4 text-red-500"
-      />
+      <AlertTriangle size={48} className="mb-4 text-red-500" />
 
-      <h2 className="text-xl font-semibold">
-        {title}
-      </h2>
+      <h2 className="text-xl font-semibold">{title}</h2>
 
-      <p className="mt-2 text-gray-600">
-        {description}
-      </p>
+      <p className="mt-2 text-gray-600">{description}</p>
 
       <button
         onClick={onRetry}

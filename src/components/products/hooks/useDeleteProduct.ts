@@ -5,8 +5,7 @@ export const useDeleteProduct = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (id: number) =>
-      productsApi.delete(id),
+    mutationFn: (id: number) => productsApi.delete(id),
 
     onSuccess: () => {
       queryClient.invalidateQueries({

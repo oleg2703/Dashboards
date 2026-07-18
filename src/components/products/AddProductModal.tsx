@@ -33,10 +33,7 @@ export default function AddProductModal({
   const submit = (data: ProductFormData) => {
     onAdd({
       ...data,
-      status:
-        data.stock > 5
-          ? 'Active'
-          : 'Low Stock',
+      status: data.stock > 5 ? 'Active' : 'Low Stock',
       description: '',
     })
 
@@ -49,18 +46,11 @@ export default function AddProductModal({
       onClose={onClose}
       footer={
         <>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onClose}
-          >
+          <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
 
-          <Button
-            type="submit"
-            form="add-product-form"
-          >
+          <Button type="submit" form="add-product-form">
             Add Product
           </Button>
         </>
@@ -72,15 +62,10 @@ export default function AddProductModal({
         className="space-y-4"
       >
         <div>
-          <Input
-            {...register('name')}
-            placeholder="Product name"
-          />
+          <Input {...register('name')} placeholder="Product name" />
 
           {errors.name && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.name.message}
-            </p>
+            <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
           )}
         </div>
 
@@ -94,9 +79,7 @@ export default function AddProductModal({
           />
 
           {errors.price && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.price.message}
-            </p>
+            <p className="mt-1 text-sm text-red-500">{errors.price.message}</p>
           )}
         </div>
 
@@ -110,9 +93,7 @@ export default function AddProductModal({
           />
 
           {errors.stock && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.stock.message}
-            </p>
+            <p className="mt-1 text-sm text-red-500">{errors.stock.message}</p>
           )}
         </div>
       </form>

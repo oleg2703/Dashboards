@@ -85,15 +85,13 @@ export default function ThemeToggle() {
       hover:bg-(--surface-hover)
       "
     >
-     {
-  mode === 'auto' ? (
-    <Monitor size={18} />
-  ) : mode === 'dark' ? (
-    <Moon size={18} />
-  ) : (
-    <Sun size={18} />
-  )
-}
+      {mode === 'auto' ? (
+        <Monitor size={18} />
+      ) : mode === 'dark' ? (
+        <Moon size={18} />
+      ) : (
+        <Sun size={18} />
+      )}
     </button>
   )
 }

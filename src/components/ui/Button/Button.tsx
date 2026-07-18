@@ -1,7 +1,4 @@
-import type {
-  ButtonHTMLAttributes,
-  ReactNode,
-} from 'react'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
 
 import type { VariantProps } from 'class-variance-authority'
 
@@ -9,7 +6,8 @@ import { cn } from '#/lib/cn'
 import { buttonVariants } from './buttonVariants'
 
 interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   loading?: boolean
   leftIcon?: ReactNode

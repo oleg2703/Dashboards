@@ -6,8 +6,7 @@ export const useUpdateProduct = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (product: Product) =>
-      productsApi.update(product),
+    mutationFn: (product: Product) => productsApi.update(product),
 
     onSuccess: () => {
       queryClient.invalidateQueries({

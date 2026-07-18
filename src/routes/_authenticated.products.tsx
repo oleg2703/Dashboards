@@ -26,54 +26,39 @@ export const Route = createFileRoute('/_authenticated/products')({
 })
 
 function RouteComponent() {
-const createMutation = useCreateProduct()
-const updateMutation = useUpdateProduct()
-const deleteMutation = useDeleteProduct()
-const modal = useModal<Product>()
+  const createMutation = useCreateProduct()
+  const updateMutation = useUpdateProduct()
+  const deleteMutation = useDeleteProduct()
+  const modal = useModal<Product>()
 
- const {
-  data: products = [], isLoading ,isError, refetch} = useProducts()
+  const { data: products = [], isLoading, isError, refetch } = useProducts()
 
-  
- const table = useTable({
-  data: products,
+  const table = useTable({
+    data: products,
 
-  defaultSort: 'asc',
+    defaultSort: 'asc',
 
-  searchFn: (product, search) =>
-    product.name
-      .toLowerCase()
-      .includes(search.toLowerCase()),
+    searchFn: (product, search) =>
+      product.name.toLowerCase().includes(search.toLowerCase()),
 
-  filterFn: (product, filter) =>
-    filter === 'All'
-      ? true
-      : product.status === filter,
+    filterFn: (product, filter) =>
+      filter === 'All' ? true : product.status === filter,
 
-  sortFn: (a, b, order) =>
-    order === 'asc'
-      ? a.price - b.price
-      : b.price - a.price,
-})
-const crud = useCrud<
-  Product,
-  Omit<Product, 'id'>
->({
-  entityName: 'Product',
+    sortFn: (a, b, order) =>
+      order === 'asc' ? a.price - b.price : b.price - a.price,
+  })
+  const crud = useCrud<Product, Omit<Product, 'id'>>({
+    entityName: 'Product',
 
-  createMutation,
-  updateMutation,
-  deleteMutation,
+    createMutation,
+    updateMutation,
+    deleteMutation,
 
-  onCreateSuccess: modal.closeAdd,
-  onUpdateSuccess: modal.closeEdit,
-  onDeleteSuccess: modal.closeDelete,
-})
+    onCreateSuccess: modal.closeAdd,
+    onUpdateSuccess: modal.closeEdit,
+    onDeleteSuccess: modal.closeDelete,
+  })
 
-
-
-
-  
   return (
     <main className="flex h-screen w-full overflow-hidden">
       <Sidebar />
@@ -81,9 +66,7 @@ const crud = useCrud<
       <div className="w-full overflow-y-auto p-2">
         <Header />
 
-        <h1 className="text-2xl font-bold">
-          Products
-        </h1>
+        <h1 className="text-2xl font-bold">Products</h1>
         <TableToolbar
           search={table.search}
           onSearchChange={table.setSearch}
@@ -91,61 +74,44 @@ const crud = useCrud<
           onAdd={modal.openAdd}
           sortOrder={table.sortOrder}
           onSort={() =>
-            table.setSortOrder(
-              table.sortOrder === 'asc'
-                ? 'desc'
-                : 'asc'
-            )
+            table.setSortOrder(table.sortOrder === 'asc' ? 'desc' : 'asc')
           }
           filterValue={table.filter}
           onFilterChange={table.setFilter}
-          filterOptions={[
-            'All',
-            'Active',
-            'Low Stock',
-          ]}
+          filterOptions={['All', 'Active', 'Low Stock']}
         />
-       
-         
 
-        
-          {isLoading ? (
-            <TableSkeleton
-              rows={5}
-              columns={6}
+        {isLoading ? (
+          <TableSkeleton rows={5} columns={6} />
+        ) : isError ? (
+          <ErrorState
+            title="Failed to load products"
+            description="Please check your connection."
+            onRetry={refetch}
+          />
+        ) : table.data.length === 0 ? (
+          <EmptyState
+            title="No products found"
+            description="Try changing your search or filter."
+          />
+        ) : (
+          <>
+            <ProductsTable
+              products={table.paginatedData}
+              onView={modal.openView}
+              onEdit={modal.openEdit}
+              onDelete={modal.openDelete}
             />
-          ) : isError ? (
-            <ErrorState
-              title="Failed to load products"
-              description="Please check your connection."
-              onRetry={refetch}
-            />
-          ) : table.data.length === 0 ? (
-            <EmptyState
-              title="No products found"
-              description="Try changing your search or filter."
-            />
-          ) : (
-            <>
-              <ProductsTable
-                products={table.paginatedData}
-                onView={modal.openView}
-                onEdit={modal.openEdit}
-                onDelete={modal.openDelete}
-              />
 
-              <Pagination
-                currentPage={table.currentPage}
-                totalPages={table.totalPages}
-                onPageChange={table.setCurrentPage}
-              />
-            </>
-          )}
+            <Pagination
+              currentPage={table.currentPage}
+              totalPages={table.totalPages}
+              onPageChange={table.setCurrentPage}
+            />
+          </>
+        )}
       </div>
-      <ProductModal
-        product={modal.selected}
-        onClose={modal.closeView}
-      />
+      <ProductModal product={modal.selected} onClose={modal.closeView} />
 
       <EditProductModal
         product={modal.editing}
@@ -154,19 +120,16 @@ const crud = useCrud<
       />
 
       {modal.isAddOpen && (
-        <AddProductModal
-          onClose={modal.closeAdd}
-          onAdd={crud.handleCreate}
-        />
+        <AddProductModal onClose={modal.closeAdd} onAdd={crud.handleCreate} />
       )}
 
       {modal.deleting && (
-      <DeleteProductModal
-        product={modal.deleting}
-        onClose={modal.closeDelete}
-        onDelete={crud.handleDelete}
-      />
-    )}
+        <DeleteProductModal
+          product={modal.deleting}
+          onClose={modal.closeDelete}
+          onDelete={crud.handleDelete}
+        />
+      )}
     </main>
   )
 }

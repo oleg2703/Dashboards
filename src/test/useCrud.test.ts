@@ -45,10 +45,7 @@ describe('useCrud', () => {
     })
 
     expect(mutate).toHaveBeenCalledTimes(1)
-    expect(mutate).toHaveBeenCalledWith(
-      product,
-      expect.any(Object),
-    )
+    expect(mutate).toHaveBeenCalledWith(product, expect.any(Object))
   })
 
   it('calls update mutation', () => {
@@ -85,10 +82,7 @@ describe('useCrud', () => {
       result.current.handleUpdate(product)
     })
 
-    expect(mutate).toHaveBeenCalledWith(
-      product,
-      expect.any(Object),
-    )
+    expect(mutate).toHaveBeenCalledWith(product, expect.any(Object))
   })
 
   it('calls delete mutation', () => {
@@ -116,9 +110,6 @@ describe('useCrud', () => {
       result.current.handleDelete(1)
     })
 
-    expect(mutate).toHaveBeenCalledWith(
-      1,
-      expect.any(Object),
-    )
+    expect(mutate).toHaveBeenCalledWith(1, expect.any(Object))
   })
 })

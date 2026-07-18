@@ -3,12 +3,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import type { Order } from '#/types/order'
-import {
-  orderSchema
-  
-} from '#/validation/orders.schema'
-import type {OrderFormData} from '#/validation/orders.schema';
-
+import { orderSchema } from '#/validation/orders.schema'
+import type { OrderFormData } from '#/validation/orders.schema'
 
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
@@ -63,18 +59,11 @@ export default function EditOrderModal({
       onClose={onClose}
       footer={
         <>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onClose}
-          >
+          <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>
 
-          <Button
-            type="submit"
-            form="edit-order-form"
-          >
+          <Button type="submit" form="edit-order-form">
             Save
           </Button>
         </>
@@ -112,9 +101,7 @@ export default function EditOrderModal({
           />
 
           {errors.amount && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.amount.message}
-            </p>
+            <p className="mt-1 text-sm text-red-500">{errors.amount.message}</p>
           )}
         </div>
 
@@ -129,9 +116,7 @@ export default function EditOrderModal({
           </select>
 
           {errors.status && (
-            <p className="mt-1 text-sm text-red-500">
-              {errors.status.message}
-            </p>
+            <p className="mt-1 text-sm text-red-500">{errors.status.message}</p>
           )}
         </div>
       </form>

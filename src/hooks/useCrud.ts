@@ -36,7 +36,7 @@ export function useCrud<T, CreateDto = T>({
       onError: (error: any) => {
         toast.error(
           error?.response?.data?.message ??
-            `Failed to create ${entityName.toLowerCase()}`
+            `Failed to create ${entityName.toLowerCase()}`,
         )
       },
     })
@@ -52,7 +52,7 @@ export function useCrud<T, CreateDto = T>({
       onError: (error: any) => {
         toast.error(
           error?.response?.data?.message ??
-            `Failed to update ${entityName.toLowerCase()}`
+            `Failed to update ${entityName.toLowerCase()}`,
         )
       },
     })
@@ -68,7 +68,7 @@ export function useCrud<T, CreateDto = T>({
       onError: (error: any) => {
         toast.error(
           error?.response?.data?.message ??
-            `Failed to delete ${entityName.toLowerCase()}`
+            `Failed to delete ${entityName.toLowerCase()}`,
         )
       },
     })

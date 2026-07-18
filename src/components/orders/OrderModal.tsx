@@ -7,48 +7,44 @@ interface OrderModalProps {
   onClose: () => void
 }
 
-export default function OrderModal({
-  order,
-  onClose,
-}: OrderModalProps) {
+export default function OrderModal({ order, onClose }: OrderModalProps) {
   if (!order) return null
 
   return (
-    <Modal 
+    <Modal
       title="Order Details"
       onClose={onClose}
-      footer={<Button
+      footer={
+        <Button
           onClick={onClose}
           className="mt-6 w-full cursor-pointer"
           variant="outline"
         >
           Close
-        </Button>}
+        </Button>
+      }
     >
-        <div className="space-y-3">
-          <p>
-            <strong>ID:</strong> {order.id}
-          </p>
+      <div className="space-y-3">
+        <p>
+          <strong>ID:</strong> {order.id}
+        </p>
 
-          <p>
-            <strong>Customer ID:</strong>{' '}
-            {order.customerId}
-          </p>
+        <p>
+          <strong>Customer ID:</strong> {order.customerId}
+        </p>
 
-          <p>
-            <strong>Amount:</strong> $
-            {order.amount}
-          </p>
+        <p>
+          <strong>Amount:</strong> ${order.amount}
+        </p>
 
-          <p>
-            <strong>Status:</strong>{' '}
-            {order.status}
-          </p>
+        <p>
+          <strong>Status:</strong> {order.status}
+        </p>
 
-          <p>
-            <strong>Date:</strong> {order.date}
-          </p>
-        </div>
+        <p>
+          <strong>Date:</strong> {order.date}
+        </p>
+      </div>
     </Modal>
   )
 }

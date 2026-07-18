@@ -16,29 +16,24 @@ export default function DeleteCustomerModal({
   if (!customer) return null
 
   return (
-    <Modal 
-    title="Delete Customer"
-    onClose={onClose}
-    footer={  <>
-         <Button
-            variant="outline"
-            onClick={onClose}
-          >
+    <Modal
+      title="Delete Customer"
+      onClose={onClose}
+      footer={
+        <>
+          <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
 
-          <Button
-            variant="danger"
-            onClick={() =>onDelete(customer.id)}>
+          <Button variant="danger" onClick={() => onDelete(customer.id)}>
             Delete
           </Button>
-        </>}>
-     
-        <p>
-          Are you sure you want to delete{' '}
-          <strong>{customer.name}</strong>?
-        </p>
-
+        </>
+      }
+    >
+      <p>
+        Are you sure you want to delete <strong>{customer.name}</strong>?
+      </p>
     </Modal>
   )
 }

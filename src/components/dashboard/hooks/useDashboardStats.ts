@@ -16,15 +16,14 @@ export const useDashboardStats = () => {
 
     const totalRevenue = ordersData.reduce(
       (sum, order) => sum + order.amount,
-      0
+      0,
     )
 
     return {
       totalCustomers: customersData.length,
 
-      activeCustomers: customersData.filter(
-        (customer) => customer.isActive
-      ).length,
+      activeCustomers: customersData.filter((customer) => customer.isActive)
+        .length,
 
       totalProducts: productsData.length,
 
@@ -33,22 +32,18 @@ export const useDashboardStats = () => {
       totalRevenue,
 
       lowStockProducts: productsData.filter(
-        (product) => product.status === 'Low Stock'
+        (product) => product.status === 'Low Stock',
       ).length,
 
-      pendingOrders: ordersData.filter(
-        (order) => order.status === 'pending'
-      ).length,
+      pendingOrders: ordersData.filter((order) => order.status === 'pending')
+        .length,
 
       averageOrder:
         ordersData.length > 0
           ? Math.round(totalRevenue / ordersData.length)
           : 0,
 
-      isLoading:
-        customers.isLoading ||
-        products.isLoading ||
-        orders.isLoading,
+      isLoading: customers.isLoading || products.isLoading || orders.isLoading,
     }
   }, [
     customers.data,

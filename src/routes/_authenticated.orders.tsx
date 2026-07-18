@@ -28,49 +28,37 @@ export const Route = createFileRoute('/_authenticated/orders')({
 function RouteComponent() {
   const { data: orders = [], isLoading, isError, refetch } = useOrders()
 
- 
-
- 
-
   const createMutation = useCreateOrder()
   const updateMutation = useUpdateOrder()
   const deleteMutation = useDeleteOrder()
 
-const table = useTable({
-  data: orders,
+  const table = useTable({
+    data: orders,
 
-  defaultSort: 'desc',
+    defaultSort: 'desc',
 
-  searchFn: (order, search) =>
-    order.id.toString().includes(search) ||
-    order.customerId.toString().includes(search),
+    searchFn: (order, search) =>
+      order.id.toString().includes(search) ||
+      order.customerId.toString().includes(search),
 
-  filterFn: (order, filter) =>
-    filter === 'All'
-      ? true
-      : order.status === filter,
+    filterFn: (order, filter) =>
+      filter === 'All' ? true : order.status === filter,
 
-  sortFn: (a, b, order) =>
-    order === 'asc'
-      ? a.amount - b.amount
-      : b.amount - a.amount,
-})
-const modal = useModal<Order>()
-const crud = useCrud<
-  Order,
-  Omit<Order, 'id'>
->({
-  entityName: 'Order',
+    sortFn: (a, b, order) =>
+      order === 'asc' ? a.amount - b.amount : b.amount - a.amount,
+  })
+  const modal = useModal<Order>()
+  const crud = useCrud<Order, Omit<Order, 'id'>>({
+    entityName: 'Order',
 
-  createMutation,
-  updateMutation,
-  deleteMutation,
+    createMutation,
+    updateMutation,
+    deleteMutation,
 
-  onCreateSuccess: modal.closeAdd,
-  onUpdateSuccess: modal.closeEdit,
-  onDeleteSuccess: modal.closeDelete,
-})
-
+    onCreateSuccess: modal.closeAdd,
+    onUpdateSuccess: modal.closeEdit,
+    onDeleteSuccess: modal.closeDelete,
+  })
 
   return (
     <main className="flex h-screen w-full overflow-hidden">
@@ -79,7 +67,7 @@ const crud = useCrud<
       <div className="w-full overflow-y-auto p-2">
         <Header />
         <h1 className="text-2xl font-bold">Orders</h1>
-     <TableToolbar
+        <TableToolbar
           search={table.search}
           onSearchChange={table.setSearch}
           addLabel="Add Order"
@@ -88,56 +76,41 @@ const crud = useCrud<
           onSort={table.toggleSort}
           filterValue={table.filter}
           onFilterChange={table.setFilter}
-          filterOptions={[
-            'All',
-            'paid',
-            'pending',
-            'cancelled',
-          ]}
+          filterOptions={['All', 'paid', 'pending', 'cancelled']}
         />
-         {isLoading ? (
-                    <TableSkeleton
-                      rows={5}
-                      columns={6}
-                    />
-                  ) : isError ? (
-                    <ErrorState
-                      title="Failed to load products"
-                      description="Please check your connection."
-                      onRetry={refetch}
-                    />
-                  ) : table.data.length === 0 ? (
-                    <EmptyState
-                      title="No products found"
-                      description="Try changing your search or filter."
-                    />
-                  ) : (
-                  <>
-                  <OrdersTable
-                      orders={table.paginatedData}
-                      onView={modal.openView}
-                      onEdit={modal.openEdit}
-                    onDelete={modal.openDelete}
-                    />
-                    
-                    <Pagination
-                      currentPage={table.currentPage}
-                      totalPages={table.totalPages}
-                      onPageChange={table.setCurrentPage}
-                    />
+        {isLoading ? (
+          <TableSkeleton rows={5} columns={6} />
+        ) : isError ? (
+          <ErrorState
+            title="Failed to load products"
+            description="Please check your connection."
+            onRetry={refetch}
+          />
+        ) : table.data.length === 0 ? (
+          <EmptyState
+            title="No products found"
+            description="Try changing your search or filter."
+          />
+        ) : (
+          <>
+            <OrdersTable
+              orders={table.paginatedData}
+              onView={modal.openView}
+              onEdit={modal.openEdit}
+              onDelete={modal.openDelete}
+            />
 
-              </>
-                  )}
-        <OrderModal 
-          order={modal.selected}
-          onClose={modal.closeView}
-        />
+            <Pagination
+              currentPage={table.currentPage}
+              totalPages={table.totalPages}
+              onPageChange={table.setCurrentPage}
+            />
+          </>
+        )}
+        <OrderModal order={modal.selected} onClose={modal.closeView} />
 
         {modal.isAddOpen && (
-          <AddOrderModal
-            onClose={modal.closeAdd}
-            onAdd={crud.handleCreate}
-          />
+          <AddOrderModal onClose={modal.closeAdd} onAdd={crud.handleCreate} />
         )}
 
         {modal.editing && (

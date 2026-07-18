@@ -13,9 +13,7 @@ export const customersApi = {
     return data as Customer[]
   },
 
-  async getById(
-    id: number,
-  ): Promise<Customer | null> {
+  async getById(id: number): Promise<Customer | null> {
     const { data, error } = await supabase
       .from('customers')
       .select('*')
@@ -27,9 +25,7 @@ export const customersApi = {
     return data as Customer | null
   },
 
-  async create(
-    customer: Omit<Customer, 'id'>,
-  ): Promise<Customer> {
+  async create(customer: Omit<Customer, 'id'>): Promise<Customer> {
     const { data, error } = await supabase
       .from('customers')
       .insert(customer)
@@ -41,9 +37,7 @@ export const customersApi = {
     return data as Customer
   },
 
-  async update(
-    customer: Customer,
-  ): Promise<Customer> {
+  async update(customer: Customer): Promise<Customer> {
     const { data, error } = await supabase
       .from('customers')
       .update(customer)
@@ -56,13 +50,8 @@ export const customersApi = {
     return data as Customer
   },
 
-  async delete(
-    id: number,
-  ): Promise<void> {
-    const { error } = await supabase
-      .from('customers')
-      .delete()
-      .eq('id', id)
+  async delete(id: number): Promise<void> {
+    const { error } = await supabase.from('customers').delete().eq('id', id)
 
     if (error) throw error
   },

@@ -1,4 +1,4 @@
-import { Plus, Search } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { Button } from '../ui/Button'
 import { SearchInput } from '../ui/SearchInput'
 
@@ -30,13 +30,10 @@ export default function TableToolbar({
 }: TableToolbarProps) {
   return (
     <div className="my-4 flex flex-wrap items-center gap-4">
-
       {addLabel && onAdd && (
-      <Button
-        onClick={onAdd} 
-        leftIcon={<Plus size={18}/>}>
-        {addLabel}
-    </Button>
+        <Button onClick={onAdd} leftIcon={<Plus size={18} />}>
+          {addLabel}
+        </Button>
       )}
 
       {onSort && (
@@ -47,30 +44,23 @@ export default function TableToolbar({
           {sortOrder === 'asc' ? '↑' : '↓'}
         </button>
       )}
-        {search !== undefined && onSearchChange && (
-          <SearchInput
-            value={search}
-            placeholder="Search..."
-            onChange={(e) =>
-              onSearchChange(e.target.value)
-            }
-            onClear={() => onSearchChange('')}
-          />
-        )}
+      {search !== undefined && onSearchChange && (
+        <SearchInput
+          value={search}
+          placeholder="Search..."
+          onChange={(e) => onSearchChange(e.target.value)}
+          onClear={() => onSearchChange('')}
+        />
+      )}
 
       {filterOptions && onFilterChange && (
         <select
           value={filterValue}
-          onChange={(e) =>
-            onFilterChange(e.target.value)
-          }
+          onChange={(e) => onFilterChange(e.target.value)}
           className="rounded-xl border border-(--border) bg-(--card-bg) px-4 py-2"
         >
           {filterOptions.map((option) => (
-            <option
-              key={option}
-              value={option}
-            >
+            <option key={option} value={option}>
               {option}
             </option>
           ))}

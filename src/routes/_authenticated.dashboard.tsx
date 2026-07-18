@@ -13,12 +13,11 @@ export const Route = createFileRoute('/_authenticated/dashboard')({
 })
 
 function DashboardPage() {
-  
- const stats = useDashboardStats()
+  const stats = useDashboardStats()
 
-if (stats.isLoading) {
-  return <div>Loading...</div>
-}
+  if (stats.isLoading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <main className="flex h-screen w-full overflow-hidden">
@@ -31,7 +30,7 @@ if (stats.isLoading) {
           </div>
 
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
-          <StatCard
+            <StatCard
               title="Customers"
               value={stats.totalCustomers}
               change={`${stats.activeCustomers} active`}
@@ -54,41 +53,32 @@ if (stats.isLoading) {
               value={`$${stats.totalRevenue.toLocaleString()}`}
               change="Total earnings"
             />
-
           </div>
 
-              <div className="mt-3 rounded-2xl border border-(--border) bg-(--card-bg) p-3">
-        <h2 className="mb-4 text-md font-semibold">
-          Revenue Overview
-        </h2>
+          <div className="mt-3 rounded-2xl border border-(--border) bg-(--card-bg) p-3">
+            <h2 className="mb-4 text-md font-semibold">Revenue Overview</h2>
 
-        <RevenueChart />
-      </div>
-      <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-2 xl:grid-cols-2">
-        <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-3">
-          <h2 className="mb-1 text-lg font-semibold">
-            Order Status
-          </h2>
+            <RevenueChart />
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-2 xl:grid-cols-2">
+            <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-3">
+              <h2 className="mb-1 text-lg font-semibold">Order Status</h2>
 
-          <OrdersPieChart  />
-        </div>
+              <OrdersPieChart />
+            </div>
 
-        <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-3">
-          <h2 className="mb-1 text-lg font-semibold">
-            Top Products
-          </h2>
+            <div className="rounded-2xl border border-(--border) bg-(--card-bg) p-3">
+              <h2 className="mb-1 text-lg font-semibold">Top Products</h2>
 
-          <TopProducts />
-        </div>
-      </div>
+              <TopProducts />
+            </div>
+          </div>
 
-      <div className="mt-3 rounded-2xl border border-(--border) bg-(--card-bg) p-3">
-        <h2 className="mb-2 text-lg font-semibold">
-          Recent Orders
-        </h2>
+          <div className="mt-3 rounded-2xl border border-(--border) bg-(--card-bg) p-3">
+            <h2 className="mb-2 text-lg font-semibold">Recent Orders</h2>
 
-        <RecentOrdersTable />
-      </div>
+            <RecentOrdersTable />
+          </div>
         </div>
       </Dashboard>
     </main>

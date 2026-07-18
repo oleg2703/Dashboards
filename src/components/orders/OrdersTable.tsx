@@ -30,10 +30,7 @@ export default function OrdersTable({
 
         <tbody>
           {orders.map((order) => (
-            <tr
-              key={order.id}
-              className="border-b border-(--border)"
-            >
+            <tr key={order.id} className="border-b border-(--border)">
               <td className="p-4">{order.id}</td>
               <td className="p-4">{order.customerId}</td>
               <td className="p-4">${order.amount}</td>
@@ -51,10 +48,7 @@ export default function OrdersTable({
                   </button>
 
                   <button onClick={() => onDelete(order)}>
-                    <Trash2
-                      size={18}
-                      className="text-red-500"
-                    />
+                    <Trash2 size={18} className="text-red-500" />
                   </button>
                 </div>
               </td>

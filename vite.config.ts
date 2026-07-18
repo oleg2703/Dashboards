@@ -14,14 +14,9 @@ export default defineConfig({
 
   server: {
     watch: {
-      ignored: [
-        '**/db.json',
-        '**/.nitro/**',
-        '**/.vinxi/**',
-      ],
+      ignored: ['**/db.json', '**/.nitro/**', '**/.vinxi/**'],
     },
   },
-
 
   plugins: [
     devtools(),

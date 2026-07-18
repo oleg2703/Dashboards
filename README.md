@@ -5,6 +5,7 @@ Modern Admin Dashboard built with **React**, **TypeScript**, **TanStack Router**
 The application allows managing products, customers, and orders through a clean dashboard interface with authentication, CRUD operations, search, filtering, sorting, pagination, reusable UI components, and charts.
 
 ---
+
 Live demo -https://dashboards-beta-plum.vercel.app/dashboard
 
 ## 🔐 Demo Credentials
@@ -22,6 +23,7 @@ admin123
 ```
 
 ---
+
 ## 📸 Screenshots
 
 ### Login
@@ -210,8 +212,6 @@ npm run test
 ```
 
 ---
-
-
 
 ## 📈 Project Highlights
 

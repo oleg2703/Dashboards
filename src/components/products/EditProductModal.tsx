@@ -45,10 +45,7 @@ export default function EditProductModal({
     onSave({
       ...product,
       ...data,
-      status:
-        data.stock > 5
-          ? 'Active'
-          : 'Low Stock',
+      status: data.stock > 5 ? 'Active' : 'Low Stock',
     })
 
     onClose()
@@ -59,77 +56,58 @@ export default function EditProductModal({
       title="Edit Product"
       onClose={onClose}
       footer={
-          <>
-            <Button
-              variant="outline"
-              onClick={onClose}
-            >
-              Cancel
-            </Button>
+        <>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
 
-            <Button type="submit"
-            form='edit-product-form'>
-              Save
-            </Button>
-          </>
+          <Button type="submit" form="edit-product-form">
+            Save
+          </Button>
+        </>
       }
-      >
-    
+    >
       <form
-       id="edit-product-form"
-          onSubmit={handleSubmit(handleSave)}
-          className="space-y-4"
-        >
-          <div>
-            <Input
-              {...register('name')}
-              placeholder="Product Name"
-             
-            />
+        id="edit-product-form"
+        onSubmit={handleSubmit(handleSave)}
+        className="space-y-4"
+      >
+        <div>
+          <Input {...register('name')} placeholder="Product Name" />
 
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.name.message}
-              </p>
-            )}
-          </div>
+          {errors.name && (
+            <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+          )}
+        </div>
 
-          <div>
-            <Input
-              type="number"
-              {...register('price', {
-                valueAsNumber: true,
-              })}
-              placeholder="Price"
-              
-            />
+        <div>
+          <Input
+            type="number"
+            {...register('price', {
+              valueAsNumber: true,
+            })}
+            placeholder="Price"
+          />
 
-            {errors.price && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.price.message}
-              </p>
-            )}
-          </div>
+          {errors.price && (
+            <p className="mt-1 text-sm text-red-500">{errors.price.message}</p>
+          )}
+        </div>
 
-          <div>
-            <Input
-              type="number"
-              {...register('stock', {
-                valueAsNumber: true,
-              })}
-              placeholder="Stock"
-              
-            />
+        <div>
+          <Input
+            type="number"
+            {...register('stock', {
+              valueAsNumber: true,
+            })}
+            placeholder="Stock"
+          />
 
-            {errors.stock && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.stock.message}
-              </p>
-            )}
-          </div>
-
-         
-        </form>
+          {errors.stock && (
+            <p className="mt-1 text-sm text-red-500">{errors.stock.message}</p>
+          )}
+        </div>
+      </form>
     </Modal>
   )
 }

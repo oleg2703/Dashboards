@@ -25,111 +25,94 @@ export const Route = createFileRoute('/_authenticated/customers')({
   component: RouteComponent,
 })
 
-
 function RouteComponent() {
-  
-  const {data = [],isFetching ,isError,refetch} = useCustomers()
+  const { data = [], isFetching, isError, refetch } = useCustomers()
 
   const createMutation = useCreateCustomer()
   const updateMutation = useUpdateCustomer()
   const deleteMutation = useDeleteCustomer()
   const modal = useModal<Customer>()
-const crud = useCrud<
-  Customer,
-  Omit<Customer, 'id'>
->({
-  entityName: 'Customer',
+  const crud = useCrud<Customer, Omit<Customer, 'id'>>({
+    entityName: 'Customer',
 
-  createMutation,
-  updateMutation,
-  deleteMutation,
+    createMutation,
+    updateMutation,
+    deleteMutation,
 
-  onCreateSuccess: modal.closeAdd,
-  onUpdateSuccess: modal.closeEdit,
-  onDeleteSuccess: modal.closeDelete,
-})
+    onCreateSuccess: modal.closeAdd,
+    onUpdateSuccess: modal.closeEdit,
+    onDeleteSuccess: modal.closeDelete,
+  })
 
+  const table = useTable({
+    data,
 
-
-const table = useTable({
-  data,
-
-  searchFn: (customer, search) =>
-    customer.name
-      .toLowerCase()
-      .includes(search.toLowerCase()) ||
-    customer.email
-      .toLowerCase()
-      .includes(search.toLowerCase()),
-})
+    searchFn: (customer, search) =>
+      customer.name.toLowerCase().includes(search.toLowerCase()) ||
+      customer.email.toLowerCase().includes(search.toLowerCase()),
+  })
 
   return (
     <>
-    <main className="flex h-screen w-full overflow-hidden">
-       <Sidebar />
+      <main className="flex h-screen w-full overflow-hidden">
+        <Sidebar />
         <div className="w-full overflow-y-auto p-2">
-    <Header />
-        <h1 className="text-2xl font-bold">
-      Customers
-    </h1>
+          <Header />
+          <h1 className="text-2xl font-bold">Customers</h1>
           <TableToolbar
-          search={table.search}
-          onSearchChange={table.setSearch}
-          addLabel="Add Customer"
-          onAdd={modal.openAdd}
-        />
+            search={table.search}
+            onSearchChange={table.setSearch}
+            addLabel="Add Customer"
+            onAdd={modal.openAdd}
+          />
 
-        {isFetching ? (
-                            <TableSkeleton
-                              rows={5}
-                              columns={6}
-                            />
-                          ) : isError ? (
-                            <ErrorState
-                              title="Failed to load products"
-                              description="Please check your connection."
-                              onRetry={refetch}
-                            />
-                          ) : table.data.length === 0 ? (
-                            <EmptyState
-                              title="No products found"
-                              description="Try changing your search or filter."
-                            />
-                          ) : (
-                      <>
-                          <CustomersTable
-                              customers={table.paginatedData}
-                                onView={modal.openView}
-                                onEdit={modal.openEdit}
-                                onDelete={modal.openDelete}
-                              />
-                            <Pagination
-                                currentPage={table.currentPage}
-                                totalPages={table.totalPages}
-                                onPageChange={table.setCurrentPage}
-                              />
-                        </>
-                          )}
+          {isFetching ? (
+            <TableSkeleton rows={5} columns={6} />
+          ) : isError ? (
+            <ErrorState
+              title="Failed to load products"
+              description="Please check your connection."
+              onRetry={refetch}
+            />
+          ) : table.data.length === 0 ? (
+            <EmptyState
+              title="No products found"
+              description="Try changing your search or filter."
+            />
+          ) : (
+            <>
+              <CustomersTable
+                customers={table.paginatedData}
+                onView={modal.openView}
+                onEdit={modal.openEdit}
+                onDelete={modal.openDelete}
+              />
+              <Pagination
+                currentPage={table.currentPage}
+                totalPages={table.totalPages}
+                onPageChange={table.setCurrentPage}
+              />
+            </>
+          )}
         </div>
-        <CustomerModal
-         customer={modal.selected}
-         onClose={modal.closeView}/>
+        <CustomerModal customer={modal.selected} onClose={modal.closeView} />
         <EditCustomerModal
-        customer={modal.editing}
-        onClose={modal.closeEdit}
-        onSave={crud.handleUpdate}/>
+          customer={modal.editing}
+          onClose={modal.closeEdit}
+          onSave={crud.handleUpdate}
+        />
         <DeleteCustomerModal
-        customer={modal.deleting}
-        onClose={modal.closeDelete}
-        onDelete={crud.handleDelete}/>
+          customer={modal.deleting}
+          onClose={modal.closeDelete}
+          onDelete={crud.handleDelete}
+        />
         {modal.isAddOpen && (
-        <AddCustomerModal
-        onClose={modal.closeAdd} 
-        onAdd={crud.handleCreate}/>
+          <AddCustomerModal
+            onClose={modal.closeAdd}
+            onAdd={crud.handleCreate}
+          />
         )}
-    </main>
-   
+      </main>
     </>
-    
   )
 }

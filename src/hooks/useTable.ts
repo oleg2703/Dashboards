@@ -5,21 +5,11 @@ interface UseTableProps<T> {
   data: T[]
   itemsPerPage?: number
 
-  searchFn?: (
-    item: T,
-    search: string
-  ) => boolean
+  searchFn?: (item: T, search: string) => boolean
 
-  filterFn?: (
-    item: T,
-    filter: string
-  ) => boolean
+  filterFn?: (item: T, filter: string) => boolean
 
-  sortFn?: (
-    a: T,
-    b: T,
-    order: 'asc' | 'desc'
-  ) => number
+  sortFn?: (a: T, b: T, order: 'asc' | 'desc') => number
 
   defaultFilter?: string
   defaultSort?: 'asc' | 'desc'
@@ -36,88 +26,61 @@ export function useTable<T>({
 }: UseTableProps<T>) {
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 300)
-  const [filter, setFilter] =
-    useState(defaultFilter)
+  const [filter, setFilter] = useState(defaultFilter)
 
- const [sortOrder, setSortOrder] =
-  useState<'asc' | 'desc'>(defaultSort)
-    const toggleSort = () => {
-  setSortOrder((prev) =>
-    prev === 'asc' ? 'desc' : 'asc'
-  )
-}
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(defaultSort)
+  const toggleSort = () => {
+    setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+  }
 
-  const [currentPage, setCurrentPage] =
-    useState(1)
+  const [currentPage, setCurrentPage] = useState(1)
 
- useEffect(() => {
-  setCurrentPage(1)
-}, [debouncedSearch, filter])
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [debouncedSearch, filter])
 
   const processedData = useMemo(() => {
     let result = [...data]
 
     if (searchFn) {
-        result = result.filter((item) =>
-          searchFn(item, debouncedSearch)
-        )
-      }
+      result = result.filter((item) => searchFn(item, debouncedSearch))
+    }
 
     if (filterFn) {
-      result = result.filter((item) =>
-        filterFn(item, filter)
-      )
+      result = result.filter((item) => filterFn(item, filter))
     }
 
     if (sortFn) {
-      result.sort((a, b) =>
-        sortFn(a, b, sortOrder)
-      )
+      result.sort((a, b) => sortFn(a, b, sortOrder))
     }
 
     return result
-  }, [
-  data,
-  debouncedSearch,
-  filter,
-  sortOrder,
-  searchFn,
-  filterFn,
-  sortFn,
-])
+  }, [data, debouncedSearch, filter, sortOrder, searchFn, filterFn, sortFn])
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(
-      processedData.length /
-        itemsPerPage
-    )
+  const totalPages = Math.max(1, Math.ceil(processedData.length / itemsPerPage))
+
+  const paginatedData = processedData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
   )
 
-  const paginatedData =
-    processedData.slice(
-      (currentPage - 1) *
-        itemsPerPage,
-      currentPage * itemsPerPage
-    )
-
   return {
-  data: processedData,
-  paginatedData,
+    data: processedData,
+    paginatedData,
 
-  search,
-  setSearch,
+    search,
+    setSearch,
 
-  filter,
-  setFilter,
+    filter,
+    setFilter,
 
-  sortOrder,
-  setSortOrder,
-  toggleSort,
+    sortOrder,
+    setSortOrder,
+    toggleSort,
 
-  currentPage,
-  setCurrentPage,
+    currentPage,
+    setCurrentPage,
 
-  totalPages,
-}
+    totalPages,
+  }
 }

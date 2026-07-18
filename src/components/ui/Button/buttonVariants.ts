@@ -16,20 +16,15 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          'bg-blue-600 text-white hover:bg-blue-700',
+        default: 'bg-blue-600 text-white hover:bg-blue-700',
 
-        outline:
-          'border border-border bg-transparent hover:bg-muted',
+        outline: 'border border-border bg-transparent hover:bg-muted',
 
-        secondary:
-          'bg-muted hover:bg-muted/80',
+        secondary: 'bg-muted hover:bg-muted/80',
 
-        danger:
-          'bg-red-600 text-white hover:bg-red-700',
+        danger: 'bg-red-600 text-white hover:bg-red-700',
 
-        ghost:
-          'hover:bg-muted',
+        ghost: 'hover:bg-muted',
       },
 
       size: {

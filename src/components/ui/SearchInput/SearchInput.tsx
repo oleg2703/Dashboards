@@ -3,8 +3,10 @@ import type { InputHTMLAttributes } from 'react'
 
 import { Input } from '../Input'
 
-interface SearchInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+interface SearchInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type'
+> {
   onClear?: () => void
 }
 

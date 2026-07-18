@@ -26,16 +26,10 @@ export default function AuthProvider({ children }: Props) {
   const login = async (email: string, password: string) => {
     await new Promise((resolve) => setTimeout(resolve, 500))
 
-    if (
-      email === fakeUser.email &&
-      password === fakePassword
-    ) {
+    if (email === fakeUser.email && password === fakePassword) {
       setUser(fakeUser)
 
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(fakeUser),
-      )
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(fakeUser))
 
       return true
     }
@@ -58,9 +52,5 @@ export default function AuthProvider({ children }: Props) {
     [user, loading],
   )
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

@@ -4,11 +4,7 @@ export default function RecentOrdersTable() {
   const { data: orders = [] } = useOrders()
 
   const recentOrders = [...orders]
-    .sort(
-      (a, b) =>
-        new Date(b.date).getTime() -
-        new Date(a.date).getTime()
-    )
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 5)
 
   return (
@@ -16,34 +12,19 @@ export default function RecentOrdersTable() {
       <table className="w-full">
         <thead>
           <tr className="border-b border-(--border)">
-            <th className="px-3 py-2 text-left">
-              Order ID
-            </th>
-            <th className="px-3 py-2 text-left">
-              Customer ID
-            </th>
-            <th className="px-3 py-2 text-left">
-              Status
-            </th>
-            <th className="px-3 py-2 text-right">
-              Amount
-            </th>
+            <th className="px-3 py-2 text-left">Order ID</th>
+            <th className="px-3 py-2 text-left">Customer ID</th>
+            <th className="px-3 py-2 text-left">Status</th>
+            <th className="px-3 py-2 text-right">Amount</th>
           </tr>
         </thead>
 
         <tbody>
           {recentOrders.map((order) => (
-            <tr
-              key={order.id}
-              className="border-b border-(--border)"
-            >
-              <td className="px-3 py-2">
-                #{order.id}
-              </td>
+            <tr key={order.id} className="border-b border-(--border)">
+              <td className="px-3 py-2">#{order.id}</td>
 
-              <td className="px-3 py-2">
-                {order.customerId}
-              </td>
+              <td className="px-3 py-2">{order.customerId}</td>
 
               <td className="px-3 py-2">
                 <span
@@ -60,9 +41,7 @@ export default function RecentOrdersTable() {
                 </span>
               </td>
 
-              <td className="px-3 py-2 text-right">
-                ${order.amount}
-              </td>
+              <td className="px-3 py-2 text-right">${order.amount}</td>
             </tr>
           ))}
         </tbody>

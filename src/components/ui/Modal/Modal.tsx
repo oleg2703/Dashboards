@@ -1,4 +1,4 @@
-import { useEffect} from 'react'
+import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
@@ -27,39 +27,34 @@ export function Modal({
   size = 'md',
 }: ModalProps) {
   useEffect(() => {
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose()
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
+      }
     }
-  }
 
-  document.body.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
 
-  window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown)
 
-  return () => {
-    document.body.style.overflow = ''
-    window.removeEventListener(
-      'keydown',
-      handleKeyDown,
-    )
-  }
-}, [onClose])
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [onClose])
 
   return createPortal(
     <div
-          data-testid="modal-backdrop"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-          onClick={onClose}
-        >
+      data-testid="modal-backdrop"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      onClick={onClose}
+    >
       <div
         className={`w-full rounded-xl bg-(--card-bg) shadow-xl ${sizes[size]}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-(--border) p-5">
-          <h2 className="text-xl font-semibold">
-            {title}
-          </h2>
+          <h2 className="text-xl font-semibold">{title}</h2>
 
           <Button
             variant="ghost"
@@ -71,9 +66,7 @@ export function Modal({
           </Button>
         </div>
 
-        <div className="p-5">
-          {children}
-        </div>
+        <div className="p-5">{children}</div>
 
         {footer && (
           <div className="flex justify-end gap-3 border-t border-(--border) p-5">

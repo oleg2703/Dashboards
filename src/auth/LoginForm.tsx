@@ -2,13 +2,12 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
 
-import  {loginSchema} from '#/validation/login.schema'
-import type {LoginFormData} from '#/validation/login.schema'
+import { loginSchema } from '#/validation/login.schema'
+import type { LoginFormData } from '#/validation/login.schema'
 import { useAuth } from '#/auth/useAuth'
 import { toast } from 'react-toastify'
 import { Button } from '#/components/ui/Button'
 import { Input } from '#/components/ui/Input'
-
 
 export default function LoginForm() {
   const { login } = useAuth()
@@ -39,23 +38,14 @@ export default function LoginForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div>
         <label>Email</label>
 
-       <Input
-        type="email"
-        placeholder="Email"
-        {...register('email')}
-      />
+        <Input type="email" placeholder="Email" {...register('email')} />
 
         {errors.email && (
-          <p className="mt-1 text-sm text-red-500">
-            {errors.email.message}
-          </p>
+          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
         )}
       </div>
 
@@ -63,23 +53,17 @@ export default function LoginForm() {
         <label>Password</label>
 
         <Input
-        type="password"
-        placeholder="Password"
-        {...register('password')}
-      />
+          type="password"
+          placeholder="Password"
+          {...register('password')}
+        />
 
         {errors.password && (
-          <p className="mt-1 text-sm text-red-500">
-            {errors.password.message}
-          </p>
+          <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
         )}
       </div>
 
-      <Button
-        type="submit"
-        loading={isSubmitting}
-        className="w-full"
-      >
+      <Button type="submit" loading={isSubmitting} className="w-full">
         Sign In
       </Button>
     </form>

@@ -9,23 +9,11 @@ import {
 
 import { Bar } from 'react-chartjs-2'
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend
-)
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend)
 
 export default function TopProducts() {
   const data = {
-    labels: [
-      'Pizza',
-      'Burger',
-      'Caesar Salad',
-      'Pasta',
-      'Steak',
-    ],
+    labels: ['Pizza', 'Burger', 'Caesar Salad', 'Pasta', 'Steak'],
     datasets: [
       {
         label: 'Sales',
@@ -51,10 +39,7 @@ export default function TopProducts() {
 
   return (
     <div className="h-300px">
-      <Bar
-        data={data}
-        options={options}
-      />
+      <Bar data={data} options={options} />
     </div>
   )
 }

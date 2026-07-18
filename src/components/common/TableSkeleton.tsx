@@ -13,10 +13,7 @@ export default function TableSkeleton({
         <thead>
           <tr>
             {Array.from({ length: columns }).map((_, i) => (
-              <th
-                key={i}
-                className="border-b border-(--border) p-4"
-              >
+              <th key={i} className="border-b border-(--border) p-4">
                 <div className="h-4 w-20 animate-pulse rounded bg-gray-300 dark:bg-gray-700" />
               </th>
             ))}
@@ -27,10 +24,7 @@ export default function TableSkeleton({
           {Array.from({ length: rows }).map((_, row) => (
             <tr key={row}>
               {Array.from({ length: columns }).map((_, col) => (
-                <td
-                  key={col}
-                  className="border-b border-(--border) p-4"
-                >
+                <td key={col} className="border-b border-(--border) p-4">
                   <div className="h-4 w-full animate-pulse rounded bg-gray-300 dark:bg-gray-700" />
                 </td>
               ))}

@@ -12,7 +12,7 @@ export default function CustomersTable({
   customers,
   onView,
   onEdit,
-  onDelete
+  onDelete,
 }: CustomersTableProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-(--border)">
@@ -30,25 +30,14 @@ export default function CustomersTable({
 
         <tbody>
           {customers.map((customer) => (
-            <tr
-              key={customer.id}
-              className="border-b border-(--border)"
-            >
-              <td className="p-4">
-                {customer.name}
-              </td>
+            <tr key={customer.id} className="border-b border-(--border)">
+              <td className="p-4">{customer.name}</td>
 
-              <td className="p-4">
-                {customer.email}
-              </td>
+              <td className="p-4">{customer.email}</td>
 
-              <td className="p-4">
-                {customer.ordersCount}
-              </td>
+              <td className="p-4">{customer.ordersCount}</td>
 
-              <td className="p-4">
-                ${customer.totalSpent}
-              </td>
+              <td className="p-4">${customer.totalSpent}</td>
 
               <td className="p-4">
                 <span
@@ -58,38 +47,33 @@ export default function CustomersTable({
                       : 'bg-red-500/20 text-red-400'
                   }`}
                 >
-                  {customer.isActive
-                    ? 'Active'
-                    : 'Inactive'}
+                  {customer.isActive ? 'Active' : 'Inactive'}
                 </span>
               </td>
               <td className="p-4">
                 <div className="flex gap-3">
-                    <button
+                  <button
                     onClick={() => onView(customer)}
                     className="rounded p-1 hover:bg-(--surface-hover)"
-                    >
+                  >
                     <Eye size={18} />
-                    </button>
+                  </button>
 
-                    <button
+                  <button
                     onClick={() => onEdit(customer)}
                     className="rounded p-1 hover:bg-(--surface-hover)"
-                    >
+                  >
                     <Pencil size={18} />
-                    </button>
+                  </button>
 
-                    <button
+                  <button
                     onClick={() => onDelete(customer)}
                     className="rounded p-1 hover:bg-red-500/10"
-                    >
-                    <Trash2
-                        size={18}
-                        className="text-red-500"
-                    />
-                    </button>
+                  >
+                    <Trash2 size={18} className="text-red-500" />
+                  </button>
                 </div>
-                </td>
+              </td>
             </tr>
           ))}
         </tbody>

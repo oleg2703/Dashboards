@@ -13,9 +13,7 @@ export const ordersApi = {
     return data as Order[]
   },
 
-  async getById(
-    id: number,
-  ): Promise<Order | null> {
+  async getById(id: number): Promise<Order | null> {
     const { data, error } = await supabase
       .from('orders')
       .select('*')
@@ -27,9 +25,7 @@ export const ordersApi = {
     return data as Order | null
   },
 
-  async create(
-    order: Omit<Order, 'id'>,
-  ): Promise<Order> {
+  async create(order: Omit<Order, 'id'>): Promise<Order> {
     const { data, error } = await supabase
       .from('orders')
       .insert(order)
@@ -41,9 +37,7 @@ export const ordersApi = {
     return data as Order
   },
 
-  async update(
-    order: Order,
-  ): Promise<Order> {
+  async update(order: Order): Promise<Order> {
     const { data, error } = await supabase
       .from('orders')
       .update(order)
@@ -56,13 +50,8 @@ export const ordersApi = {
     return data as Order
   },
 
-  async delete(
-    id: number,
-  ): Promise<void> {
-    const { error } = await supabase
-      .from('orders')
-      .delete()
-      .eq('id', id)
+  async delete(id: number): Promise<void> {
+    const { error } = await supabase.from('orders').delete().eq('id', id)
 
     if (error) throw error
   },

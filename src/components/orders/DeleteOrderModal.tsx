@@ -20,27 +20,18 @@ export default function DeleteOrderModal({
       title="Delete Order"
       onClose={onClose}
       footer={
-        < >
-          <button
-            onClick={onClose}
-            className="rounded-xl border px-4 py-2"
-          >
+        <>
+          <button onClick={onClose} className="rounded-xl border px-4 py-2">
             Cancel
           </button>
 
-          <Button
-            onClick={() =>onDelete(order.id)}
-            variant="danger">
+          <Button onClick={() => onDelete(order.id)} variant="danger">
             Delete
           </Button>
         </>
       }
     >
-        <p>
-          Are you sure you want to delete order
-          #{order.id}?
-        </p>
-
+      <p>Are you sure you want to delete order #{order.id}?</p>
     </Modal>
   )
 }

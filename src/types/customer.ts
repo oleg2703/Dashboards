@@ -1,7 +1,7 @@
-import type { ReactNode } from "react"
+import type { ReactNode } from 'react'
 
 export type Customer = {
-  ordersCount: ReactNode
+  ordersCount: number
   id: number
   name: string
   email: string
