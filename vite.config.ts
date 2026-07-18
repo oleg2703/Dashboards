@@ -5,7 +5,6 @@ import { devtools } from '@tanstack/devtools-vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { nitro } from 'nitro/vite'
 
 export default defineConfig({
   resolve: {
@@ -14,19 +13,9 @@ export default defineConfig({
 
   server: {
     watch: {
-      ignored: ['**/db.json', '**/.nitro/**', '**/.vinxi/**'],
+      ignored: ['**/db.json', '**/.vinxi/**'],
     },
   },
 
-  plugins: [
-    devtools(),
-    nitro({
-      rollupConfig: {
-        external: [/^@sentry\//],
-      },
-    }),
-    tailwindcss(),
-    tanstackStart(),
-    viteReact(),
-  ],
+  plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
 })

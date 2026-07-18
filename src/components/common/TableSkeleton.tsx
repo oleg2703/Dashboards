@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 interface TableSkeletonProps {
   rows?: number
   columns?: number
