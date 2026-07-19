@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
@@ -10,7 +11,8 @@ import { Button } from '#/components/ui/Button'
 import { Input } from '#/components/ui/Input'
 
 export default function LoginForm() {
-  const { login } = useAuth()
+  const [isRegistering, setIsRegistering] = useState(false)
+  const { login, register: registerUser } = useAuth()
 
   const navigate = useNavigate()
 
@@ -23,10 +25,20 @@ export default function LoginForm() {
   })
 
   const onSubmit = async (data: LoginFormData) => {
-    const success = await login(data.email, data.password)
+    const error = isRegistering
+      ? await registerUser(data.email, data.password)
+      : await login(data.email, data.password)
 
-    if (!success) {
-      toast.error('Invalid email or password')
+    if (error) {
+      toast.error(error)
+      return
+    }
+
+    if (isRegistering) {
+      toast.success(
+        'Account created. Check your email to confirm your account.',
+      )
+      setIsRegistering(false)
       return
     }
 
@@ -64,8 +76,18 @@ export default function LoginForm() {
       </div>
 
       <Button type="submit" loading={isSubmitting} className="w-full">
-        Sign In
+        {isRegistering ? 'Create account' : 'Sign In'}
       </Button>
+
+      <button
+        type="button"
+        className="w-full text-sm text-primary underline"
+        onClick={() => setIsRegistering((current) => !current)}
+      >
+        {isRegistering
+          ? 'Already have an account? Sign in'
+          : 'New here? Create an account'}
+      </button>
     </form>
   )
 }

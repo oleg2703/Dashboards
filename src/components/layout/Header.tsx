@@ -8,12 +8,15 @@ export default function Header() {
 
   const navigate = useNavigate()
 
-  const handleLogout = () => {
-    logout()
-
-    navigate({
-      to: '/login',
-    })
+  const handleLogout = async () => {
+    try {
+      await logout()
+      navigate({
+        to: '/login',
+      })
+    } catch {
+      // Keep the user on the current page if their Supabase session cannot be ended.
+    }
   }
   return (
     <header className="w-full flex items-center justify-between border-b bg-background ">

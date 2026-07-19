@@ -19,7 +19,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`sidebar h-screen border-r p-4 mr-4 flex flex-col justify-between transition-all duration-500 ${
+      className={`sidebar h-screen border-r p-4 mr-10 flex flex-col justify-between transition-all duration-500 ${
         collapsed ? 'w-15' : 'w-70'
       }`}
     >

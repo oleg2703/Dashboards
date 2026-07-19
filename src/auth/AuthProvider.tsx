@@ -1,12 +1,25 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AuthContext } from './AuthContext'
-import { fakePassword, fakeUser } from './fakeAuth'
 import type { User } from '#/types/user'
-
-const STORAGE_KEY = 'dashboard-user'
+import { supabase } from '#/lib/supabase'
 
 interface Props {
   children: React.ReactNode
+}
+
+function toUser(user: {
+  id: string
+  email?: string
+  user_metadata: Record<string, unknown>
+}): User {
+  const name = user.user_metadata.full_name ?? user.user_metadata.name
+
+  return {
+    id: user.id,
+    name:
+      typeof name === 'string' && name.trim() ? name : (user.email ?? 'User'),
+    email: user.email ?? '',
+  }
 }
 
 export default function AuthProvider({ children }: Props) {
@@ -14,32 +27,56 @@ export default function AuthProvider({ children }: Props) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY)
+    let active = true
 
-    if (stored) {
-      setUser(JSON.parse(stored))
+    const restoreSession = async () => {
+      const { data } = await supabase.auth.getSession()
+
+      if (active) {
+        setUser(data.session?.user ? toUser(data.session.user) : null)
+        setLoading(false)
+      }
     }
 
-    setLoading(false)
+    void restoreSession()
+
+    const { data: subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ? toUser(session.user) : null)
+        setLoading(false)
+      },
+    )
+
+    return () => {
+      active = false
+      subscription.subscription.unsubscribe()
+    }
   }, [])
 
   const login = async (email: string, password: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
 
-    if (email === fakeUser.email && password === fakePassword) {
-      setUser(fakeUser)
-
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(fakeUser))
-
-      return true
-    }
-
-    return false
+    return error?.message ?? null
   }
 
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem(STORAGE_KEY)
+  const register = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+
+    return error?.message ?? null
+  }
+
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut()
+
+    if (error) {
+      throw error
+    }
   }
 
   const value = useMemo(
@@ -47,6 +84,7 @@ export default function AuthProvider({ children }: Props) {
       user,
       loading,
       login,
+      register,
       logout,
     }),
     [user, loading],
