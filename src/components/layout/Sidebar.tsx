@@ -28,7 +28,6 @@ export default function Sidebar() {
           {!collapsed && <span>#</span>}
           {!collapsed && (
             <article>
-              <p>{user?.name}</p>
               <p>{user?.email}</p>
             </article>
           )}

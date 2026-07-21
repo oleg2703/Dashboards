@@ -44,6 +44,20 @@ export default function OrderModal({ order, onClose }: OrderModalProps) {
         <p>
           <strong>Date:</strong> {order.date}
         </p>
+
+        {order.items && order.items.length > 0 && (
+          <div>
+            <strong>Items:</strong>
+            <ul className="mt-2 space-y-1">
+              {order.items.map((item) => (
+                <li key={item.productId}>
+                  Product #{item.productId} × {item.quantity} — $
+                  {item.priceAtOrderTime.toFixed(2)}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </Modal>
   )

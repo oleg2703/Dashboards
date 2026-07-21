@@ -20,6 +20,8 @@ import { useModal } from '#/hooks/useModal'
 import TableSkeleton from '#/components/common/TableSkeleton'
 import EmptyState from '#/components/common/EmptyState'
 import ErrorState from '#/components/common/ErrorState'
+import { useCustomers } from '#/components/customers/hooks/useCustomers'
+import { useProducts } from '#/components/products/hooks/useProducts'
 
 export const Route = createFileRoute('/_authenticated/orders')({
   component: RouteComponent,
@@ -27,6 +29,8 @@ export const Route = createFileRoute('/_authenticated/orders')({
 
 function RouteComponent() {
   const { data: orders = [], isLoading, isError, refetch } = useOrders()
+  const { data: customers = [] } = useCustomers()
+  const { data: products = [] } = useProducts()
 
   const createMutation = useCreateOrder()
   const updateMutation = useUpdateOrder()
@@ -110,7 +114,12 @@ function RouteComponent() {
         <OrderModal order={modal.selected} onClose={modal.closeView} />
 
         {modal.isAddOpen && (
-          <AddOrderModal onClose={modal.closeAdd} onAdd={crud.handleCreate} />
+          <AddOrderModal
+            onClose={modal.closeAdd}
+            onAdd={crud.handleCreate}
+            customers={customers}
+            products={products}
+          />
         )}
 
         {modal.editing && (

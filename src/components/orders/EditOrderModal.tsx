@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import type { Order } from '#/types/order'
-import { orderSchema } from '#/validation/orders.schema'
-import type { OrderFormData } from '#/validation/orders.schema'
+import { editOrderSchema } from '#/validation/orders.schema'
+import type { EditOrderFormData } from '#/validation/orders.schema'
 
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
@@ -26,8 +26,8 @@ export default function EditOrderModal({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<OrderFormData>({
-    resolver: zodResolver(orderSchema),
+  } = useForm<EditOrderFormData>({
+    resolver: zodResolver(editOrderSchema),
   })
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function EditOrderModal({
 
   if (!order) return null
 
-  const handleSave = (data: OrderFormData) => {
+  const handleSave = (data: EditOrderFormData) => {
     onSave({
       ...order,
       customerId: data.customerId,

@@ -15,7 +15,7 @@ export default function Header() {
         to: '/login',
       })
     } catch {
-      // Keep the user on the current page if their Supabase session cannot be ended.
+      
     }
   }
   return (
