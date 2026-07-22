@@ -20,12 +20,15 @@ import { useUpdateProduct } from '#/components/products/hooks/useUpdateProduct'
 import { useModal } from '#/hooks/useModal'
 import TableSkeleton from '#/components/common/TableSkeleton'
 import EmptyState from '#/components/common/EmptyState'
+import { useAuth } from '#/auth/useAuth'
 
 export const Route = createFileRoute('/_authenticated/products')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const { hasPermission } = useAuth()
+  const canManage = hasPermission('products:manage')
   const createMutation = useCreateProduct()
   const updateMutation = useUpdateProduct()
   const deleteMutation = useDeleteProduct()
@@ -70,8 +73,8 @@ function RouteComponent() {
         <TableToolbar
           search={table.search}
           onSearchChange={table.setSearch}
-          addLabel="Add Product"
-          onAdd={modal.openAdd}
+          addLabel={canManage ? 'Add Product' : undefined}
+          onAdd={canManage ? modal.openAdd : undefined}
           sortOrder={table.sortOrder}
           onSort={() =>
             table.setSortOrder(table.sortOrder === 'asc' ? 'desc' : 'asc')
@@ -101,6 +104,7 @@ function RouteComponent() {
               onView={modal.openView}
               onEdit={modal.openEdit}
               onDelete={modal.openDelete}
+              canManage={canManage}
             />
 
             <Pagination
@@ -113,17 +117,19 @@ function RouteComponent() {
       </div>
       <ProductModal product={modal.selected} onClose={modal.closeView} />
 
-      <EditProductModal
-        product={modal.editing}
-        onClose={modal.closeEdit}
-        onSave={crud.handleUpdate}
-      />
+      {canManage && (
+        <EditProductModal
+          product={modal.editing}
+          onClose={modal.closeEdit}
+          onSave={crud.handleUpdate}
+        />
+      )}
 
-      {modal.isAddOpen && (
+      {canManage && modal.isAddOpen && (
         <AddProductModal onClose={modal.closeAdd} onAdd={crud.handleCreate} />
       )}
 
-      {modal.deleting && (
+      {canManage && modal.deleting && (
         <DeleteProductModal
           product={modal.deleting}
           onClose={modal.closeDelete}

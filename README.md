@@ -21,7 +21,6 @@ Password
 ```text
 admin123
 ```
-
 ---
 
 ## 📸 Screenshots
@@ -131,7 +130,6 @@ admin123
 - React Hook Form
 - Zod Validation
 - React Query
-- Fake API (JSON Server)
 
 ---
 
@@ -191,12 +189,6 @@ npm install
 
 ## ▶️ Run Application
 
-Start JSON Server
-
-```bash
-npx json-server db.json --port 3001
-```
-
 Start development server
 
 ```bash
@@ -233,7 +225,6 @@ npm run test
 
 - Real Backend API
 - JWT Authentication
-- User Roles
 - Export to Excel
 - Export to PDF
 - Dashboard Analytics

@@ -22,12 +22,15 @@ import EmptyState from '#/components/common/EmptyState'
 import ErrorState from '#/components/common/ErrorState'
 import { useCustomers } from '#/components/customers/hooks/useCustomers'
 import { useProducts } from '#/components/products/hooks/useProducts'
+import { useAuth } from '#/auth/useAuth'
 
 export const Route = createFileRoute('/_authenticated/orders')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const { hasPermission } = useAuth()
+  const canManage = hasPermission('orders:manage')
   const { data: orders = [], isLoading, isError, refetch } = useOrders()
   const { data: customers = [] } = useCustomers()
   const { data: products = [] } = useProducts()
@@ -74,8 +77,8 @@ function RouteComponent() {
         <TableToolbar
           search={table.search}
           onSearchChange={table.setSearch}
-          addLabel="Add Order"
-          onAdd={modal.openAdd}
+          addLabel={canManage ? 'Add Order' : undefined}
+          onAdd={canManage ? modal.openAdd : undefined}
           sortOrder={table.sortOrder}
           onSort={table.toggleSort}
           filterValue={table.filter}
@@ -102,6 +105,7 @@ function RouteComponent() {
               onView={modal.openView}
               onEdit={modal.openEdit}
               onDelete={modal.openDelete}
+              canManage={canManage}
             />
 
             <Pagination
@@ -113,7 +117,7 @@ function RouteComponent() {
         )}
         <OrderModal order={modal.selected} onClose={modal.closeView} />
 
-        {modal.isAddOpen && (
+        {canManage && modal.isAddOpen && (
           <AddOrderModal
             onClose={modal.closeAdd}
             onAdd={crud.handleCreate}
@@ -122,7 +126,7 @@ function RouteComponent() {
           />
         )}
 
-        {modal.editing && (
+        {canManage && modal.editing && (
           <EditOrderModal
             order={modal.editing}
             onClose={modal.closeEdit}
@@ -130,7 +134,7 @@ function RouteComponent() {
           />
         )}
 
-        {modal.deleting && (
+        {canManage && modal.deleting && (
           <DeleteOrderModal
             order={modal.deleting}
             onClose={modal.closeDelete}

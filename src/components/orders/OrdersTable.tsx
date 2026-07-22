@@ -6,6 +6,7 @@ interface OrdersTableProps {
   onView: (order: Order) => void
   onEdit: (order: Order) => void
   onDelete: (order: Order) => void
+  canManage: boolean
 }
 
 export default function OrdersTable({
@@ -13,6 +14,7 @@ export default function OrdersTable({
   onView,
   onEdit,
   onDelete,
+  canManage,
 }: OrdersTableProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-(--border)">
@@ -43,13 +45,17 @@ export default function OrdersTable({
                     <Eye size={18} />
                   </button>
 
-                  <button onClick={() => onEdit(order)}>
-                    <Pencil size={18} />
-                  </button>
+                  {canManage && (
+                    <>
+                      <button onClick={() => onEdit(order)}>
+                        <Pencil size={18} />
+                      </button>
 
-                  <button onClick={() => onDelete(order)}>
-                    <Trash2 size={18} className="text-red-500" />
-                  </button>
+                      <button onClick={() => onDelete(order)}>
+                        <Trash2 size={18} className="text-red-500" />
+                      </button>
+                    </>
+                  )}
                 </div>
               </td>
             </tr>

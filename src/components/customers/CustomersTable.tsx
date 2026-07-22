@@ -6,6 +6,7 @@ interface CustomersTableProps {
   onView: (customer: Customer) => void
   onEdit: (customer: Customer) => void
   onDelete: (customer: Customer) => void
+  canManage: boolean
 }
 
 export default function CustomersTable({
@@ -13,6 +14,7 @@ export default function CustomersTable({
   onView,
   onEdit,
   onDelete,
+  canManage,
 }: CustomersTableProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-(--border)">
@@ -59,19 +61,23 @@ export default function CustomersTable({
                     <Eye size={18} />
                   </button>
 
-                  <button
-                    onClick={() => onEdit(customer)}
-                    className="rounded p-1 hover:bg-(--surface-hover)"
-                  >
-                    <Pencil size={18} />
-                  </button>
+                  {canManage && (
+                    <>
+                      <button
+                        onClick={() => onEdit(customer)}
+                        className="rounded p-1 hover:bg-(--surface-hover)"
+                      >
+                        <Pencil size={18} />
+                      </button>
 
-                  <button
-                    onClick={() => onDelete(customer)}
-                    className="rounded p-1 hover:bg-red-500/10"
-                  >
-                    <Trash2 size={18} className="text-red-500" />
-                  </button>
+                      <button
+                        onClick={() => onDelete(customer)}
+                        className="rounded p-1 hover:bg-red-500/10"
+                      >
+                        <Trash2 size={18} className="text-red-500" />
+                      </button>
+                    </>
+                  )}
                 </div>
               </td>
             </tr>

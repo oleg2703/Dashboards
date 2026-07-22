@@ -1,8 +1,7 @@
 import { useAuth } from '#/auth/useAuth'
 import { Link } from '@tanstack/react-router'
 import {
-  ChevronDown,
-  ChevronUp,
+
   LayoutDashboard,
   FolderKanban,
   UsersRound,
@@ -15,7 +14,7 @@ import { useState } from 'react'
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
-  const { user } = useAuth()
+  const { user, hasPermission } = useAuth()
 
   return (
     <aside
@@ -24,26 +23,19 @@ export default function Sidebar() {
       }`}
     >
       <div>
-        <div className="flex items-center gap-4 mb-8  cursor-pointer">
-          {!collapsed && <span>#</span>}
+        <div className="flex items-center mb-8 gap-3 justify-around">
           {!collapsed && (
-            <article>
+            <article className="flex flex-col">
               <p>{user?.email}</p>
+              <p className="text-medium capitalize text-(--text-muted)">
+                {user?.role}
+              </p>
             </article>
           )}
-          {!collapsed && (
-            <div>
-              <span>
-                <ChevronUp />
-              </span>
-              <span>
-                <ChevronDown />
-              </span>
-            </div>
-          )}
+
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="cursor-pointer"
+            className=" cursor-pointer"
           >
             <ArrowLeftFromLine
               className={` transition-transform ${
@@ -52,7 +44,6 @@ export default function Sidebar() {
             />
           </button>
         </div>
-        <div></div>
         <ul className="flex flex-col gap-4 ">
           <li className="flex items-center gap-2">
             <Link
@@ -94,15 +85,17 @@ export default function Sidebar() {
       </div>
 
       <ul className="flex flex-col gap-2 ">
-        <li className="flex items-center gap-2">
-          <Link
-            to={'/settings'}
-            className="text-lg font-bold flex items-center gap-2"
-          >
-            <Settings />
-            {!collapsed && <span className="font-bold">Settings</span>}
-          </Link>
-        </li>
+          {hasPermission('settings:view') && (
+            <li className="flex items-center gap-2">
+              <Link
+                to={'/settings'}
+                className="text-lg font-bold flex items-center gap-2"
+              >
+                <Settings />
+                {!collapsed && <span className="font-bold">Settings</span>}
+              </Link>
+            </li>
+          )}
         <li className="flex items-center gap-2">
           <Link
             to={'/help'}

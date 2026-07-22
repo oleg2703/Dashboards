@@ -20,12 +20,15 @@ import { useModal } from '#/hooks/useModal'
 import TableSkeleton from '#/components/common/TableSkeleton'
 import EmptyState from '#/components/common/EmptyState'
 import ErrorState from '#/components/common/ErrorState'
+import { useAuth } from '#/auth/useAuth'
 
 export const Route = createFileRoute('/_authenticated/customers')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const { hasPermission } = useAuth()
+  const canManage = hasPermission('customers:manage')
   const { data = [], isFetching, isError, refetch } = useCustomers()
 
   const createMutation = useCreateCustomer()
@@ -62,8 +65,8 @@ function RouteComponent() {
           <TableToolbar
             search={table.search}
             onSearchChange={table.setSearch}
-            addLabel="Add Customer"
-            onAdd={modal.openAdd}
+            addLabel={canManage ? 'Add Customer' : undefined}
+            onAdd={canManage ? modal.openAdd : undefined}
           />
 
           {isFetching ? (
@@ -86,6 +89,7 @@ function RouteComponent() {
                 onView={modal.openView}
                 onEdit={modal.openEdit}
                 onDelete={modal.openDelete}
+                canManage={canManage}
               />
               <Pagination
                 currentPage={table.currentPage}
@@ -96,17 +100,21 @@ function RouteComponent() {
           )}
         </div>
         <CustomerModal customer={modal.selected} onClose={modal.closeView} />
-        <EditCustomerModal
-          customer={modal.editing}
-          onClose={modal.closeEdit}
-          onSave={crud.handleUpdate}
-        />
-        <DeleteCustomerModal
-          customer={modal.deleting}
-          onClose={modal.closeDelete}
-          onDelete={crud.handleDelete}
-        />
-        {modal.isAddOpen && (
+        {canManage && (
+          <>
+            <EditCustomerModal
+              customer={modal.editing}
+              onClose={modal.closeEdit}
+              onSave={crud.handleUpdate}
+            />
+            <DeleteCustomerModal
+              customer={modal.deleting}
+              onClose={modal.closeDelete}
+              onDelete={crud.handleDelete}
+            />
+          </>
+        )}
+        {canManage && modal.isAddOpen && (
           <AddCustomerModal
             onClose={modal.closeAdd}
             onAdd={crud.handleCreate}

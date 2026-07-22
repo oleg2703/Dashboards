@@ -1,24 +1,33 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AuthContext } from './AuthContext'
-import type { User } from '#/types/user'
+import type { Permission, User } from '#/types/user'
 import { supabase } from '#/lib/supabase'
+import { getRole, hasPermission } from './permissions'
 
 interface Props {
   children: React.ReactNode
 }
 
-function toUser(user: {
+async function toUser(user: {
   id: string
   email?: string
   user_metadata: Record<string, unknown>
-}): User {
-  const name = user.user_metadata.full_name ?? user.user_metadata.name
+}): Promise<User> {
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('full_name, role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  const metadataName = user.user_metadata.full_name ?? user.user_metadata.name
+  const name = profile?.full_name ?? metadataName
 
   return {
     id: user.id,
     name:
       typeof name === 'string' && name.trim() ? name : (user.email ?? 'User'),
     email: user.email ?? '',
+    role: getRole(profile?.role),
   }
 }
 
@@ -31,9 +40,12 @@ export default function AuthProvider({ children }: Props) {
 
     const restoreSession = async () => {
       const { data } = await supabase.auth.getSession()
+      const restoredUser = data.session?.user
+        ? await toUser(data.session.user)
+        : null
 
       if (active) {
-        setUser(data.session?.user ? toUser(data.session.user) : null)
+        setUser(restoredUser)
         setLoading(false)
       }
     }
@@ -42,8 +54,16 @@ export default function AuthProvider({ children }: Props) {
 
     const { data: subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        setUser(session?.user ? toUser(session.user) : null)
-        setLoading(false)
+        void (async () => {
+          const authenticatedUser = session?.user
+            ? await toUser(session.user)
+            : null
+
+          if (active) {
+            setUser(authenticatedUser)
+            setLoading(false)
+          }
+        })()
       },
     )
 
@@ -62,13 +82,30 @@ export default function AuthProvider({ children }: Props) {
     return error?.message ?? null
   }
 
-  const register = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
+  const register = async (name: string, email: string, password: string) => {
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: { full_name: name },
+      },
     })
 
-    return error?.message ?? null
+    if (error) {
+      return { error: error.message, requiresEmailConfirmation: false }
+    }
+
+    if (data.user?.identities?.length === 0) {
+      return {
+        error: 'An account with this email already exists.',
+        requiresEmailConfirmation: false,
+      }
+    }
+
+    return {
+      error: null,
+      requiresEmailConfirmation: !data.session,
+    }
   }
 
   const logout = async () => {
@@ -83,6 +120,8 @@ export default function AuthProvider({ children }: Props) {
     () => ({
       user,
       loading,
+      hasPermission: (permission: Permission) =>
+        user ? hasPermission(user.role, permission) : false,
       login,
       register,
       logout,

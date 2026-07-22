@@ -6,6 +6,7 @@ interface ProductsTableProps {
   onView: (product: Product) => void
   onEdit: (product: Product) => void
   onDelete: (product: Product) => void
+  canManage: boolean
 }
 
 export default function ProductsTable({
@@ -13,6 +14,7 @@ export default function ProductsTable({
   onView,
   onEdit,
   onDelete,
+  canManage,
 }: ProductsTableProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-(--border)">
@@ -53,19 +55,23 @@ export default function ProductsTable({
                   >
                     <Eye size={18} />
                   </div>
-                  <div className="rounded p-1 hover:bg-(--surface-hover)">
-                    <button onClick={() => onEdit(product)}>
-                      <Pencil size={18} />
-                    </button>
-                  </div>
-                  <div className="rounded p-1 hover:bg-red-500/10">
-                    <button onClick={() => onDelete(product)}>
-                      <Trash2
-                        size={18}
-                        className="cursor-pointer text-red-500"
-                      />
-                    </button>
-                  </div>
+                  {canManage && (
+                    <>
+                      <div className="rounded p-1 hover:bg-(--surface-hover)">
+                        <button onClick={() => onEdit(product)}>
+                          <Pencil size={18} />
+                        </button>
+                      </div>
+                      <div className="rounded p-1 hover:bg-red-500/10">
+                        <button onClick={() => onDelete(product)}>
+                          <Trash2
+                            size={18}
+                            className="cursor-pointer text-red-500"
+                          />
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </td>
             </tr>
