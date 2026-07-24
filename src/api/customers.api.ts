@@ -1,16 +1,50 @@
 import { supabase } from '#/lib/supabase'
 import type { Customer } from '#/types/customer'
+import type { Order } from '#/types/order'
+
+export function buildCustomerSummaries(
+  customers: Customer[],
+  orders: Order[],
+): Customer[] {
+  const summaries = orders.reduce(
+    (acc, order) => {
+      const current = acc.get(order.customerId) ?? { ordersCount: 0, totalSpent: 0 }
+
+      current.ordersCount += 1
+      current.totalSpent += order.amount
+      acc.set(order.customerId, current)
+
+      return acc
+    },
+    new Map<number, { ordersCount: number; totalSpent: number }>(),
+  )
+
+  return customers.map((customer) => {
+    const summary = summaries.get(customer.id)
+
+    return {
+      ...customer,
+      ordersCount: summary?.ordersCount ?? 0,
+      totalSpent: summary?.totalSpent ?? 0,
+    }
+  })
+}
 
 export const customersApi = {
   async getAll(): Promise<Customer[]> {
-    const { data, error } = await supabase
-      .from('customers')
-      .select('*')
-      .order('id')
+    const [{ data: customerData, error: customersError }, { data: orderData, error: ordersError }] =
+      await Promise.all([
+        supabase.from('customers').select('*').order('id'),
+        supabase.from('orders').select('*').order('id'),
+      ])
 
-    if (error) throw error
+    if (customersError) throw customersError
+    if (ordersError) throw ordersError
 
-    return data as Customer[]
+    return buildCustomerSummaries(
+      (customerData as Customer[]) ?? [],
+      (orderData as Order[]) ?? [],
+    )
   },
 
   async getById(id: number): Promise<Customer | null> {

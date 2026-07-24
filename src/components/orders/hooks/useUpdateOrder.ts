@@ -11,6 +11,9 @@ export const useUpdateOrder = () => {
       queryClient.invalidateQueries({
         queryKey: ['orders'],
       })
+      queryClient.invalidateQueries({
+        queryKey: ['customers'],
+      })
     },
   })
 }

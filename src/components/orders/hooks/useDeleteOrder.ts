@@ -11,6 +11,9 @@ export const useDeleteOrder = () => {
       queryClient.invalidateQueries({
         queryKey: ['orders'],
       })
+      queryClient.invalidateQueries({
+        queryKey: ['customers'],
+      })
     },
   })
 }
