@@ -39,10 +39,15 @@ export default function AddOrderModal({
   })
 
   const { fields, append, remove } = useFieldArray({ control, name: 'items' })
-  const items = useWatch({ control, name: 'items' }) ?? []
+  const items = useWatch({ control, name: 'items' })
   const amount = items.reduce((total, item) => {
     const product = products.find((current) => current.id === item.productId)
-    return total + (product?.price ?? 0) * (item.quantity || 0)
+
+    if (!product) {
+      return total
+    }
+
+    return total + product.price * (item.quantity || 0)
   }, 0)
 
   const handleAdd = (data: OrderFormData) => {

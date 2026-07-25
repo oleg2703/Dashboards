@@ -11,7 +11,7 @@ interface InputProps
     InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputVariants> {}
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+export const Input = forwardRef<HTMLInputElement, InputProps>(function InputComponent(
   { className, variant, inputSize, ...props },
   ref,
 ) {

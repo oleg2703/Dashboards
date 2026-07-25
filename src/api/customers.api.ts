@@ -8,7 +8,12 @@ export function buildCustomerSummaries(
 ): Customer[] {
   const summaries = orders.reduce(
     (acc, order) => {
-      const current = acc.get(order.customerId) ?? { ordersCount: 0, totalSpent: 0 }
+      const current = acc.get(order.customerId)
+
+      if (!current) {
+        acc.set(order.customerId, { ordersCount: 1, totalSpent: order.amount })
+        return acc
+      }
 
       current.ordersCount += 1
       current.totalSpent += order.amount
@@ -22,10 +27,18 @@ export function buildCustomerSummaries(
   return customers.map((customer) => {
     const summary = summaries.get(customer.id)
 
+    if (!summary) {
+      return {
+        ...customer,
+        ordersCount: 0,
+        totalSpent: 0,
+      }
+    }
+
     return {
       ...customer,
-      ordersCount: summary?.ordersCount ?? 0,
-      totalSpent: summary?.totalSpent ?? 0,
+      ordersCount: summary.ordersCount,
+      totalSpent: summary.totalSpent,
     }
   })
 }
@@ -41,10 +54,10 @@ export const customersApi = {
     if (customersError) throw customersError
     if (ordersError) throw ordersError
 
-    return buildCustomerSummaries(
-      (customerData as Customer[]) ?? [],
-      (orderData as Order[]) ?? [],
-    )
+    const customers = customerData as Customer[]
+    const orders = orderData as Order[]
+
+    return buildCustomerSummaries(customers, orders)
   },
 
   async getById(id: number): Promise<Customer | null> {

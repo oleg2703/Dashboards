@@ -10,7 +10,7 @@ import { Modal } from '../ui/Modal'
 
 interface AddProductModalProps {
   onClose: () => void
-  onAdd: (product: Omit<Product, 'id' | 'status'>) => void
+  onAdd: (product: Omit<Product, 'id'>) => void
 }
 
 export default function AddProductModal({
@@ -33,6 +33,7 @@ export default function AddProductModal({
   const submit = (data: ProductFormData) => {
     onAdd({
       ...data,
+      status: 'Active',
       description: '',
     })
 
