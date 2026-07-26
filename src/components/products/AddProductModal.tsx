@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { productSchema } from '#/validation/product.schema'
 import type { ProductFormData } from '#/validation/product.schema'
 import type { Product } from '#/types/product'
+import { getProductStatus } from '../../hooks/UseStatus'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import { Modal } from '../ui/Modal'
@@ -33,7 +34,7 @@ export default function AddProductModal({
   const submit = (data: ProductFormData) => {
     onAdd({
       ...data,
-      status: 'Active',
+      status: getProductStatus(data.stock),
       description: '',
     })
 

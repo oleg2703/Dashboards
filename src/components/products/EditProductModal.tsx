@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { Product } from '#/types/product'
 import { productSchema } from '#/validation/product.schema'
 import type { ProductFormData } from '#/validation/product.schema'
+import { getProductStatus } from '../../hooks/UseStatus'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import { Modal } from '../ui/Modal'
@@ -45,7 +46,7 @@ export default function EditProductModal({
     onSave({
       ...product,
       ...data,
-      status: data.stock > 5 ? 'Active' : 'Low Stock',
+      status: getProductStatus(data.stock),
     })
 
     onClose()

@@ -89,13 +89,13 @@ function RouteComponent() {
           <TableSkeleton rows={5} columns={6} />
         ) : isError ? (
           <ErrorState
-            title="Failed to load products"
+            title="Failed to load orders"
             description="Please check your connection."
             onRetry={refetch}
           />
         ) : table.data.length === 0 ? (
           <EmptyState
-            title="No products found"
+            title="No orders found"
             description="Try changing your search or filter."
           />
         ) : (
