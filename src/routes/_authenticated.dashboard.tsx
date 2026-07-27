@@ -34,24 +34,28 @@ function DashboardPage() {
               title="Customers"
               value={stats.totalCustomers}
               change={`${stats.activeCustomers} active`}
+              tone="positive"
             />
 
             <StatCard
               title="Products"
               value={stats.totalProducts}
               change={`${stats.lowStockProducts} low stock`}
+              tone={stats.lowStockProducts > 0 ? 'warning' : 'positive'}
             />
 
             <StatCard
               title="Orders"
               value={stats.totalOrders}
               change={`${stats.pendingOrders} pending`}
+              tone={stats.pendingOrders > 0 ? 'warning' : 'neutral'}
             />
 
             <StatCard
               title="Revenue"
               value={`$${stats.totalRevenue.toLocaleString()}`}
               change="Total earnings"
+              tone="positive"
             />
           </div>
 
