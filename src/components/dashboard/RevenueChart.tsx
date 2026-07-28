@@ -13,7 +13,14 @@ import 'chartjs-adapter-date-fns'
 import { Line } from 'react-chartjs-2'
 import { useOrders } from '#/components/orders/hooks/useOrders'
 
-ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Tooltip, Legend)
+ChartJS.register(
+  TimeScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+)
 
 const options = {
   responsive: true,
@@ -22,7 +29,7 @@ const options = {
     x: {
       type: 'time' as const,
       time: {
-        unit: 'day',
+        unit: 'day' as const,
         tooltipFormat: 'PP',
         displayFormats: {
           day: 'MMM d',

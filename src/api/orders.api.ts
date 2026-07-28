@@ -51,31 +51,26 @@ export const ordersApi = {
   },
 
   async create(order: Omit<Order, 'id'>): Promise<Order> {
-    const { items = [], ...orderData } = order
+    const { customerId, items = [] } = order
+
     const { data, error } = await supabase
-      .from('orders')
-      .insert(orderData)
-      .select()
+      .rpc('create_order_with_items', {
+        customer_id: customerId,
+        items: items.map(({ productId, quantity }) => ({
+          productId,
+          quantity,
+        })),
+      })
       .single()
 
     if (error) throw error
 
-    const createdOrder = data as Order
-    const { error: itemsError } = await supabase.from('order_items').insert(
-      items.map((item) => ({
-        orderId: createdOrder.id,
-        productId: item.productId,
-        quantity: item.quantity,
-        priceAtOrderTime: item.priceAtOrderTime,
-      })),
-    )
-
-    if (itemsError) {
-      await supabase.from('orders').delete().eq('id', createdOrder.id)
-      throw itemsError
-    }
-
-    return { ...createdOrder, items }
+    // amount/priceAtOrderTime are now calculated by the database, not
+    // sent from the client — re-fetch the full order (with items) so
+    // the UI shows the real, server-computed values.
+    const created = data as Order
+    const full = await ordersApi.getById(created.id)
+    return full ?? created
   },
 
   async update(order: Order): Promise<Order> {
