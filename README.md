@@ -6,22 +6,7 @@ The application allows managing products, customers, and orders through a clean 
 
 ---
 
-Live demo -https://dashboards-beta-plum.vercel.app/dashboard
-
-## 🔐 Demo Credentials
-
-Email
-
-```text
-admin@example.com
-```
-
-Password
-
-```text
-admin123
-```
----
+Live demo -https://dashboards-beta-plum.vercel.app
 
 ## 📸 Screenshots
 
@@ -63,91 +48,76 @@ admin123
 
 ## 🚀 Features
 
-### Authentication
+### Authentication & Authorization
 
-- Fake authentication
+- Supabase Authentication
 - Protected routes
-- Persistent session (LocalStorage)
-- Logout
+- Role-based access (Admin / Manager / Viewer)
+- Row Level Security (RLS)
 
 ### Dashboard
 
-- Statistics cards
-- Revenue chart
-- Orders pie chart
+- KPI cards
+- Revenue analytics
+- Orders overview
 - Top products
 - Recent orders
+- Interactive charts
 
 ### Products
 
-- View products
-- Add product
-- Edit product
-- Delete product
+- Create, update, delete products
+- Automatic stock status
 - Search
-- Sort
+- Sorting
 - Pagination
-- Validation with Zod
+- Form validation
 
 ### Customers
 
-- View customers
-- Add customer
-- Edit customer
-- Delete customer
+- CRUD operations
 - Search
-- Sort
+- Sorting
 - Pagination
-- Validation
+- Automatic spending statistics
 
 ### Orders
 
-- View orders
-- Add order
-- Edit order
-- Delete order
-- Search
-- Filter by status
-- Sort
-- Pagination
+- CRUD operations
+- Customer & product selection
+- Automatic total calculation
+- Stock validation
+- Atomic order creation using PostgreSQL functions
+- Automatic stock synchronization with database triggers
 
-### Reusable UI
+### General
 
-- Button
-- Input
-- SearchInput
-- Modal
-- Pagination
-- Empty State
-- Error State
-- Table Skeleton
-
-### Other
-
-- Dark / Light Theme
-- Responsive Design
-- Toast Notifications
-- React Hook Form
-- Zod Validation
-- React Query
+- Responsive design
+- Dark / Light theme
+- Toast notifications
+- Reusable UI components
+- Form validation with Zod
+- Component testing
 
 ---
 
 ## 🛠 Tech Stack
 
-- React
+- React 19
 - TypeScript
 - Vite
 - TanStack Router
 - TanStack React Query
 - Tailwind CSS
+- Supabase
+  - PostgreSQL
+  - Authentication
+  - Row Level Security (RLS)
 - Chart.js
 - React Hook Form
 - Zod
-- React Toastify
-- JSON Server
 - Vitest
-- Testing Library
+- GitHub Actions
 
 ---
 
@@ -156,21 +126,18 @@ admin123
 ```text
 src
 │
-├── components
-│   ├── common
-│   ├── layout
-│   ├── products
-│   ├── customers
-│   ├── orders
-│   └── ui
-│
-├── hooks
 ├── api
 ├── auth
+├── components
+├── hooks
+├── lib
 ├── routes
 ├── types
 ├── validation
-└── lib
+└── data
+
+supabase
+└── migrations
 ```
 
 ---
@@ -183,21 +150,15 @@ git clone https://github.com/oleg2703/Dashboards.git
 cd Dashboards
 
 npm install
-```
 
----
+cp .env.example .env
 
-## ▶️ Run Application
-
-Start development server
-
-```bash
 npm run dev
 ```
 
 ---
 
-## 🧪 Run Tests
+## 🧪 Testing
 
 ```bash
 npm run test
@@ -205,32 +166,20 @@ npm run test
 
 ---
 
-## 📈 Project Highlights
+## ⭐ Highlights
 
-- Reusable UI components
-- Generic CRUD hook
-- Generic Table hook
-- Generic Modal
-- Protected Routes
-- Authentication Context
-- Custom Hooks
-- Form Validation
-- React Query
-- Responsive Layout
-- Component Testing
-
----
-
-## 📋 Future Improvements
-
-- Real Backend API
-- JWT Authentication
-- Export to Excel
-- Export to PDF
-- Dashboard Analytics
-- Unit & Integration Tests
-- CI/CD
-- Docker
+- Relational database design
+- SQL migrations
+- PostgreSQL functions
+- Database triggers
+- Row Level Security (RLS)
+- Generic CRUD architecture
+- Generic table components
+- React Query data management
+- Form validation
+- Responsive UI
+- Component testing
+- CI with GitHub Actions
 
 ---
 
@@ -238,5 +187,4 @@ npm run test
 
 **Oleg Lebid**
 
-GitHub:
-https://github.com/oleg2703
+GitHub: https://github.com/oleg2703
