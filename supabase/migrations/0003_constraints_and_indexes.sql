@@ -1,7 +1,5 @@
--- ============================================================
--- Foreign keys that ALREADY exist in production (confirmed via
--- information_schema.table_constraints on 2026-07-28)
--- ============================================================
+
+-- Foreign keys that ALREADY exist in production 
 alter table public.order_items
   add constraint order_items_orderId_fkey
   foreign key ("orderId") references public.orders (id) on delete cascade;
@@ -19,9 +17,9 @@ alter table public.profiles
 alter table public.orders
   add constraint orders_customerId_fkey
   foreign key ("customerId") references public.customers (id) on delete restrict;
--- ============================================================
+
 -- Indexes that ALREADY exist
--- ============================================================
+
 create index order_items_product_id_idx on public.order_items using btree ("productId");
 create index order_items_order_id_idx on public.order_items using btree ("orderId");
 create index orders_customer_id_idx on public.orders using btree ("customerId");

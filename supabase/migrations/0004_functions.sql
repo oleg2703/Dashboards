@@ -1,9 +1,3 @@
--- Verbatim from production (pg_get_functiondef dump, 2026-07-28), minus:
---  - rls_auto_enable(): exists but is NOT attached to any event trigger
---    (confirmed via pg_event_trigger) — dead code, not included here.
---  - adjust_stock_on_order_item_insert() / restore_stock_on_order_item_delete()
---    and my own adjust_product_stock(): duplicate/incorrect stock logic,
---    removed via URGENT_deduplicate_stock_triggers.sql — not included here.
 
 create or replace function public.current_role()
 returns text
@@ -253,17 +247,6 @@ begin
 end;
 $$;
 
--- NOTE: this creates the order as 'pending', which — given the stock
--- system above only deducts stock once an order becomes 'paid' — means
--- create_order_with_items() does NOT reserve stock at creation time.
--- Its own stock check (below) is only a point-in-time availability
--- check, not a reservation. Two people can still both pass this check
--- for the last unit if both orders stay 'pending' and only one of them
--- later gets marked 'paid' first. This matches the existing "reserve
--- on payment, not on order" business rule already encoded in the
--- triggers above, so it's left as-is rather than "fixed" to reserve
--- immediately — flagging it here so it's a deliberate, known choice,
--- not a silent gap.
 create or replace function public.create_order_with_items(
   customer_id bigint,
   items jsonb
@@ -275,7 +258,7 @@ set search_path to 'public'
 as $$
 declare
   new_order   public.orders;
-  item        jsonb;
+  item_value  jsonb;
   product_row public.products;
   total       numeric(10, 2) := 0;
 begin
@@ -287,24 +270,26 @@ begin
     raise exception 'Order must contain at least one item';
   end if;
 
-  for item in
-    select * from jsonb_array_elements(items) order by (value->>'productId')::bigint
+  for item_value in
+    select value
+    from jsonb_array_elements(items) as item_json
+    order by (item_json->>'productId')::bigint
   loop
     select * into product_row
     from public.products
-    where id = (item->>'productId')::bigint
+    where id = (item_value->>'productId')::bigint
     for update;
 
     if not found then
-      raise exception 'Product % does not exist', item->>'productId';
+      raise exception 'Product % does not exist', item_value->>'productId';
     end if;
 
-    if product_row.stock < (item->>'quantity')::integer then
+    if product_row.stock < (item_value->>'quantity')::integer then
       raise exception 'Not enough stock for %: % available, % requested',
-        product_row.name, product_row.stock, item->>'quantity';
+        product_row.name, product_row.stock, item_value->>'quantity';
     end if;
 
-    total := total + product_row.price * (item->>'quantity')::integer;
+    total := total + product_row.price * (item_value->>'quantity')::integer;
   end loop;
 
   insert into public.orders ("customerId", amount, status, date)
@@ -314,11 +299,11 @@ begin
   insert into public.order_items ("orderId", "productId", "quantity", "priceAtOrderTime")
   select
     new_order.id,
-    (item->>'productId')::bigint,
-    (item->>'quantity')::integer,
+    (item_json->>'productId')::bigint,
+    (item_json->>'quantity')::integer,
     p.price
-  from jsonb_array_elements(items) item
-  join public.products p on p.id = (item->>'productId')::bigint;
+  from jsonb_array_elements(items) as item_json
+  join public.products p on p.id = (item_json->>'productId')::bigint;
 
   return new_order;
 end;

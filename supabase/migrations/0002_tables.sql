@@ -1,8 +1,4 @@
--- Column nullability/defaults here match what's ACTUALLY live, confirmed
--- via information_schema.columns — not what would be ideal. A few gaps
--- (e.g. orders.amount/status/date being nullable) are called out but not
--- silently "fixed" here, since tightening them could break existing rows.
--- See 0007_optional_hardening.sql for suggested (not required) fixes.
+-- Column nullability/defaults here match what's ACTUALLY live
 
 create table public.customers (
   id           bigint generated always as identity primary key,
@@ -41,7 +37,6 @@ create table public.order_items (
 );
 
 -- profiles.id is NOT its own identity — it's 1:1 with auth.users, see the
--- foreign key + on_auth_user_created trigger in later migrations.
 create table public.profiles (
   id         uuid primary key,
   email      text not null,
