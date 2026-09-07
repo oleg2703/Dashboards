@@ -21,7 +21,7 @@ export default function Header() {
   return (
     <header className="w-full flex items-center justify-between border-b bg-background ">
       <div className="flex items-left place-content-end gap-3">
-        <h1 className="text-sm text-(--text-secondary)">DashboardBY</h1>
+        <h1 className="text-sm text-(--text-secondary)">PulseDashboard</h1>
       </div>
       <ul className="flex items-right gap-7 items-center">
         <li>
