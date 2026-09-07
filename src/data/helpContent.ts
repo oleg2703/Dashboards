@@ -76,6 +76,6 @@ export const faqSections: FaqSection[] = [
 ]
 
 export const supportContact = {
-  email: 'support@yourstore.example',
+  email: 'supportDashboradPulse@gmail.com',
   note: 'For anything not covered here \u2014 bugs, access requests, or feature ideas \u2014 email us directly.',
 }

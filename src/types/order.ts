@@ -1,6 +1,7 @@
 export interface Order {
   id: number
   customerId: number
+  customerName?: string
   amount: number
   status: 'paid' | 'pending' | 'cancelled'
   date: string

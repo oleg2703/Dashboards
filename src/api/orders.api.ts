@@ -8,14 +8,16 @@ type OrderItemRecord = {
 }
 
 type OrderRecord = Order & {
+  customers?: { name: string } | null
   order_items?: OrderItemRecord[]
 }
 
 function mapOrder(record: OrderRecord): Order {
-  const { order_items, ...order } = record
+  const { customers, order_items, ...order } = record
 
   return {
     ...order,
+    customerName: customers?.name ?? 'Unknown customer',
     items: order_items?.map(
       ({ productId, quantity, priceAtOrderTime }): OrderItem => ({
         productId,
@@ -30,7 +32,9 @@ export const ordersApi = {
   async getAll(): Promise<Order[]> {
     const { data, error } = await supabase
       .from('orders')
-      .select('*, order_items(productId, quantity, priceAtOrderTime)')
+      .select(
+        '*, customers(name), order_items(productId, quantity, priceAtOrderTime)',
+      )
       .order('id')
 
     if (error) throw error
@@ -41,7 +45,9 @@ export const ordersApi = {
   async getById(id: number): Promise<Order | null> {
     const { data, error } = await supabase
       .from('orders')
-      .select('*, order_items(productId, quantity, priceAtOrderTime)')
+      .select(
+        '*, customers(name), order_items(productId, quantity, priceAtOrderTime)',
+      )
       .eq('id', id)
       .maybeSingle()
 
@@ -74,9 +80,10 @@ export const ordersApi = {
   },
 
   async update(order: Order): Promise<Order> {
+    const { customerName: _customerName, items: _items, ...orderData } = order
     const { data, error } = await supabase
       .from('orders')
-      .update(order)
+      .update(orderData)
       .eq('id', order.id)
       .select()
       .single()

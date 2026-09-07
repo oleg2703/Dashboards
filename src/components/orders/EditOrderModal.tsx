@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import type { Order } from '#/types/order'
+import type { Customer } from '#/types/customer'
 import { editOrderSchema } from '#/validation/orders.schema'
 import type { EditOrderFormData } from '#/validation/orders.schema'
 
@@ -14,12 +15,14 @@ interface EditOrderModalProps {
   order: Order | null
   onClose: () => void
   onSave: (order: Order) => void
+  customers: Customer[]
 }
 
 export default function EditOrderModal({
   order,
   onClose,
   onSave,
+  customers,
 }: EditOrderModalProps) {
   const {
     register,
@@ -75,13 +78,17 @@ export default function EditOrderModal({
         className="space-y-4"
       >
         <div>
-          <Input
-            type="number"
-            placeholder="Customer ID"
-            {...register('customerId', {
-              valueAsNumber: true,
-            })}
-          />
+          <select
+            {...register('customerId', { valueAsNumber: true })}
+            className="w-full rounded-xl border border-(--border) bg-(--card-bg) p-2"
+          >
+            <option value={0}>Select customer</option>
+            {customers.map((customer) => (
+              <option key={customer.id} value={customer.id}>
+                {customer.name} ({customer.email})
+              </option>
+            ))}
+          </select>
 
           {errors.customerId && (
             <p className="mt-1 text-sm text-red-500">

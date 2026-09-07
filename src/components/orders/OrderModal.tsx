@@ -30,7 +30,8 @@ export default function OrderModal({ order, onClose }: OrderModalProps) {
         </p>
 
         <p>
-          <strong>Customer ID:</strong> {order.customerId}
+          <strong>Customer:</strong>{' '}
+          {order.customerName ?? 'Unknown customer'}
         </p>
 
         <p>

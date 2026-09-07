@@ -13,7 +13,7 @@ export default function RecentOrdersTable() {
         <thead>
           <tr className="border-b border-(--border)">
             <th className="px-3 py-2 text-left">Order ID</th>
-            <th className="px-3 py-2 text-left">Customer ID</th>
+            <th className="px-3 py-2 text-left">Customer</th>
             <th className="px-3 py-2 text-left">Status</th>
             <th className="px-3 py-2 text-right">Amount</th>
           </tr>
@@ -24,7 +24,9 @@ export default function RecentOrdersTable() {
             <tr key={order.id} className="border-b border-(--border)">
               <td className="px-3 py-2">#{order.id}</td>
 
-              <td className="px-3 py-2">{order.customerId}</td>
+              <td className="px-3 py-2">
+                {order.customerName ?? 'Unknown customer'}
+              </td>
 
               <td className="px-3 py-2">
                 <span

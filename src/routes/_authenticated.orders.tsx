@@ -46,7 +46,9 @@ function RouteComponent() {
 
     searchFn: (order, search) =>
       order.id.toString().includes(search) ||
-      order.customerId.toString().includes(search),
+      (order.customerName ?? 'Unknown customer')
+        .toLowerCase()
+        .includes(search),
 
     filterFn: (order, filter) =>
       filter === 'All' ? true : order.status === filter,
@@ -131,6 +133,7 @@ function RouteComponent() {
             order={modal.editing}
             onClose={modal.closeEdit}
             onSave={crud.handleUpdate}
+            customers={customers}
           />
         )}
 

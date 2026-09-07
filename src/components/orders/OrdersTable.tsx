@@ -34,7 +34,7 @@ export default function OrdersTable({
           {orders.map((order) => (
             <tr key={order.id} className="border-b border-(--border)">
               <td className="p-4">{order.id}</td>
-              <td className="p-4">{order.customerId}</td>
+              <td className="p-4">{order.customerName ?? 'Unknown customer'}</td>
               <td className="p-4">${order.amount}</td>
               <td className="p-4">{order.status}</td>
               <td className="p-4">{order.date}</td>
