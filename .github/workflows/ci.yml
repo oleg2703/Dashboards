@@ -1,19 +1,19 @@
 name: CI
 
-on:
-  pull_request:
-    branches:
-      - main
+on: [pull_request, push]
+
 
 jobs:
   quality:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [20.x, 18.x, 16.x]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: 20
