@@ -23,17 +23,15 @@ export default function Sidebar() {
       }`}
     >
       <div>
-        <div className="flex items-center mb-8 gap-3 justify-around">
-          {!collapsed && (
-            <article className="flex flex-col">
-              <p>{user?.email}</p>
-              <p className="text-medium capitalize text-(--text-muted)">
-                {user?.role}
-              </p>
-            </article>
+        <div className="flex place-items-center mb-8 jsutify-between gap-2"> 
+         {!collapsed && (
+          
+            <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="logo" className="w-12 h-12" />
+            <h2 className="text-xl font-bold">PulseDashboard</h2>
+         </div>
           )}
-
-          <button
+           <button
             onClick={() => setCollapsed(!collapsed)}
             className=" cursor-pointer"
           >
@@ -43,6 +41,25 @@ export default function Sidebar() {
               }`}
             />
           </button>
+           </div>
+          
+        <div className="flex items-center mb-8 gap-3 justify-around">
+           {!collapsed && (
+            
+            <div className="rounded-full p-2 bg-gray-700"> <p className="font-bold">{user?.name}</p></div>
+          )}
+          {!collapsed && (
+            <article className="flex flex-col">
+              
+              <p>{user?.email}</p>
+              <p className="text-medium capitalize text-(--text-muted)">
+                {user?.role}
+              </p>
+              
+            </article>
+          )}
+
+         
         </div>
         <ul className="flex flex-col gap-4 ">
           <li className="flex items-center gap-2">
