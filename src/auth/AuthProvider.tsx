@@ -82,6 +82,14 @@ export default function AuthProvider({ children }: Props) {
     return error?.message ?? null
   }
 
+  const forgotPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/login`,
+    })
+
+    return error?.message ?? null
+  }
+
   const register = async (name: string, email: string, password: string) => {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -123,6 +131,7 @@ export default function AuthProvider({ children }: Props) {
       hasPermission: (permission: Permission) =>
         user ? hasPermission(user.role, permission) : false,
       login,
+      forgotPassword,
       register,
       logout,
     }),

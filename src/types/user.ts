@@ -12,6 +12,7 @@ export interface AuthContextType {
   loading: boolean
   hasPermission: (permission: Permission) => boolean
   login: (email: string, password: string) => Promise<string | null>
+  forgotPassword: (email: string) => Promise<string | null>
   register: (
     name: string,
     email: string,

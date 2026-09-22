@@ -24,12 +24,14 @@ export default function LoginForm() {
 }
 
 function SignInForm({ onRegister }: { onRegister: () => void }) {
-  const { login } = useAuth()
+  const { forgotPassword, login } = useAuth()
 
   const navigate = useNavigate()
 
   const {
     register,
+    getValues,
+    trigger,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
@@ -49,6 +51,23 @@ function SignInForm({ onRegister }: { onRegister: () => void }) {
     navigate({
       to: '/dashboard',
     })
+  }
+
+  const onForgotPassword = async () => {
+    const isEmailValid = await trigger('email')
+
+    if (!isEmailValid) {
+      return
+    }
+
+    const error = await forgotPassword(getValues('email'))
+
+    if (error) {
+      toast.error(error)
+      return
+    }
+
+    toast.success('Password reset instructions sent to your email.')
   }
 
   return (
@@ -81,6 +100,14 @@ function SignInForm({ onRegister }: { onRegister: () => void }) {
         {errors.password && (
           <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
         )}
+
+        <button
+          type="button"
+          className="mt-2 block w-full text-right text-sm text-primary underline"
+          onClick={onForgotPassword}
+        >
+          Forgot password?
+        </button>
       </div>
 
       <Button type="submit" loading={isSubmitting} className="w-full">
