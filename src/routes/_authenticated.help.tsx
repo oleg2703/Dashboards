@@ -51,7 +51,7 @@ function RouteComponent() {
             ))}
           </div>
 
-          <section className="mt-10 rounded-xl border border-(--border) bg-(--card-bg) p-5">
+          <section className="mt-10 rounded-xl border border-(--border) bg-(--surface-hover) p-5">
             <h2 className="text-lg font-semibold">Still need help?</h2>
             <p className="mt-1 text-(--text-secondary)">
               {supportContact.note}

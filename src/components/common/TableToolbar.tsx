@@ -39,6 +39,8 @@ export default function TableToolbar({
       {onSort && (
         <button
           onClick={onSort}
+          aria-label={`Sort ${sortOrder === 'asc' ? 'ascending' : 'descending'}`}
+          title={`Sort ${sortOrder === 'asc' ? 'ascending' : 'descending'}`}
           className="rounded-xl border border-(--border) bg-(--card-bg) px-4 py-2"
         >
           {sortOrder === 'asc' ? '↑' : '↓'}
